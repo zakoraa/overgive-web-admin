@@ -1,5 +1,5 @@
-import { Home } from "@/modules/home";
+import AppLayout from "@/layout/app-layout";
 
 export default function Page() {
-  return <div>HAllo</div>;
+  return <AppLayout />;
 }
