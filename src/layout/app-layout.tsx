@@ -3,7 +3,7 @@
 import { useState } from "react";
 import SideBar from "./side-bar";
 import { Modal } from "@/components/ui/modal/modal";
-import DonationCampaign from "@/modules/donation_campaign/table";
+import DonationCampaign from "@/modules/donation_campaign/pages/table";
 
 export default function AppLayout() {
   const [activeTab, setActiveTab] = useState("kampanye");
