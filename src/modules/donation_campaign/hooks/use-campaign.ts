@@ -8,38 +8,38 @@ export const useCampaign = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addCampaign = async (data: CampaignCreateInput, file?: File) => {
-    setLoading(true);
-    setError(null);
+const addCampaign = async (data: CampaignCreateInput, file?: File) => {
+  setLoading(true);
+  setError(null);
 
-    try {
-      let imageUrl: string;
+  try {
+    let payload: CampaignCreateInput = { ...data };
 
-      if (file) {
-        const fileName = `campaign-${Date.now()}-${file.name}`;
-        const { data: uploadData, error: uploadError } = await supabaseClient.storage
-          .from("campaign-images")
-          .upload(fileName, file);
+    if (file) {
+      const fileName = `campaign-${Date.now()}-${file.name}`;
+      const { data: uploadData, error: uploadError } = await supabaseClient.storage
+        .from("campaign-images")
+        .upload(fileName, file);
 
-        if (uploadError) throw uploadError;
+      if (uploadError) throw uploadError;
 
-        imageUrl = supabaseClient.storage
-          .from("campaign-images")
-          .getPublicUrl(uploadData.path).data.publicUrl;
-          
-        const payload: CampaignCreateInput = { ...data, image_url: imageUrl };
-        const result = await createCampaign(payload);
-          
-        return result;
-      }
-      setError( "Gagal menambahkan kampanye");
-    } catch (err: any) {
-      setError(err.message || "Gagal menambahkan kampanye");
-      throw err;
-    } finally {
-      setLoading(false);
+     const imageUrl =  supabaseClient.storage
+        .from("campaign-images")
+        .getPublicUrl(uploadData.path).data.publicUrl;
+ 
+      payload.image_url = imageUrl; 
     }
-  };
+
+    const result = await createCampaign(payload);
+    return result;
+
+  } catch (err: any) {
+    setError(err.message || "Gagal menambahkan kampanye");
+    throw err;
+  } finally {
+    setLoading(false);
+  }
+};
 
   return { addCampaign, loading, error };
 };

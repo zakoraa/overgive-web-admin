@@ -9,34 +9,39 @@ import { AppRichTextEditor } from "@/components/ui/input/app-rich-text-editor";
 import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
 import { useCampaign } from "@/modules/donation_campaign/hooks/use-campaign";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
+import { AppFileInput } from "@/components/ui/input/app-file-input";
 
 export const AddDonationCampaignForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<any>({});
   const { addCampaign, loading } = useCampaign();
 
-  const handleSubmitConfirm = async () => {
-    setIsModalOpen(false);
+const handleSubmitConfirm = async () => {
+  setIsModalOpen(false);
 
-    try {
-      const payload = {
+  try {
+    // Ambil file dari formData.image_file
+    const result = await addCampaign(
+      {
         title: formData.name,
         background_html: formData.background_html,
-        image_url: formData.image_url,
         category: formData.category as CampaignCategory,
-        target_amount: Number(formData.target_ammount),
+      
+        target_amount: Number(formData.target_amount),
         ended_at: formData.ended_at || null,
-        created_by: "ADEE KAKA",
-      };
+        created_by: "83740ae3-fbd2-4648-93e0-cb0e62c07167",
+      },
+      formData.image_file // <- optional file untuk upload
+    );
 
-      console.log("Payload:", payload); // Hanya primitive types
-      await addCampaign(payload);
-      alert("Kampanye berhasil ditambahkan!");
-    } catch (err) {
-      console.error("Gagal kampanye:", err);
-      alert("Gagal menambahkan kampanye.");
-    }
-  };
+    alert("Kampanye berhasil ditambahkan!");
+    console.log("Result:", result);
+  } catch (err) {
+    console.error("Gagal kampanye:", err);
+    alert("Gagal menambahkan kampanye.");
+  }
+};
+
 
   return (
     <>
@@ -48,6 +53,14 @@ export const AddDonationCampaignForm = () => {
         }}
       >
         <div className="space-y-3 lg:w-[40%]!">
+          <AppFileInput
+            label="Thumbnail Kampanye"
+            name="thumbnail"
+            accept="image/*"
+            hint="Unggah gambar untuk kampanye"
+            onChange={(file) => setFormData({ ...formData, image_file: file })}
+          />
+
           <AppInput
             name="name"
             required
@@ -65,6 +78,7 @@ export const AddDonationCampaignForm = () => {
             required
             label="Kategori"
             name="category"
+            defaultValue={"education"}
             options={[
               { label: "Pendidikan", value: "education" },
               { label: "Lingkungan", value: "environment" },
@@ -83,10 +97,10 @@ export const AddDonationCampaignForm = () => {
             allowedChar="currency"
             label="Target Donasi (Rp)"
             hint="cth: 100.000.000"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            onChange={(event) =>
               setFormData((prev: any) => ({
                 ...prev,
-                target_amount: event.target.value,
+                target_amount: event.target.value, // <-- di sini target_amount, bukan target_ammount
               }))
             }
           />

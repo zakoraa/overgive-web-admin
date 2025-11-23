@@ -13,7 +13,7 @@ export type CampaignStatus = "ongoing" | "completed";
 export interface CampaignCreateInput {
   title: string;
   background_html: string;
-  image_url: string
+  image_url?: string;
   category: CampaignCategory;
   target_amount: number;
   ended_at?: string | null;
