@@ -75,7 +75,7 @@ export const AddDonationCampaignForm = () => {
         <AppButton
           type="submit"
           text="Tambah Kampanye Donasi"
-          className="mt-10 w-full! rounded-xl!"
+          className="mt-5 w-full! rounded-xl!"
         />
       </form>
 
