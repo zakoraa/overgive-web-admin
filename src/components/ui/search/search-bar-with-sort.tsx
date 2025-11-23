@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import SearchInput from "@/components/ui/search/search-input";
 
 interface SearchBarWithSortProps {
   placeholder?: string;
@@ -15,21 +16,7 @@ export const SearchBarWithSort = ({
   return (
     <div className="flex w-full items-center justify-between space-x-3">
       {/* Search Bar */}
-      <div className="flex w-full items-center rounded-xl border border-gray-300 px-3 py-2">
-        <Image
-          src="/icons/ic-search.svg"
-          alt="search-icon"
-          height={18}
-          width={18}
-          className="opacity-60"
-        />
-        <input
-          type="text"
-          placeholder={placeholder}
-          onChange={(e) => onSearch?.(e.target.value)}
-          className="ml-3 w-full bg-transparent text-sm outline-none"
-        />
-      </div>
+      <SearchInput placeholder={placeholder} onChange={onSearch} />
 
       {/* Sort Button */}
       <div

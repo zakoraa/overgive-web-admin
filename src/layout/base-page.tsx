@@ -1,17 +1,20 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
+import clsx from "clsx";
 
 interface BasePageProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export default function BasePage({ children, className = "" }: BasePageProps) {
+export default function BasePage({ children, className }: BasePageProps) {
   return (
-    <Card
-      className={`container mx-auto flex flex-col items-center justify-center space-y-2 rounded-none pb-5 md:max-w-[550px] ${className}`}
+    <main
+      className={clsx(
+        "container flex  min-w-full flex-col items-center space-y-5 py-3 text-center",
+        className,
+      )}
     >
       {children}
-    </Card>
+    </main>
   );
 }

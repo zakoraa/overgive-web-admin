@@ -4,6 +4,7 @@ import {
   UserPlus,
   LogOut,
   History,
+  HandHeart,
 } from "lucide-react";
 
 export type TabItem = {
@@ -16,12 +17,12 @@ export const tabs: TabItem[] = [
   {
     id: "dashboard",
     label: "Dasbor",
-    icon: <LayoutDashboard className="w-5 h-5" />,
+    icon: <LayoutDashboard className="h-5 w-5" />,
   },
   {
-    id: "history",
-    label: "Riwayat Pemeriksaan",
-    icon: <History className="w-5 h-5" />,
+    id: "kampanye",
+    label: "Kampanye Donasi",
+    icon: <HandHeart className="h-5 w-5" />,
   },
   // {
   //   id: "patients",
@@ -31,11 +32,11 @@ export const tabs: TabItem[] = [
   {
     id: "doctors",
     label: "Daftarkan Dokter",
-    icon: <UserPlus className="w-5 h-5" />,
+    icon: <UserPlus className="h-5 w-5" />,
   },
   {
     id: "logout",
     label: "Logout",
-    icon: <LogOut className="w-5 h-5 text-red-500" />,
+    icon: <LogOut className="h-5 w-5 text-red-500" />,
   },
 ];

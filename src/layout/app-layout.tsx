@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import SideBar from "./side-bar";
-import { Modal } from "@/components/ui/modal";
+import { Modal } from "@/components/ui/modal/modal";
+import DonationCampaign from "@/modules/donation_campaign";
 
 export default function AppLayout() {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("kampanye");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, _] = useState(false);
   // const logout = useLogout();
@@ -33,7 +34,7 @@ export default function AppLayout() {
       {/* Konten Dinamis */}
       <div className="flex-1 overflow-auto p-6">
         {/* {activeTab === "dashboard" && <Dashboard />} */}
-        {/* {activeTab === "history" && <ExaminationHistory />} */}
+        {activeTab === "kampanye" && <DonationCampaign />}
         {/* {activeTab === "doctors" && <CreateDoctorAccountForm />} */}
       </div>
 
