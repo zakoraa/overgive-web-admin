@@ -37,3 +37,8 @@ export function formatArrayToCommaSeparated(input: string[] | null | undefined):
   return input.join(", ");
 }
 
+export const formatRupiah = (value: string) => {
+  if (!value) return "";
+  const number = parseInt(value.replace(/\D/g, ""), 10);
+  return number.toLocaleString("id-ID");
+};

@@ -23,8 +23,8 @@ export const ModalConfirm: React.FC<ModalConfirmProps> = ({
   description,
   confirmText = "Konfirmasi",
   cancelText = "Batal",
-  confirmClassName = "bg-red-500 text-white hover:bg-red-600",
-  cancelClassName = "border border-gray-300 text-gray-700 hover:bg-gray-100",
+  confirmClassName,
+  cancelClassName,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

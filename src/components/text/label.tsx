@@ -1,27 +1,41 @@
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+"use client";
 
-interface LabelProps extends HTMLAttributes<HTMLParagraphElement> {
+import { cn } from "@/lib/utils";
+import { HTMLAttributes, ReactNode } from "react";
+
+interface LabelProps extends HTMLAttributes<HTMLLabelElement> {
   text?: string;
+  children?: ReactNode;
   size?: "sm" | "md" | "lg";
+  required?: boolean;
   className?: string;
+  htmlFor?: string;
 }
 
-export const Label: React.FC<LabelProps> = ({
+export const Label = ({
   text,
+  children,
   size = "md",
+  required,
   className,
+  htmlFor,
   ...props
-}) => {
-  const sizeStyles = {
-    sm: "text-xs font-bold",
-    md: "text-sm font-bold",
-    lg: "text-base font-bold",
+}: LabelProps) => {
+  const sizeClasses = {
+    sm: "text-sm font-medium",
+    md: "text-md font-bold",
+    lg: "text-lg font-semibold",
   };
 
   return (
-    <h3 className={cn("text-start line-clamp-2", sizeStyles[size], className)} {...props}>
-      {text}
-    </h3>
+    <label
+      htmlFor={htmlFor}
+      {...props}
+      className={cn("line-clamp-2 text-start", sizeClasses[size], className)}
+    >
+      {text || children}
+
+      {required && <span className="ml-1 text-red-500">*</span>}
+    </label>
   );
 };

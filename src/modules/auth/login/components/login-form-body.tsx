@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Alert from "@/components/ui/alert";
 import { AppButton } from "@/components/ui/button/app-button";
-import { AppInput } from "@/components/ui/app-input";
+import { AppInput } from "@/components/ui/input/app-input";
 import Link from "next/link";
 
 interface FormState {

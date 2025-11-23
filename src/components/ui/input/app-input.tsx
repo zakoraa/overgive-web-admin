@@ -2,17 +2,20 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import { Eye, EyeOff } from "lucide-react";
-import { Label } from "../text/label";
-import ErrorInputMessage from "./error-input-message";
+import { Label } from "../../text/label";
+import ErrorInputMessage from "../error-input-message";
+import { formatRupiah } from "@/lib/utils";
 
 interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   labelMessage?: string | null;
   hint: string;
   error?: string;
-  allowedChar?: "letters" | "integer" | "decimal" | "default";
+  allowedChar?: "letters" | "integer" | "decimal" | "currency" | "default";
   suffix?: string | null;
   isPassword?: boolean;
+  required?: boolean;
+  name?: string;
 }
 
 export function AppInput({
@@ -20,6 +23,8 @@ export function AppInput({
   labelMessage = null,
   hint,
   error,
+  name,
+  required = false,
   allowedChar = "default",
   className,
   onChange,
@@ -32,6 +37,22 @@ export function AppInput({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value;
+
+    if (allowedChar === "currency") {
+      // Hanya angka
+      const raw = newValue.replace(/\D/g, "");
+      const formatted = formatRupiah(raw);
+
+      setValue(formatted);
+
+      // Kirim angka murni ke parent
+      onChange?.({
+        ...e,
+        target: { ...e.target, value: raw },
+      });
+
+      return;
+    }
 
     if (allowedChar === "integer") {
       newValue = newValue.replace(/[^0-9]/g, "");
@@ -59,7 +80,7 @@ export function AppInput({
 
   return (
     <div className="flex w-full flex-col space-y-1">
-      <Label text={label} />
+      <Label htmlFor={name} required={required} text={label} />
       {labelMessage && <p className="text-sm text-gray-500">{labelMessage}</p>}
 
       <div className="relative">
@@ -68,7 +89,7 @@ export function AppInput({
           type={resolvedType}
           placeholder={hint}
           className={clsx(
-            "w-full rounded-lg bg-card-background border px-4 py-2 pr-12 text-sm transition duration-200 outline-none",
+            "bg-card-background w-full rounded-lg border px-4 py-2 pr-12 text-sm transition duration-200 outline-none",
             error
               ? "border-red-500 focus:border-red-600"
               : "border-gray-300 focus:border-gray-500",
