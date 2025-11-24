@@ -6,9 +6,14 @@ import { DonationProgressIndicator } from "@/components/ui/donation-progress-ind
 import { cn, getDonationPercentage } from "@/utils/util";
 import { formatRupiah } from "@/utils/currency";
 import { useCampaignDetailContext } from "@/modules/donation_campaign/providers/campaign-detail-provider";
-import Image from "next/image";
-import Link from "next/link";
-import { getRemainingDays, isExpired } from "@/utils/date";
+import { formatDate, getRemainingDays, isExpired } from "@/utils/date";
+import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
+import {
+  categoryDisplay,
+  getCampaignStatusInfo,
+} from "@/modules/donation_campaign/utils/campaign-display";
+import clsx from "clsx";
+import { Label } from "@/components/text/label";
 
 interface Item {
   icon: string;
@@ -49,6 +54,10 @@ export const CampaignHeaderCard = () => {
       />
       <div className="mt-3 w-full px-5">
         <Title className="font-black" text={campaign?.title} />
+        <Label
+          className="font-normal"
+          text={`Kategori: ${categoryDisplay[campaign?.category as CampaignCategory]}`}
+        />
         <div className="mt-3 flex gap-x-1">
           {!campaign?.targetAmount && <Title size="sm" text="Terkumpul " />}
           <Title
@@ -75,16 +84,25 @@ export const CampaignHeaderCard = () => {
               </span>
             </p>
           )}
-          <p
-            className={cn(
-              "text-xs",
-              isExpired(campaign?.endedAt) ? "text-red-500" : "",
+          {campaign?.endedAt && campaign?.status === "active" && (
+            <p className={"text-xs text-orange-400"}>
+              Selesai pada {formatDate(campaign?.endedAt)}
+            </p>
+          )}
+        </div>
+        <div className="mt-5 flex items-center justify-between text-xs">
+          <Card
+            className={clsx(
+              "w-auto! px-3 py-1",
+              getCampaignStatusInfo(campaign?.status, campaign?.endedAt)
+                .colorClass,
             )}
           >
-            {getRemainingDays(campaign?.endedAt)}
-          </p>
+            {getCampaignStatusInfo(campaign?.status, campaign?.endedAt).label}
+          </Card>
+          <p className="">Dibuat pada {formatDate(campaign?.createdAt)}</p>
         </div>
-        <div className="mt-5 flex w-full items-center justify-between px-10">
+        {/* <div className="mt-5 flex w-full items-center justify-between px-10">
           {items.map((item, index) => (
             <div key={index}>
               {item === null ? (
@@ -110,7 +128,7 @@ export const CampaignHeaderCard = () => {
               )}
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </Card>
   );

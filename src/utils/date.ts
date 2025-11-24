@@ -1,4 +1,5 @@
-export const formatDate = (timestamp: string): string => {
+export const formatDate = (timestamp: string | undefined): string => {
+  if(!timestamp) return "";
   const date = new Date(timestamp);
 
   // Array nama bulan singkat
@@ -21,7 +22,7 @@ export function getRemainingDays(targetDateString: string | undefined): string {
   const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
   if (diffDays <= 0) {
-    return `Ditutup pada ${formatDate(targetDateString)}`;
+    return ``;
   }
 
   return `${diffDays} hari lagi`;

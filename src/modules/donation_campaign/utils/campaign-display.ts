@@ -15,8 +15,8 @@ export const categoryDisplay: Record<CampaignCategory, string> = {
 };
 
 export function getCampaignStatusInfo(
-  status: CampaignStatus,
-  endedAt: string | undefined
+  status: CampaignStatus | undefined,
+  endedAt: string | undefined,
 ) {
     if (!endedAt) {
     return {
