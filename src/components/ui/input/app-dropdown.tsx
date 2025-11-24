@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/util";
 import { ChangeEvent } from "react";
 import { Label } from "../../text/label";
 

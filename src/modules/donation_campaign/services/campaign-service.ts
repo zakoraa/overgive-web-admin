@@ -1,21 +1,7 @@
 "use server";
 
-import {   Campaign, CampaignCreateInput, CampaignTableItem, PaginatedCampaigns } from "../types/campaign";
+import {  Campaign, CampaignTableItem, PaginatedCampaigns } from "../types/campaign";
 import { supabaseServer } from "@/lib/supabase/supabase-server";
-
-export const createCampaign = async (data: CampaignCreateInput) => {
-  const supabase = await supabaseServer(); // ambil client server
-  const { data: result, error } = await supabase
-    .from("campaigns")
-    .insert([data])
-    .select()
-    .single();
-
-    console.log("ERROR BANG", error)
-  if (error) throw error;
-  return result;
-};
-
 
 
 export const getCampaignDetail = async (id: string): Promise<Campaign | null> => {
@@ -66,7 +52,7 @@ export const getCampaignsTable = async (page: number, pageSize: number): Promise
   const supabase = await supabaseServer();
   const { data, count, error } = await supabase
     .from<"campaigns",CampaignTableItem>("campaigns")
-    .select("id, title, category, created_at, collected_amount, target_amount, status", { count: "exact" })
+    .select("id, title, category, created_at, collected_amount, target_amount, status, ended_at", { count: "exact" })
     .order("created_at", { ascending: false })
     .is("deleted_at", null)
     .range(from, to);

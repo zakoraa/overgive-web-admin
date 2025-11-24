@@ -8,7 +8,7 @@ export type CampaignCategory =
   | "environment"
   | "others";
 
-export type CampaignStatus = "ongoing" | "completed";
+export type CampaignStatus = "active" | "inactive";
 
 
 export interface Campaign {
@@ -45,11 +45,12 @@ export type CampaignRow = {
 export interface CampaignTableItem {
   id: string;
   title: string;
-  category: string;
+  category: CampaignCategory;
   created_at: string;
   collected_amount: number;
   target_amount: number;
-  status: string;
+  status: CampaignStatus;
+  ended_at: string;
 }
 
 export interface PaginatedCampaigns {
@@ -63,7 +64,7 @@ export interface CampaignCreateInput {
   background_html: string;
   image_url?: string;
   category: CampaignCategory;
-  target_amount: number;
+  target_amount?: number | null;
   ended_at?: string | null;
   created_by: string; // UUID user
 }

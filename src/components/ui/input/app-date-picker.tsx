@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/util";
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
@@ -10,6 +10,7 @@ import { Label } from "@/components/text/label";
 
 interface AppDatePickerProps {
   label?: string;
+  labelMessage?: string;
   name?: string;
   required?: boolean;
   error?: string;
@@ -24,6 +25,7 @@ interface AppDatePickerProps {
 
 export const AppDatePicker = ({
   label,
+  labelMessage,
   name,
   required,
   error,
@@ -70,6 +72,8 @@ export const AppDatePicker = ({
           className={labelClassName}
         />
       )}
+
+      {labelMessage && <p className="text-xs text-gray-500">{labelMessage}</p>}
 
       {/* Trigger Button */}
       <button

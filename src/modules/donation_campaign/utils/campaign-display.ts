@@ -1,5 +1,6 @@
 // utils/campaign-display.ts
 
+import { getRemainingDays, isExpired } from "@/utils/date";
 import { CampaignCategory, CampaignStatus } from "../types/campaign";
 
 export const categoryDisplay: Record<CampaignCategory, string> = {
@@ -13,7 +14,47 @@ export const categoryDisplay: Record<CampaignCategory, string> = {
   others: "Lainnya",
 };
 
-export const statusDisplay: Record<CampaignStatus, string> = {
-  ongoing: "Berlangsung",
-  completed: "Selesai",
-};
+export function getCampaignStatusInfo(
+  status: CampaignStatus,
+  endedAt: string | undefined
+) {
+    if (!endedAt) {
+    return {
+      label: "Berlangsung",
+      colorClass: "text-primary-dark bg-primary-faded",
+    };
+  }
+
+  const expired = isExpired(endedAt);
+  const remainingLabel = getRemainingDays(endedAt);
+
+  // active + masih ada waktu → remaining
+  if (status === "active" && !expired) {
+    return {
+      label: remainingLabel,
+      colorClass: "text-amber-600 bg-amber-100",
+    };
+  }
+
+  // inactive + masih ada waktu → ditutup
+  if (status === "inactive" && !expired) {
+    return {
+      label: "Ditutup",
+      colorClass: "text-red-800 bg-red-400",
+    };
+  }
+
+  // active + waktu habis → selesai
+  if (status === "active" && expired) {
+    return {
+      label: "Selesai",
+      colorClass: "text-red-500 bg-red-100",
+    };
+  }
+
+  // inactive + waktu habis → selesai
+  return {
+    label: "Selesai",
+    colorClass: "text-red-500 bg-red-100",
+  };
+}

@@ -12,8 +12,8 @@ create type campaign_category as enum (
 
 -- Enum status kampanye
 create type campaign_status as enum (
-  'ongoing',
-  'completed'
+  'active',
+  'inactive'
 );
 
 -- Tabel campaigns
@@ -25,7 +25,7 @@ create table public.campaigns (
   category campaign_category not null,
   target_amount numeric,
   collected_amount numeric default 0,
-  status campaign_status default 'ongoing',
+  status campaign_status default 'active',
   created_by uuid references public.users(id),
   ended_at timestamp with time zone,
   created_at timestamp with time zone default now(),

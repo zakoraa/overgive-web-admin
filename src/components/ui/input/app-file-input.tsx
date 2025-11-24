@@ -1,9 +1,13 @@
 import { Label } from "@/components/text/label";
 import { FC, useState, useEffect } from "react";
+import ErrorInputMessage from "../error-input-message";
+import clsx from "clsx";
 
 interface AppFileInputProps {
   label: string;
+  labelMessage?:string,
   name: string;
+  error?: string;
   onChange: (file: File | null) => void;
   accept?: string;
   required?: boolean;
@@ -12,8 +16,10 @@ interface AppFileInputProps {
 
 export const AppFileInput: FC<AppFileInputProps> = ({
   label,
+  labelMessage,
   name,
   onChange,
+  error,
   accept,
   required = false,
   hint,
@@ -40,11 +46,8 @@ export const AppFileInput: FC<AppFileInputProps> = ({
 
   return (
     <div className="flex flex-col space-y-2">
-      <Label
-        text={label}
-        htmlFor={name}
-        required
-      />
+      <Label text={label} htmlFor={name} required />
+      {labelMessage && <p className="text-xs text-gray-500">{labelMessage}</p>}
 
       <input
         id={name}
@@ -53,16 +56,22 @@ export const AppFileInput: FC<AppFileInputProps> = ({
         accept={accept}
         required={required}
         onChange={handleChange}
-        className="rounded border p-2"
+        className={clsx(
+          "rounded border p-2",
+          error
+            ? "border-red-500 focus:border-red-600"
+            : "border-gray-300 focus:border-gray-500",
+        )}
       />
 
       {hint && <p className="text-xs text-gray-500">{hint}</p>}
+      <ErrorInputMessage error={error} />
 
       {preview && (
         <img
           src={preview}
           alt="Preview"
-          className="mt-2 h-48 w-48 rounded-lg border object-cover"
+          className="mt-2 aspect-auto rounded-lg border object-cover"
         />
       )}
     </div>

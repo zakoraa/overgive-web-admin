@@ -3,10 +3,12 @@
 import { Title } from "@/components/text/title";
 import { Card } from "@/components/ui/card";
 import { DonationProgressIndicator } from "@/components/ui/donation-progress-indicator";
-import { cn, formatRupiah } from "@/lib/utils";
+import { cn, getDonationPercentage } from "@/utils/util";
+import { formatRupiah } from "@/utils/currency";
 import { useCampaignDetailContext } from "@/modules/donation_campaign/providers/campaign-detail-provider";
 import Image from "next/image";
 import Link from "next/link";
+import { getRemainingDays, isExpired } from "@/utils/date";
 
 interface Item {
   icon: string;
@@ -47,20 +49,40 @@ export const CampaignHeaderCard = () => {
       />
       <div className="mt-3 w-full px-5">
         <Title className="font-black" text={campaign?.title} />
-        <Title
-          size="sm"
-          text={`${formatRupiah(campaign?.collectedAmount ?? 0)}`}
-          className="text-primary mt-3"
-        />
-        <DonationProgressIndicator percentage={20} className="mb-3" />
+        <div className="mt-3 flex gap-x-1">
+          {!campaign?.targetAmount && <Title size="sm" text="Terkumpul " />}
+          <Title
+            size="sm"
+            text={`${formatRupiah(campaign?.collectedAmount ?? 0)}`}
+            className="text-primary"
+          />
+        </div>
+        {campaign?.targetAmount && (
+          <DonationProgressIndicator
+            percentage={getDonationPercentage(
+              campaign?.collectedAmount ?? 0,
+              campaign?.targetAmount ?? 0,
+            )}
+            className="mb-3"
+          />
+        )}
         <div className="flex items-center justify-between">
-          <p className="text-sm">
-            Target donasi{" "}
-            <span className="font-black">
-              {formatRupiah(campaign?.targetAmount ?? 0)}
-            </span>
+          {campaign?.targetAmount && (
+            <p className="text-sm">
+              Target donasi{" "}
+              <span className="font-black">
+                {formatRupiah(campaign?.targetAmount ?? 0)}
+              </span>
+            </p>
+          )}
+          <p
+            className={cn(
+              "text-xs",
+              isExpired(campaign?.endedAt) ? "text-red-500" : "",
+            )}
+          >
+            {getRemainingDays(campaign?.endedAt)}
           </p>
-          <p className="text-xs">100 hari lagi</p>
         </div>
         <div className="mt-5 flex w-full items-center justify-between px-10">
           {items.map((item, index) => (

@@ -42,8 +42,10 @@ export const PaginationButton = ({
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
         width="auto"
-        borderRadius="10px"
-        className="px-3 py-1"
+        fontSize="14px"
+        height="auto"
+        borderRadius="8px"
+        className="px-2 py-1"
       />
 
       {pageNumbers.map((page, index) =>
@@ -56,11 +58,13 @@ export const PaginationButton = ({
             text={page.toString()}
             key={index}
             width="auto"
-            borderRadius="10px"
+            height="auto"
+            fontSize="14px"
+            borderRadius="8px"
             onClick={() => typeof page === "number" && onPageChange(page)}
             className={clsx(
               `${currentPage === page ? "bg-primary text-white" : "opacity-60"}`,
-              "px-5 py-1",
+              "px-3 py-1",
             )}
           />
         ),
@@ -69,10 +73,12 @@ export const PaginationButton = ({
       <AppButton
         text="Next"
         width="auto"
-        borderRadius="10px"
+        height="auto"
+        fontSize="14px"
+        borderRadius="8px"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
-        className="px-5 py-1"
+        className="px-2 py-1"
       />
     </div>
   );

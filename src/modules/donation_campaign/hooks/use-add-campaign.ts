@@ -1,7 +1,7 @@
 import { supabaseClient } from "@/lib/supabase/supabase-client";
 import { useState } from "react";
-import { createCampaign } from "../services/campaign-service";
 import { CampaignCreateInput } from "../types/campaign";
+import { compressImage } from "@/utils/image";
 
 
 export const useAddCampaign = () => {
@@ -16,21 +16,28 @@ const addCampaign = async (data: CampaignCreateInput, file?: File) => {
     let payload: CampaignCreateInput = { ...data };
 
     if (file) {
+       const compressedFile = await compressImage(file);
+
       const fileName = `campaign-${Date.now()}-${file.name}`;
       const { data: uploadData, error: uploadError } = await supabaseClient.storage
         .from("campaign-images")
-        .upload(fileName, file);
+        .upload(fileName, compressedFile); 
 
       if (uploadError) throw uploadError;
 
      const imageUrl =  supabaseClient.storage
         .from("campaign-images")
         .getPublicUrl(uploadData.path).data.publicUrl;
+
+       console.log("imageUrl FILE: ", imageUrl)
  
       payload.image_url = imageUrl; 
     }
 
-    const result = await createCampaign(payload);
+    const result = await fetch("/api/campaign/create", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });;
     return result;
 
   } catch (err: any) {

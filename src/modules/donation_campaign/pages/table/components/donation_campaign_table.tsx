@@ -12,14 +12,15 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
-import { formatDate, formatRupiah } from "@/lib/utils";
+import { formatRupiah } from "@/utils/currency";
+import { formatDate } from "@/utils/date";
 import {
   CampaignCategory,
   CampaignStatus,
 } from "@/modules/donation_campaign/types/campaign";
 import {
   categoryDisplay,
-  statusDisplay,
+  getCampaignStatusInfo,
 } from "@/modules/donation_campaign/utils/campaign-display";
 import CircularLoading from "@/components/ui/circular-loading";
 import { useCampaignContext } from "@/modules/donation_campaign/providers/campaign-table-provider";
@@ -54,7 +55,6 @@ export const DonationCampaignTable = () => {
               <TableRow>
                 <TableCell isHeader>No</TableCell>
                 <TableCell isHeader>Nama</TableCell>
-                <TableCell isHeader>Kategori</TableCell>
                 <TableCell isHeader>
                   <button
                     onClick={toggleSort}
@@ -64,6 +64,7 @@ export const DonationCampaignTable = () => {
                     {/* <span className="text-xs"> {sort === "asc" ? "▲" : "▼"}</span> */}
                   </button>
                 </TableCell>
+                <TableCell isHeader>Kategori</TableCell>
                 <TableCell isHeader>Dana Terkumpul (Rp)</TableCell>
                 <TableCell isHeader>Target Dana (Rp)</TableCell>
                 <TableCell isHeader>Status</TableCell>
@@ -91,15 +92,21 @@ export const DonationCampaignTable = () => {
                   <TableCell>
                     {formatRupiah(campaign.collected_amount, false)}
                   </TableCell>
-                  <TableCell>{formatRupiah(campaign.target_amount, false)}</TableCell>
+                  <TableCell>
+                    {campaign.target_amount === null
+                      ? "-"
+                      : formatRupiah(campaign.target_amount, false)}
+                  </TableCell>
                   <TableCell
                     className={`px-4 py-2 text-sm ${
-                      campaign.status === "ongoing"
-                        ? "bg-primary-faded text-primary-dark"
-                        : "bg-gray-200 text-gray-600"
+                      getCampaignStatusInfo(campaign.status, campaign.ended_at)
+                        .colorClass
                     }`}
                   >
-                    {statusDisplay[campaign.status as CampaignStatus]}
+                    {
+                      getCampaignStatusInfo(campaign.status, campaign.ended_at)
+                        .label
+                    }
                   </TableCell>
 
                   <TableCell className="flex items-center justify-center space-x-1 text-center">

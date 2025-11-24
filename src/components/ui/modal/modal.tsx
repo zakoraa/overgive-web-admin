@@ -8,6 +8,7 @@ interface ModalProps {
   children: React.ReactNode;
   showCloseButton?: boolean;
   isFullscreen?: boolean;
+  disableClose?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -17,20 +18,21 @@ export const Modal: React.FC<ModalProps> = ({
   className,
   showCloseButton = true,
   isFullscreen = false,
+  disableClose = false,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // ESC to close
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape" && !disableClose) onClose();
     };
 
     if (isOpen) {
       document.addEventListener("keydown", handleEscape);
     }
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, disableClose]);
 
   // Disable body scroll
   useEffect(() => {
@@ -49,14 +51,16 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div
       className="animate-fadeIn fixed inset-0 z-9999 flex items-center justify-center bg-black/40"
-      onClick={onClose}
+      onClick={() => {
+        if (!disableClose) onClose();
+      }}
     >
       <div
         ref={modalRef}
         className={`animate-scaleIn relative p-0 ${contentClasses} ${className || ""} `}
         onClick={(e) => e.stopPropagation()}
       >
-        {showCloseButton && !isFullscreen && (
+        {showCloseButton && !isFullscreen && !disableClose && (
           <button
             onClick={onClose}
             className="absolute top-3 right-3 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-gray-500 shadow-sm transition hover:bg-gray-200 hover:text-gray-700"

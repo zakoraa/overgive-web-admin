@@ -11,7 +11,7 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import { ResizableImage } from "tiptap-extension-resizable-image";
 import { FontSize } from "@/extensions/tiptap/font-size";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/util";
 import { Label } from "@/components/text/label";
 
 import {
@@ -31,6 +31,7 @@ import {
   Redo,
 } from "lucide-react";
 import { AutoUrl } from "@/extensions/tiptap/auto-url";
+import ErrorInputMessage from "../error-input-message";
 
 interface AppRichTextEditorProps {
   label?: string;
@@ -75,7 +76,6 @@ export const AppRichTextEditor = ({
         FontSize, // ⬅️ Tambah ini
         Placeholder.configure({
           placeholder,
-          
         }),
         ResizableImage.configure({ allowBase64: true }),
         AutoUrl,
@@ -179,6 +179,8 @@ export const AppRichTextEditor = ({
           <option value="14px">14</option>
           <option value="16px">16</option>
           <option value="18px">18</option>
+          <option value="20px">20</option>
+          <option value="22px">22</option>
           <option value="24px">24</option>
           <option value="30px">30</option>
           <option value="36px">36</option>
@@ -357,7 +359,7 @@ export const AppRichTextEditor = ({
         />
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      <ErrorInputMessage error={error} />
     </div>
   );
 };

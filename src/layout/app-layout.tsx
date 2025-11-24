@@ -4,9 +4,18 @@ import { useState } from "react";
 import SideBar from "./side-bar";
 import { Modal } from "@/components/ui/modal/modal";
 import DonationCampaign from "@/modules/donation_campaign/pages/table";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AppLayout() {
-  const [activeTab, setActiveTab] = useState("kampanye");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const tab = searchParams.get("tab") || "kampanye";
+
+  const handleChangeTab = (tabName: string) => {
+    router.push(`/?tab=${tabName}`);
+  };
+
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, _] = useState(false);
   // const logout = useLogout();
@@ -21,20 +30,17 @@ export default function AppLayout() {
     <div className="flex h-screen">
       {/* Sidebar */}
       <SideBar
-        activeTab={activeTab}
-        setActiveTab={(tab) => {
-          if (tab === "logout") {
-            setShowLogoutModal(true);
-          } else {
-            setActiveTab(tab);
-          }
+        activeTab={tab}
+        setActiveTab={(name) => {
+          if (name === "logout") return setShowLogoutModal(true);
+          handleChangeTab(name);
         }}
       />
 
       {/* Konten Dinamis */}
       <div className="flex-1 overflow-auto p-6">
         {/* {activeTab === "dashboard" && <Dashboard />} */}
-        {activeTab === "kampanye" && <DonationCampaign />}
+        {tab === "kampanye" && <DonationCampaign />}
         {/* {activeTab === "doctors" && <CreateDoctorAccountForm />} */}
       </div>
 

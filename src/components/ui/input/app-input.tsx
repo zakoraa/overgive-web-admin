@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Eye, EyeOff } from "lucide-react";
 import { Label } from "../../text/label";
 import ErrorInputMessage from "../error-input-message";
-import { formatRupiah } from "@/lib/utils";
+import { formatRupiah } from "@/utils/currency";
 
 interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -82,7 +82,7 @@ export function AppInput({
   return (
     <div className="flex w-full flex-col space-y-1">
       <Label htmlFor={name} required={required} text={label} />
-      {labelMessage && <p className="text-sm text-gray-500">{labelMessage}</p>}
+      {labelMessage && <p className="text-xs text-gray-500">{labelMessage}</p>}
 
       <div className="relative">
         <input

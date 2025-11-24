@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/util";
 import { HTMLAttributes, ReactNode } from "react";
 
 interface LabelProps extends HTMLAttributes<HTMLLabelElement> {
