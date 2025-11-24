@@ -14,12 +14,14 @@ import { parseCurrency } from "@/utils/currency";
 import { ModalLoading } from "@/components/ui/modal/modal-loading";
 import { useCampaignDetailContext } from "@/modules/donation_campaign/providers/campaign-detail-provider";
 import { useEditCampaignFormValidation } from "@/modules/donation_campaign/hooks/use-edit-campaign-form-validation";
+import { useEditCampaign } from "@/modules/donation_campaign/hooks/use-edit-campaign";
+import CircularLoading from "@/components/ui/circular-loading";
 
 export const EditDonationCampaignForm = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<any>({ category: "education" });
-  const { errors, validate, clearErrors } = useEditCampaignFormValidation();
+  const { errors, validate } = useEditCampaignFormValidation();
 
   const { campaign } = useCampaignDetailContext();
 
@@ -32,16 +34,14 @@ export const EditDonationCampaignForm = () => {
       background_html: campaign.backgroundHtml,
       category: campaign.category,
       status: campaign.status,
-      
       target_amount: campaign.targetAmount ? String(campaign.targetAmount) : "",
       ended_at: campaign.endedAt ? new Date(campaign.endedAt) : null,
       image_url: campaign.imageUrl ?? "",
     });
   }, [campaign]);
 
-  useEffect(() => {
-    console.log("UPDATED form data:", formData);
-  }, [formData]);
+  if (!campaign) return <CircularLoading />;
+  const { editCampaign, loading } = useEditCampaign(campaign.id);
 
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
   const [modalInfoData, setModalInfoData] = useState({
@@ -53,24 +53,42 @@ export const EditDonationCampaignForm = () => {
   const handleSubmitConfirm = async () => {
     setIsModalOpen(false);
 
-    try {
-      // Ambil file dari formData.image_file
+    const rawTarget = parseCurrency(formData.target_amount);
+    const targetAmount = rawTarget === 0 ? null : rawTarget;
 
-      const rawTarget = parseCurrency(formData.target_amount);
-      const targetAmount = rawTarget === 0 ? null : rawTarget;
+    let image_file_base64: string | undefined;
+    if (formData.image_file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(formData.image_file);
+      image_file_base64 = await new Promise((resolve) => {
+        reader.onload = () => resolve(reader.result as string);
+      });
+    }
 
-      // Munculkan modal sukses
+    const payload = {
+      name: formData.name,
+      background_html: formData.background_html,
+      category: formData.category,
+      status: formData.status,
+      target_amount: targetAmount,
+      ended_at: formData.ended_at ? formData.ended_at.toISOString() : null,
+      image_file_base64,
+    };
+
+    const result = await editCampaign(payload);
+
+    if (result?.success) {
       setModalInfoData({
         title: "Berhasil!",
         message: "Kampanye berhasil diperbarui.",
         imageUrl: "/svgs/success.svg",
       });
       setModalInfoOpen(true);
-    } catch (err) {
-      // Munculkan modal gagal
+    } else {
+      console.log("ERROR  EDIT:", result?.error);
       setModalInfoData({
         title: "Gagal!",
-        message: "Terjadi kesalahan, kampanye tidak dapat diperbarui.",
+        message: result?.error || "Terjadi kesalahan",
         imageUrl: "/svgs/failed.svg",
       });
       setModalInfoOpen(true);
@@ -88,7 +106,7 @@ export const EditDonationCampaignForm = () => {
 
   return (
     <>
-      {/* <ModalLoading isOpen={loading} /> */}
+      <ModalLoading isOpen={loading} />
       <form
         className="space-y-3 pb-14"
         onSubmit={(e) => {
@@ -186,10 +204,7 @@ export const EditDonationCampaignForm = () => {
 
         <AppButton
           type="submit"
-          text={
-            // loading ? "Menyimpan..." :
-            "Edit Kampanye Donasi"
-          }
+          text={loading ? "Menyimpan..." : "Edit Kampanye Donasi"}
           className="mt-5 w-full! rounded-xl!"
         />
       </form>
@@ -207,8 +222,8 @@ export const EditDonationCampaignForm = () => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleSubmitConfirm}
         title="Konfirmasi Tambah Kampanye"
-        description="Apakah kamu yakin ingin menambahkan kampanye donasi baru?"
-        confirmText="Ya, Tambahkan"
+        description="Apakah kamu yakin ingin memperbarui kampanye donasi ini?"
+        confirmText="Ya, Perbarui"
         cancelText="Batal"
       />
     </>

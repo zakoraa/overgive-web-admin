@@ -40,7 +40,7 @@ export function getCampaignStatusInfo(
   if (status === "inactive" && !expired) {
     return {
       label: "Ditutup",
-      colorClass: "text-red-800 bg-red-400",
+      colorClass: "text-red-800 bg-red-300",
     };
   }
 
