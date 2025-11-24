@@ -118,7 +118,9 @@ export const DonationCampaignTable = () => {
                     <AppButtonSm
                       icon={<Edit />}
                       className="bg-secondary!"
-                      //   onClick={() => router.push(`/history/${user.id}`)}
+                      onClick={() =>
+                        router.push(`/campaign/edit/${campaign.id}`)
+                      }
                     />
                     <AppButtonSm
                       icon={<Trash2 />}

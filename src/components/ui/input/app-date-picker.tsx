@@ -42,6 +42,11 @@ export const AppDatePicker = ({
 
   const popupRef = useRef<HTMLDivElement | null>(null);
 
+  // Sync jika defaultValue berubah (misal setelah fetch API)
+  useEffect(() => {
+    setSelected(defaultValue ?? null);
+  }, [defaultValue]);
+
   const handleSelect = (day: Date | undefined) => {
     const val = day ?? null;
     setSelected(val);

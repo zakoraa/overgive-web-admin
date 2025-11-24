@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Eye, EyeOff } from "lucide-react";
 import { Label } from "../../text/label";
@@ -34,6 +34,35 @@ export function AppInput({
 }: AppInputProps) {
   const [value, setValue] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const isFocusedRef = useRef(false);
+
+  useEffect(() => {
+    if (props.value === undefined) return;
+
+    // jika sedang focus, jangan overwrite (user sedang mengetik)
+    if (isFocusedRef.current) return;
+
+    if (allowedChar === "currency") {
+      const numeric = Number(String(props.value).replace(/[^\d]/g, "")) || 0;
+      const formatted =
+        numeric === 0 && (props.value === "" || props.value === null)
+          ? "" // preserve empty
+          : formatRupiah(numeric);
+
+      if (formatted !== value) {
+        setValue(formatted);
+      }
+    } else {
+      const str =
+        props.value !== null && props.value !== undefined
+          ? String(props.value)
+          : "";
+      if (str !== value) setValue(str);
+    }
+    // ignore value in deps to avoid loop; we only run when props.value changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.value, allowedChar]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value;

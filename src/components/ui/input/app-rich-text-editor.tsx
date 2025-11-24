@@ -90,6 +90,16 @@ export const AppRichTextEditor = ({
     [],
   );
 
+  useEffect(() => {
+    if (!editor) return;
+
+    if (defaultValue) {
+      editor.commands.setContent(defaultValue);
+    } else {
+      editor.commands.clearContent();
+    }
+  }, [defaultValue, editor]);
+
   // sinkronisasi UI dropdown ketika seleksi berubah
   useEffect(() => {
     if (!editor) return;

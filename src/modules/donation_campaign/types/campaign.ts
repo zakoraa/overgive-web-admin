@@ -15,6 +15,7 @@ export interface Campaign {
   id: string;
   title: string;
   imageUrl: string;
+  
   backgroundHtml: string;
   category: CampaignCategory;
   targetAmount: number;

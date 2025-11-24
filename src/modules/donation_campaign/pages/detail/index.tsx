@@ -1,11 +1,8 @@
-// modules/donation_campaign/pages/detail/index.tsx
-import BasePage from "@/layout/base-page";
 import { CampaignBackgroundCard } from "./components/campaign-background-card";
 import { CampaignHeaderCard } from "./components/campaign-header-card";
 import { CampaignDonorsCard } from "./components/campaign_donors_card";
 import { CampaignLatestNewsCard } from "./components/campaign-latest-news-card";
 import { CampaignDetailsOfFundCard } from "./components/campaign-details-of-fund-card";
-import { DonationButton } from "./components/ui/donation-button";
 import { CampaignDetailProvider } from "../../providers/campaign-detail-provider";
 import { Campaign as CampaignType } from "../../types/campaign";
 import { Card } from "@/components/ui/card";

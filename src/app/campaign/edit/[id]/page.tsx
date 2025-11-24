@@ -1,5 +1,4 @@
-// app/campaign/[id]/page.tsx
-import { Campaign } from "@/modules/donation_campaign/pages/detail";
+import { EditDonationCampaign } from "@/modules/donation_campaign/pages/edit";
 import { getCampaignDetail } from "@/modules/donation_campaign/services/campaign-service";
 import { notFound } from "next/navigation";
 
@@ -15,5 +14,5 @@ export default async function Page({ params }: CampaignPageProps) {
 
   if (!campaign) return notFound();
 
-  return <Campaign initialCampaign={campaign} />;
+  return <EditDonationCampaign initialCampaign={campaign} />;
 }

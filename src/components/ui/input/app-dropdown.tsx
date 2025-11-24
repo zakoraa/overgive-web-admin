@@ -40,7 +40,6 @@ export const AppSelect = ({
   disabled = false,
   error,
   hint,
-
   className,
   labelClassName,
   selectClassName,
@@ -63,8 +62,7 @@ export const AppSelect = ({
 
       <select
         name={name}
-        value={value}
-        defaultValue={defaultValue}
+        value={value ?? defaultValue ?? ""}
         disabled={disabled}
         onChange={handleChange}
         className={cn(

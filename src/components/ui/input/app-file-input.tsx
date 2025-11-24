@@ -5,13 +5,14 @@ import clsx from "clsx";
 
 interface AppFileInputProps {
   label: string;
-  labelMessage?:string,
+  labelMessage?: string;
   name: string;
   error?: string;
   onChange: (file: File | null) => void;
   accept?: string;
   required?: boolean;
   hint?: string;
+  initialUrl?: string | null;
 }
 
 export const AppFileInput: FC<AppFileInputProps> = ({
@@ -23,15 +24,20 @@ export const AppFileInput: FC<AppFileInputProps> = ({
   accept,
   required = false,
   hint,
+  initialUrl = null,
 }) => {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(initialUrl);
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
-    if (!file) {
-      setPreview(null);
-      return;
+    if (initialUrl && !file) {
+      setPreview(initialUrl);
     }
+  }, [initialUrl, file]);
+
+  useEffect(() => {
+    if (!file) return;
+
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
 
@@ -58,9 +64,7 @@ export const AppFileInput: FC<AppFileInputProps> = ({
         onChange={handleChange}
         className={clsx(
           "rounded border p-2",
-          error
-            ? "border-red-500 focus:border-red-600"
-            : "border-gray-300 focus:border-gray-500",
+          error ? "border-red-500" : "border-gray-300",
         )}
       />
 
@@ -70,7 +74,6 @@ export const AppFileInput: FC<AppFileInputProps> = ({
       {preview && (
         <img
           src={preview}
-          alt="Preview"
           className="mt-2 aspect-auto rounded-lg border object-cover"
         />
       )}
