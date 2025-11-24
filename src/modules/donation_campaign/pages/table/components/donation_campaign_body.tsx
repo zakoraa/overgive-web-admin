@@ -15,7 +15,7 @@ export default function DonationCampaignBody() {
       <div className="mx-3 flex items-center justify-between gap-10">
         <SearchInput placeholder="Cari nama kampanye..." />
         <AppButtonSm
-          onClick={() => router.push("/add-donation-campaign")}
+          onClick={() => router.push("/campaign/add")}
           text="Tambah"
           icon={<Plus />}
         />

@@ -12,8 +12,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
-import { useCampaigns } from "@/modules/donation_campaign/hooks/use-campaign-table";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatRupiah } from "@/lib/utils";
 import {
   CampaignCategory,
   CampaignStatus,
@@ -90,11 +89,9 @@ export const DonationCampaignTable = () => {
                     {categoryDisplay[campaign.category as CampaignCategory]}
                   </TableCell>
                   <TableCell>
-                    {campaign.collected_amount.toLocaleString()}
+                    {formatRupiah(campaign.collected_amount, false)}
                   </TableCell>
-                  <TableCell>
-                    {campaign.target_amount.toLocaleString()}
-                  </TableCell>
+                  <TableCell>{formatRupiah(campaign.target_amount, false)}</TableCell>
                   <TableCell
                     className={`px-4 py-2 text-sm ${
                       campaign.status === "ongoing"
@@ -108,8 +105,9 @@ export const DonationCampaignTable = () => {
                   <TableCell className="flex items-center justify-center space-x-1 text-center">
                     <AppButtonSm
                       icon={<Eye />}
-                      //   onClick={() => router.push(`/history/${user.id}`)}
+                      onClick={() => router.push(`/campaign/${campaign.id}`)} // navigasi ke halaman detail
                     />
+
                     <AppButtonSm
                       icon={<Edit />}
                       className="bg-secondary!"

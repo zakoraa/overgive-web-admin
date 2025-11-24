@@ -4,7 +4,7 @@ import { createCampaign } from "../services/campaign-service";
 import { CampaignCreateInput } from "../types/campaign";
 
 
-export const useCampaign = () => {
+export const useAddCampaign = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,6 +35,8 @@ const addCampaign = async (data: CampaignCreateInput, file?: File) => {
 
   } catch (err: any) {
     setError(err.message || "Gagal menambahkan kampanye");
+    console.log("ERROR BANG saaa", err)
+
     throw err;
   } finally {
     setLoading(false);

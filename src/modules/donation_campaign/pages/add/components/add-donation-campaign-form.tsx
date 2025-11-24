@@ -7,41 +7,40 @@ import { AppSelect } from "@/components/ui/input/app-dropdown";
 import { AppInput } from "@/components/ui/input/app-input";
 import { AppRichTextEditor } from "@/components/ui/input/app-rich-text-editor";
 import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
-import { useCampaign } from "@/modules/donation_campaign/hooks/use-campaign";
+import { useAddCampaign } from "@/modules/donation_campaign/hooks/use-add-campaign";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import { AppFileInput } from "@/components/ui/input/app-file-input";
 
 export const AddDonationCampaignForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState<any>({});
-  const { addCampaign, loading } = useCampaign();
+  const [formData, setFormData] = useState<any>({ category: "education" });
+  const { addCampaign, loading } = useAddCampaign();
 
-const handleSubmitConfirm = async () => {
-  setIsModalOpen(false);
+  const handleSubmitConfirm = async () => {
+    setIsModalOpen(false);
 
-  try {
-    // Ambil file dari formData.image_file
-    const result = await addCampaign(
-      {
-        title: formData.name,
-        background_html: formData.background_html,
-        category: formData.category as CampaignCategory,
-      
-        target_amount: Number(formData.target_amount),
-        ended_at: formData.ended_at || null,
-        created_by: "83740ae3-fbd2-4648-93e0-cb0e62c07167",
-      },
-      formData.image_file // <- optional file untuk upload
-    );
+    try {
+      // Ambil file dari formData.image_file
+      const result = await addCampaign(
+        {
+          title: formData.name,
+          background_html: formData.background_html,
+          category: formData.category as CampaignCategory,
 
-    alert("Kampanye berhasil ditambahkan!");
-    console.log("Result:", result);
-  } catch (err) {
-    console.error("Gagal kampanye:", err);
-    alert("Gagal menambahkan kampanye.");
-  }
-};
+          target_amount: Number(formData.target_amount),
+          ended_at: formData.ended_at || null,
+          created_by: "83740ae3-fbd2-4648-93e0-cb0e62c07167",
+        },
+        formData.image_file, // <- optional file untuk upload
+      );
 
+      alert("Kampanye berhasil ditambahkan!");
+      console.log("Result:", result);
+    } catch (err) {
+      console.error("Gagal kampanye:", err);
+      alert("Gagal menambahkan kampanye.");
+    }
+  };
 
   return (
     <>

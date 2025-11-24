@@ -40,8 +40,9 @@ export function AppInput({
 
     if (allowedChar === "currency") {
       // Hanya angka
-      const raw = newValue.replace(/\D/g, "");
-      const formatted = formatRupiah(raw);
+      const raw = newValue.replace(/\D/g, ""); // masih string
+      const numericValue = Number(raw); // konversi ke number
+      const formatted = formatRupiah(numericValue);
 
       setValue(formatted);
 

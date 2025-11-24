@@ -37,11 +37,17 @@ export function formatArrayToCommaSeparated(input: string[] | null | undefined):
   return input.join(", ");
 }
 
-export const formatRupiah = (value: string) => {
-  if (!value) return "";
-  const number = parseInt(value.replace(/\D/g, ""), 10);
-  return number.toLocaleString("id-ID");
+export const formatRupiah = (value: string | number, showRp: boolean = true): string => {
+  const numericValue = Number(value) || 0;
+
+  return numericValue.toLocaleString("id-ID", {
+    style: showRp ? "currency" : "decimal",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).replace(showRp ? '' : 'Rp', '');
 };
+
 
 // utils/date.ts
 export const formatDate = (timestamp: string): string => {

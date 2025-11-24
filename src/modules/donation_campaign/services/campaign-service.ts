@@ -1,22 +1,70 @@
-import { supabaseClient } from "@/lib/supabase/supabase-client";
-import {  CampaignCreateInput, CampaignTableItem, PaginatedCampaigns } from "../types/campaign";
+"use server";
+
+import {   Campaign, CampaignCreateInput, CampaignTableItem, PaginatedCampaigns } from "../types/campaign";
+import { supabaseServer } from "@/lib/supabase/supabase-server";
 
 export const createCampaign = async (data: CampaignCreateInput) => {
-  const { data: result, error } = await supabaseClient
+  const supabase = await supabaseServer(); // ambil client server
+  const { data: result, error } = await supabase
     .from("campaigns")
     .insert([data])
     .select()
     .single();
 
+    console.log("ERROR BANG", error)
   if (error) throw error;
   return result;
 };
+
+
+
+export const getCampaignDetail = async (id: string): Promise<Campaign | null> => {
+  const supabase = await supabaseServer(); // ambil client server
+  console.log(`ID: ${id}`)
+
+  const { data, error } = await supabase
+    .from("campaigns")
+    .select("*")
+    .eq("id", id)
+    .is("deleted_at", null)
+    .single();
+
+    console.log(`data: ${data}`)
+    
+    if (error) {
+    console.log(`erro:`, error)
+    if (error.code === "PGRST116") return null;
+    throw new Error(error.message);
+  }
+  
+if (!data) return null;
+
+const campaign: Campaign = {
+  id: data.id,
+  title: data.title,
+  imageUrl: data.image_url,
+  backgroundHtml: data.background_html,
+  category: data.category,
+  targetAmount: data.target_amount,
+  collectedAmount: data.collected_amount,
+  status: data.status,
+  createdBy: data.created_by,
+  endedAt: data.ended_at,
+  createdAt: data.created_at,
+  deletedAt: data.deleted_at,
+};
+
+
+return campaign;
+};
+
 
 export const getCampaignsTable = async (page: number, pageSize: number): Promise<PaginatedCampaigns> => {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  const { data, count, error } = await supabaseClient
+  const supabase = await supabaseServer();
+  const { data, count, error } = await supabase
     .from<"campaigns",CampaignTableItem>("campaigns")
     .select("id, title, category, created_at, collected_amount, target_amount, status", { count: "exact" })
     .order("created_at", { ascending: false })
@@ -28,7 +76,8 @@ export const getCampaignsTable = async (page: number, pageSize: number): Promise
 };
 
 export const deleteCampaign = async (id: string) => {
-  const { error } = await supabaseClient
+  const supabase = await supabaseServer();
+  const { error } = await supabase
     .from("campaigns")
     .update({ deleted_at: new Date().toISOString() })
     .eq("id", id);

@@ -26,6 +26,22 @@ export interface Campaign {
   deletedAt?: string;
 }
 
+export type CampaignRow = {
+  id: string;
+  title: string;
+  image_url: string;
+  background_html: string;
+  category: string;
+  target_amount: number;
+  collected_amount: number;
+  status: string;
+  created_by: string;
+  ended_at?: string;
+  created_at: string;
+  deleted_at?: string;
+};
+
+
 export interface CampaignTableItem {
   id: string;
   title: string;

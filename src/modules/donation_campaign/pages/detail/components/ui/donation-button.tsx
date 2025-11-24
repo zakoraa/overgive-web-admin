@@ -1,4 +1,4 @@
-import { AppButton } from "@/components/ui/app-button";
+import { AppButton } from "@/components/ui/button/app-button";
 import BasePage from "@/layout/base-page";
 
 export const DonationButton = () => {
