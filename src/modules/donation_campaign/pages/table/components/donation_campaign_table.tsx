@@ -12,11 +12,31 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
+import { useCampaigns } from "@/modules/donation_campaign/hooks/use-campaign-table";
+import { formatDate } from "@/lib/utils";
+import {
+  CampaignCategory,
+  CampaignStatus,
+} from "@/modules/donation_campaign/types/campaign";
+import {
+  categoryDisplay,
+  statusDisplay,
+} from "@/modules/donation_campaign/utils/campaign-display";
+import CircularLoading from "@/components/ui/circular-loading";
+import { useCampaignContext } from "@/modules/donation_campaign/providers/campaign-table-provider";
 
 export const DonationCampaignTable = () => {
   const router = useRouter();
+  const { campaigns, isLoading, deleteCampaign } = useCampaignContext();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const handleDelete = () => {
+    if (selectedId) deleteCampaign(selectedId);
+    setOpenDeleteModal(false);
+  };
+
+  if (isLoading) return <CircularLoading />;
 
   //   const { users, sort, setSort } = useHistoryContext();
 
@@ -26,91 +46,105 @@ export const DonationCampaignTable = () => {
 
   return (
     <div className="w-full overflow-x-auto">
-      {/* {users.length === 0 ? (
+      {campaigns.length === 0 ? (
         <p className="text-xs text-gray-500">Belum ada data pasien</p>
-      ) : ( */}
-      <Table className="min-w-full">
-        <TableHeader className="bg-gray-50 text-left text-xs font-semibold text-gray-600">
-          <TableRow>
-            <TableCell isHeader>No</TableCell>
-            <TableCell isHeader>Nama</TableCell>
-            <TableCell isHeader>
-              <button
-                onClick={toggleSort}
-                className="flex cursor-pointer items-center gap-1"
-              >
-                Tgl Dibuat
-                {/* <span className="text-xs"> {sort === "asc" ? "▲" : "▼"}</span> */}
-              </button>
-            </TableCell>
-            <TableCell isHeader>Dana Terkumpul (Rp)</TableCell>
-            <TableCell isHeader>Target Dana (Rp)</TableCell>
-            <TableCell isHeader>Status</TableCell>
-            <TableCell isHeader className="flex justify-center">
-              Aksi
-            </TableCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow
-            // key={user.id}
-            className="transition hover:bg-gray-50"
-          >
-            <TableCell className="text-sm text-gray-800">
-              {/* {index + 1} */}1
-            </TableCell>
-            <TableCell className="text-sm font-bold text-gray-800">
-              Bangun Sekolah di Papua
-            </TableCell>
-            <TableCell className="text-sm text-gray-800">
-              2 November 2025
-            </TableCell>
-            <TableCell className="text-sm text-gray-800">12.000.000</TableCell>
-            <TableCell className="text-sm text-gray-800">100.000.000</TableCell>
-            <TableCell className="bg-primary-faded text-primary-dark px-4 py-2 text-sm">
-              Berlangsung
-            </TableCell>
+      ) : (
+        <>
+          <Table className="min-w-full">
+            <TableHeader className="bg-gray-50 text-left text-xs font-semibold text-gray-600">
+              <TableRow>
+                <TableCell isHeader>No</TableCell>
+                <TableCell isHeader>Nama</TableCell>
+                <TableCell isHeader>Kategori</TableCell>
+                <TableCell isHeader>
+                  <button
+                    onClick={toggleSort}
+                    className="flex cursor-pointer items-center gap-1"
+                  >
+                    Tgl Dibuat
+                    {/* <span className="text-xs"> {sort === "asc" ? "▲" : "▼"}</span> */}
+                  </button>
+                </TableCell>
+                <TableCell isHeader>Dana Terkumpul (Rp)</TableCell>
+                <TableCell isHeader>Target Dana (Rp)</TableCell>
+                <TableCell isHeader>Status</TableCell>
+                <TableCell isHeader>Aksi</TableCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {campaigns?.map((campaign, index) => (
+                <TableRow
+                  key={campaign.id}
+                  className="transition hover:bg-gray-50"
+                >
+                  <TableCell className="text-sm text-gray-800">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="text-sm font-bold text-gray-800">
+                    {campaign.title}
+                  </TableCell>
+                  <TableCell className="text-sm text-gray-800">
+                    {formatDate(campaign.created_at)}
+                  </TableCell>
+                  <TableCell className="text-sm text-gray-800">
+                    {categoryDisplay[campaign.category as CampaignCategory]}
+                  </TableCell>
+                  <TableCell>
+                    {campaign.collected_amount.toLocaleString()}
+                  </TableCell>
+                  <TableCell>
+                    {campaign.target_amount.toLocaleString()}
+                  </TableCell>
+                  <TableCell
+                    className={`px-4 py-2 text-sm ${
+                      campaign.status === "ongoing"
+                        ? "bg-primary-faded text-primary-dark"
+                        : "bg-gray-200 text-gray-600"
+                    }`}
+                  >
+                    {statusDisplay[campaign.status as CampaignStatus]}
+                  </TableCell>
 
-            <TableCell className="flex items-center justify-center space-x-1 text-center">
-              <AppButtonSm
-                icon={<Eye />}
-                //   onClick={() => router.push(`/history/${user.id}`)}
-              />
-              <AppButtonSm
-                icon={<Edit />}
-                className="bg-secondary!"
-                //   onClick={() => router.push(`/history/${user.id}`)}
-              />
-              <AppButtonSm
-                icon={<Trash2 />}
-                onClick={() => {
-                  setSelectedId("1"); // nanti diganti id asli
-                  setOpenDeleteModal(true);
-                }}
-                className="bg-error!"
-                //   onClick={() => router.push(`/history/${user.id}`)}
-              />
-            </TableCell>
-          </TableRow>
-          {/* })} */}
-        </TableBody>
-      </Table>
-      <ModalConfirm
-        isOpen={openDeleteModal}
-        onClose={() => setOpenDeleteModal(false)}
-        onConfirm={() => {
-          console.log("hapus data!");
-          setOpenDeleteModal(false);
-        }}
-        title="Hapus Kampanye?"
-        description="Apakah kamu yakin ingin menghapus kampanye ini? Tindakan ini tidak dapat dibatalkan."
-        confirmText="Hapus"
-        cancelText="Batal"
-        confirmClassName="bg-error!"
-        cancelClassName=" bg-primary!"
-      />
-
-      {/* )} */}
+                  <TableCell className="flex items-center justify-center space-x-1 text-center">
+                    <AppButtonSm
+                      icon={<Eye />}
+                      //   onClick={() => router.push(`/history/${user.id}`)}
+                    />
+                    <AppButtonSm
+                      icon={<Edit />}
+                      className="bg-secondary!"
+                      //   onClick={() => router.push(`/history/${user.id}`)}
+                    />
+                    <AppButtonSm
+                      icon={<Trash2 />}
+                      onClick={() => {
+                        setSelectedId("1"); // nanti diganti id asli
+                        setOpenDeleteModal(true);
+                      }}
+                      className="bg-error!"
+                      //   onClick={() => router.push(`/history/${user.id}`)}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <ModalConfirm
+            isOpen={openDeleteModal}
+            onClose={() => setOpenDeleteModal(false)}
+            onConfirm={() => {
+              console.log("hapus data!");
+              setOpenDeleteModal(false);
+            }}
+            title="Hapus Kampanye?"
+            description="Apakah kamu yakin ingin menghapus kampanye ini? Tindakan ini tidak dapat dibatalkan."
+            confirmText="Hapus"
+            cancelText="Batal"
+            confirmClassName="bg-error!"
+            cancelClassName=" bg-primary!"
+          />
+        </>
+      )}
     </div>
   );
 };

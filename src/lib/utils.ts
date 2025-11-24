@@ -42,3 +42,17 @@ export const formatRupiah = (value: string) => {
   const number = parseInt(value.replace(/\D/g, ""), 10);
   return number.toLocaleString("id-ID");
 };
+
+// utils/date.ts
+export const formatDate = (timestamp: string): string => {
+  const date = new Date(timestamp);
+
+  // Array nama bulan singkat
+  const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
+};

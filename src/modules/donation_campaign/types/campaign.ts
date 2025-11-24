@@ -10,6 +10,38 @@ export type CampaignCategory =
 
 export type CampaignStatus = "ongoing" | "completed";
 
+
+export interface Campaign {
+  id: string;
+  title: string;
+  imageUrl: string;
+  backgroundHtml: string;
+  category: CampaignCategory;
+  targetAmount: number;
+  collectedAmount: number;
+  status: CampaignStatus;
+  createdBy: string;
+  endedAt?: string;
+  createdAt: string;
+  deletedAt?: string;
+}
+
+export interface CampaignTableItem {
+  id: string;
+  title: string;
+  category: string;
+  created_at: string;
+  collected_amount: number;
+  target_amount: number;
+  status: string;
+}
+
+export interface PaginatedCampaigns {
+  data: CampaignTableItem[];
+  total: number;
+}
+
+
 export interface CampaignCreateInput {
   title: string;
   background_html: string;
