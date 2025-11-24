@@ -1,5 +1,4 @@
 import { AppButtonSm } from "@/components/ui/button/app-button-sm";
-import { Modal } from "@/components/ui/modal/modal";
 import {
   TableHeader,
   TableRow,
@@ -16,7 +15,7 @@ import { formatRupiah } from "@/utils/currency";
 import { formatDate } from "@/utils/date";
 import {
   CampaignCategory,
-  CampaignStatus,
+  CampaignTableItem,
 } from "@/modules/donation_campaign/types/campaign";
 import {
   categoryDisplay,
@@ -24,16 +23,57 @@ import {
 } from "@/modules/donation_campaign/utils/campaign-display";
 import CircularLoading from "@/components/ui/circular-loading";
 import { useCampaignContext } from "@/modules/donation_campaign/providers/campaign-table-provider";
+import { useDeleteCampaign } from "@/modules/donation_campaign/hooks/use-delete-campaign";
+import { ModalInfo } from "@/components/ui/modal/modal-info";
+import { ModalLoading } from "@/components/ui/modal/modal-loading";
 
 export const DonationCampaignTable = () => {
   const router = useRouter();
-  const { campaigns, isLoading, deleteCampaign } = useCampaignContext();
+  const { campaigns, isLoading } = useCampaignContext();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedCampaign, setSelectedCampaign] =
+    useState<CampaignTableItem | null>(null);
+  const { deleteCampaign, loading: deleting } = useDeleteCampaign();
 
-  const handleDelete = () => {
-    if (selectedId) deleteCampaign(selectedId);
+  const [modalInfoOpen, setModalInfoOpen] = useState(false);
+  const [modalInfoData, setModalInfoData] = useState({
+    title: "",
+    message: "",
+    imageUrl: "",
+  });
+
+  const handleCloseInfoModal = () => {
+    setModalInfoOpen(false);
+    if (modalInfoData.title === "Berhasil!") {
+      router.refresh();
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedCampaign) return;
+
+    // tampilkan loading otomatis lewat hook useDeleteCampaign
+    const result = await deleteCampaign(selectedCampaign.id);
+
+    // tutup modal konfirmasi
     setOpenDeleteModal(false);
+
+    // tampilkan modal info sukses/gagal
+    if (result.success) {
+      setModalInfoData({
+        title: "Berhasil!",
+        message: `Kampanye <b>${selectedCampaign.title}</b> berhasil dihapus.`,
+        imageUrl: "/svgs/success.svg",
+      });
+      setModalInfoOpen(true);
+    } else {
+      setModalInfoData({
+        title: "Gagal!",
+        message: `Terjadi kesalahan: ${result.error}`,
+        imageUrl: "/svgs/failed.svg",
+      });
+      setModalInfoOpen(true);
+    }
   };
 
   if (isLoading) return <CircularLoading />;
@@ -125,11 +165,10 @@ export const DonationCampaignTable = () => {
                     <AppButtonSm
                       icon={<Trash2 />}
                       onClick={() => {
-                        setSelectedId("1"); // nanti diganti id asli
+                        setSelectedCampaign(campaign);
                         setOpenDeleteModal(true);
                       }}
                       className="bg-error!"
-                      //   onClick={() => router.push(`/history/${user.id}`)}
                     />
                   </TableCell>
                 </TableRow>
@@ -139,17 +178,24 @@ export const DonationCampaignTable = () => {
           <ModalConfirm
             isOpen={openDeleteModal}
             onClose={() => setOpenDeleteModal(false)}
-            onConfirm={() => {
-              console.log("hapus data!");
-              setOpenDeleteModal(false);
-            }}
+            onConfirm={handleConfirmDelete}
             title="Hapus Kampanye?"
-            description="Apakah kamu yakin ingin menghapus kampanye ini? Tindakan ini tidak dapat dibatalkan."
+            description={`Apakah kamu yakin ingin menghapus <b>${selectedCampaign?.title}</b>? Tindakan ini tidak dapat dibatalkan.`}
             confirmText="Hapus"
             cancelText="Batal"
             confirmClassName="bg-error!"
             cancelClassName=" bg-primary!"
           />
+
+          <ModalInfo
+            isOpen={modalInfoOpen}
+            onClose={handleCloseInfoModal}
+            title={modalInfoData.title}
+            message={modalInfoData.message}
+            imageUrl={modalInfoData.imageUrl}
+          />
+
+          <ModalLoading isOpen={deleting} />
         </>
       )}
     </div>

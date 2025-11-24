@@ -9,7 +9,6 @@ interface CampaignContextValue {
   page: number;
   pageSize: number;
   setPage: (page: number) => void;
-  deleteCampaign: ReturnType<typeof useCampaigns>["deleteCampaign"];
   totalPages: number;
 }
 
@@ -25,7 +24,7 @@ export const CampaignTableProvider = ({
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  const { campaigns, total, isLoading, isError, deleteCampaign } = useCampaigns(
+  const { campaigns, total, isLoading, isError } = useCampaigns(
     page,
     pageSize,
   );
@@ -42,7 +41,6 @@ export const CampaignTableProvider = ({
         page,
         pageSize,
         setPage,
-        deleteCampaign,
         totalPages,
       }}
     >

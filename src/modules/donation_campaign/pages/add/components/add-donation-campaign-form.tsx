@@ -21,7 +21,7 @@ export const AddDonationCampaignForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<any>({ category: "education" });
   const { errors, validate, clearErrors } = useAddCampaignFormValidation();
-  const { addCampaign, loading, error } = useAddCampaign();
+  const { addCampaign, loading } = useAddCampaign();
 
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
   const [modalInfoData, setModalInfoData] = useState({

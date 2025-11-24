@@ -31,7 +31,10 @@ export const ModalConfirm: React.FC<ModalConfirmProps> = ({
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
 
-        <p className="text-sm leading-relaxed text-gray-600">{description}</p>
+        <p
+          className="text-sm leading-relaxed text-gray-600"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
 
         <div className="flex justify-center gap-3 pt-4">
           <button

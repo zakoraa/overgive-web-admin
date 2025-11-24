@@ -20,8 +20,6 @@ export const ModalInfo: React.FC<ModalInfoProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="relative mx-auto flex max-w-sm flex-col items-center justify-center space-y-4 px-4 py-6 text-center">
-      
-
         {/* SVG via Image */}
         {imageUrl && (
           <img
@@ -35,7 +33,10 @@ export const ModalInfo: React.FC<ModalInfoProps> = ({
         <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
 
         {/* Message */}
-        <p className="text-sm leading-relaxed text-gray-600">{message}</p>
+        <p
+          className="text-sm leading-relaxed text-gray-600"
+          dangerouslySetInnerHTML={{ __html: message }}
+        />
       </div>
     </Modal>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { PaginationButton } from "@/components/ui/table/pagination-button";
-import { DonationCampaignTable } from "./donation_campaign_table";
+import { DonationCampaignTable } from "./donation-campaign-table";
 import SearchInput from "@/components/ui/search/search-input";
 import { AppButtonSm } from "@/components/ui/button/app-button-sm";
 import { Plus } from "lucide-react";

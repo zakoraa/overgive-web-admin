@@ -1,6 +1,6 @@
 import { Title } from "@/components/text/title";
 import BasePage from "@/layout/base-page";
-import DonationCampaignBody from "./components/donation_campaign_body";
+import DonationCampaignBody from "./components/donation-campaign-body";
 import { CampaignTableProvider } from "../../providers/campaign-table-provider";
 
 export default function DonationCampaign() {
