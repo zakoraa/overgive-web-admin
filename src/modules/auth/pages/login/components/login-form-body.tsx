@@ -1,85 +1,92 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Alert from "@/components/ui/alert";
 import { AppButton } from "@/components/ui/button/app-button";
 import { AppInput } from "@/components/ui/input/app-input";
-import Link from "next/link";
-
-interface FormState {
-  email: string;
-  password: string;
-}
+import { useLoginForm } from "../hooks/use-login-form";
+import { useLogin } from "../hooks/use-login";
+import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { ModalInfo } from "@/components/ui/modal/modal-info";
+import { useState } from "react";
 
 export default function LoginFormBody() {
-  // const { form, setForm, errors, validate } = useLoginForm();
+  const { form, setForm, errors, validate } = useLoginForm();
   const router = useRouter();
-  const [form, setForm] = useState<FormState>({
-    email: "",
-    password: "",
+  const [modalInfoOpen, setModalInfoOpen] = useState(false);
+  const [modalInfoData, setModalInfoData] = useState({
+    title: "",
+    message: "",
+    imageUrl: "",
   });
 
-  const [showLoginErrorAlert, setShowLoginErrorAlert] = useState("");
-  // const { login, loading, error } = useLogin();
-  // const handleLoginWithEmail = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
+  const { login, loading, error } = useLogin();
 
-  //   if (!validate()) return;
+  const handleLoginWithEmail = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  //   const user = await login(form.email, form.password);
+    if (!validate()) return;
 
-  //   if (user) {
-  //     setShowLoginErrorAlert("");
-  //     router.push("/");
-  //   } else {
-  //     setShowLoginErrorAlert(error || "Login gagal. Harap periksa email dan password!");
-  //   }
-  // };
+    const user = await login(form.email, form.password);
+
+    
+    if (user) {
+      router.push("/");
+    } else {
+      console.log("LOGIN ERROR: ", error);
+      setModalInfoData({
+        title: "Gagal!",
+        message: "Login gagal. Silakan periksa kembali email dan kata sandi Anda.",
+        imageUrl: "/svgs/failed.svg",
+      });
+      setModalInfoOpen(true);
+    }
+  };
+
+  const handleCloseInfoModal = () => {
+    setModalInfoOpen(false);
+  };
+
   return (
-    <form className="space-y-3">
-      <AppInput
-        label="Email"
-        hint="contoh@gmail.com"
-        value={form.email}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setForm((prev) => ({ ...prev, email: e.target.value }))
-        }
-        // error={errors.email}
-      />
+    <>
+      <ModalLoading isOpen={loading} />
+      <form className="space-y-3"  onSubmit={handleLoginWithEmail} >
+        <AppInput
+          label="Email"
+          hint="contoh@gmail.com"
+          value={form.email}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setForm((prev) => ({ ...prev, email: e.target.value }))
+          }
+          error={errors.email}
+        />
 
-      <AppInput
-        label="Password"
-        hint="Minimal 6 karakter"
-        isPassword={true}
-        value={form.password}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setForm((prev) => ({ ...prev, password: e.target.value }))
-        }
-        // error={errors.password}
-      />
+        <AppInput
+          label="Password"
+          hint="Minimal 6 karakter"
+          isPassword={true}
+          value={form.password}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setForm((prev) => ({ ...prev, password: e.target.value }))
+          }
+          error={errors.password}
+        />
 
-      <AppButton
-        width="100%"
-        className="my-5"
-        text="Login"
-        //  isLoading={loading}
-      />
-      <p className="text-center text-sm">
-        Belum punya akun?{" "}
-        <span className="text-primary font-bold">
-          <Link href={"/sign-up"}>Daftar</Link>{" "}
-        </span>
-      </p>
-      {showLoginErrorAlert && (
-        <div className="my-5">
-          <Alert
-            variant="error"
-            title="Gagal Masuk"
-            message={showLoginErrorAlert}
-          />
-        </div>
-      )}
-    </form>
+        <AppButton
+          type="submit"
+          width="100%"
+          className="my-5"
+          text="Login"
+          isLoading={loading}
+        />
+
+        <ModalInfo
+          isOpen={modalInfoOpen}
+          onClose={handleCloseInfoModal}
+          title={modalInfoData.title}
+          message={modalInfoData.message}
+          imageUrl={modalInfoData.imageUrl}
+        />
+      </form>
+    </>
   );
 }

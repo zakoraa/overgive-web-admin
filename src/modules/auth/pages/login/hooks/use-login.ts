@@ -1,6 +1,7 @@
+"use client"
 import { useState } from "react";
-import { setCookie } from "cookies-next";
 import { loginWithEmailPassword } from "../services/login-service";
+import { setCookie } from "cookies-next";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
@@ -12,13 +13,13 @@ export function useLogin() {
 
     try {
       const user = await loginWithEmailPassword(email, password);
-      const idToken = await user.getIdToken();
+      console.log("LOGIN user: ", user);
+      setCookie("token", user.id);
 
-      // Simpan token ke cookie
-      setCookie("token", idToken);
 
       return user;
-    } catch {
+    } catch(err) {
+      console.log("ERROR USE_LOGIN: ", err)
       setError("Login gagal. Harap periksa email dan password.");
       return null;
     } finally {

@@ -5,8 +5,12 @@ import SideBar from "./side-bar";
 import { Modal } from "@/components/ui/modal/modal";
 import DonationCampaign from "@/modules/donation_campaign/pages/table";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useLogout } from "@/modules/auth/hooks/use-logout";
+import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { ModalInfo } from "@/components/ui/modal/modal-info";
 
 export default function AppLayout() {
+  const [modalInfoOpen, setModalInfoOpen] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -18,12 +22,19 @@ export default function AppLayout() {
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, _] = useState(false);
-  // const logout = useLogout();
+  const { logout, loading } = useLogout();
 
   const handleLogoutCancel = () => setShowLogoutModal(false);
 
   const handleLogoutConfirm = async () => {
-    // await logout();
+    setShowLogoutModal(false);
+    
+    try {
+      await logout();
+      router.refresh();
+    } catch {
+      setModalInfoOpen(true);
+    }
   };
 
   return (
@@ -68,6 +79,15 @@ export default function AppLayout() {
           </div>
         </div>
       </Modal>
+
+      <ModalInfo
+        isOpen={modalInfoOpen}
+        onClose={() => setModalInfoOpen(false)}
+        title={"Gagal!"}
+        message={"Gagal logout. Silakan coba lagi!"}
+      />
+
+      <ModalLoading isOpen={loading} />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import LoginFormBody from "./components/login-form-body";
 
 export default function LoginForm() {
   return (
-    <main className="justify-center w-full px-4 md:mx-0">
+    <main className="w-full justify-center px-4 md:mx-0">
       {/* Header */}
       <div className="mb-5 text-start">
         <div className="mb-10 flex items-center justify-center md:hidden">

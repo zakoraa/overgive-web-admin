@@ -1,10 +1,18 @@
-"use server";
+"use server"
 
-export async function loginWithEmailPassword(email: string, password: string) {
-  const res = await fetch("/api/login", {
+import { absoluteUrl } from "@/lib/absolute-url";
+
+export async function loginWithEmailPassword(email:string, password:string) {
+  const url = await absoluteUrl('/api/auth/login')
+  const res = await fetch(url, {
     method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
 
-  return res.json();
+  if (!res.ok) return null;
+
+  const { user } = await res.json();
+  return user;
 }
