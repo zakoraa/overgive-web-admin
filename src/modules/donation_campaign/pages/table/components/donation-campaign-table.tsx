@@ -43,7 +43,7 @@ export const DonationCampaignTable = () => {
   const handleCloseInfoModal = () => {
     setModalInfoOpen(false);
     if (modalInfoData.title === "Berhasil!") {
-      router.refresh();
+      window.location.reload();
     }
   };
 

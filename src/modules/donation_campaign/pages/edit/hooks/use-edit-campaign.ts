@@ -2,30 +2,18 @@
 
 import { useState } from "react";
 import { EditCampaignPayload } from "../types/edit-campaign-payload";
+import { updateCampaign } from "../services/update-campaign-service";
 
 export const useEditCampaign = (id: string) => {
   const [loading, setLoading] = useState(false);
 
-  const editCampaign = async (payload: EditCampaignPayload) => {
-    
-    if (!id) return { success: false, error: "Gagal Memperbarui Kampanye" };
-;
+ const editCampaign = async (payload: EditCampaignPayload) => {
+    setLoading(true);
+
     try {
-      setLoading(true);
-
-    const res = await fetch(`/api/campaign/update/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-    });
-
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to update campaign");
-
-      return { success: true, data: data.data };
+      const result = await updateCampaign(id, payload);
+      return result;
     } catch (err: any) {
-      console.error(err);
       return { success: false, error: err.message };
     } finally {
       setLoading(false);
