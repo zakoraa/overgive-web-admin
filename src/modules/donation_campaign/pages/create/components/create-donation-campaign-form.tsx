@@ -1,47 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AppButton } from "@/components/ui/button/app-button";
 import { AppDatePicker } from "@/components/ui/input/app-date-picker";
 import { AppSelect } from "@/components/ui/input/app-dropdown";
 import { AppInput } from "@/components/ui/input/app-input";
 import { AppRichTextEditor } from "@/components/ui/input/app-rich-text-editor";
 import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
+import { useCreateCampaign } from "@/modules/donation_campaign/pages/create/hooks/use-create-campaign";
+import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import { AppFileInput } from "@/components/ui/input/app-file-input";
 import { useRouter } from "next/navigation";
+import { useCreateCampaignFormValidation } from "@/modules/donation_campaign/pages/create/hooks/use-create-campaign-form-validation";
 import { ModalInfo } from "@/components/ui/modal/modal-info";
 import { parseCurrency } from "@/utils/currency";
 import { ModalLoading } from "@/components/ui/modal/modal-loading";
-import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/detail/providers/campaign-detail-provider";
-import { useEditCampaignFormValidation } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign-form-validation";
-import { useEditCampaign } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign";
-import CircularLoading from "@/components/ui/circular-loading";
 
-export const EditDonationCampaignForm = () => {
+export const CreateDonationCampaignForm = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<any>({ category: "education" });
-  const { errors, validate } = useEditCampaignFormValidation();
-
-  const { campaign } = useCampaignDetailContext();
-
-  useEffect(() => {
-    console.log("Campaign: ", campaign);
-    if (!campaign) return;
-
-    setFormData({
-      name: campaign.title,
-      background_html: campaign.backgroundHtml,
-      category: campaign.category,
-      status: campaign.status,
-      target_amount: campaign.targetAmount ? String(campaign.targetAmount) : "",
-      ended_at: campaign.endedAt ? new Date(campaign.endedAt) : null,
-      image_url: campaign.imageUrl ?? "",
-    });
-  }, [campaign]);
-
-  if (!campaign) return <CircularLoading />;
-  const { editCampaign, loading } = useEditCampaign(campaign.id);
+  const { errors, validate, clearErrors } = useCreateCampaignFormValidation();
+  const { addCampaign, loading } = useCreateCampaign();
 
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
   const [modalInfoData, setModalInfoData] = useState({
@@ -50,45 +30,44 @@ export const EditDonationCampaignForm = () => {
     imageUrl: "",
   });
 
+  const resetForm = () => {
+    setFormData({ category: "education" });
+    clearErrors();
+  };
+
   const handleSubmitConfirm = async () => {
     setIsModalOpen(false);
 
-    const rawTarget = parseCurrency(formData.target_amount);
-    const targetAmount = rawTarget === 0 ? null : rawTarget;
+    try {
+      const rawTarget = parseCurrency(formData.target_amount);
+      const targetAmount = rawTarget === 0 ? null : rawTarget;
+      await addCampaign(
+        {
+          title: formData.name,
+          background_html: formData.background_html,
+          category: formData.category as CampaignCategory,
+          target_amount: targetAmount,
+          ended_at: formData.ended_at || null,
+          created_by: "83740ae3-fbd2-4648-93e0-cb0e62c07167",
+        },
+        formData.image_file, // <- optional file untuk upload
+      );
 
-    let image_file_base64: string | undefined;
-    if (formData.image_file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(formData.image_file);
-      image_file_base64 = await new Promise((resolve) => {
-        reader.onload = () => resolve(reader.result as string);
-      });
-    }
-
-    const payload = {
-      name: formData.name,
-      background_html: formData.background_html,
-      category: formData.category,
-      status: formData.status,
-      target_amount: targetAmount,
-      ended_at: formData.ended_at ? formData.ended_at.toISOString() : null,
-      image_file_base64,
-    };
-
-    const result = await editCampaign(payload);
-
-    if (result?.success) {
+      // Munculkan modal sukses
       setModalInfoData({
         title: "Berhasil!",
-        message: "Kampanye berhasil diperbarui.",
+        message: "Kampanye berhasil ditambahkan.",
         imageUrl: "/svgs/success.svg",
       });
       setModalInfoOpen(true);
-    } else {
-      console.log("ERROR  EDIT:", result?.error);
+
+      // Reset form
+      resetForm();
+    } catch (err) {
+      // Munculkan modal gagal
       setModalInfoData({
         title: "Gagal!",
-        message: result?.error || "Terjadi kesalahan",
+        message: "Terjadi kesalahan, kampanye tidak dapat ditambahkan.",
         imageUrl: "/svgs/failed.svg",
       });
       setModalInfoOpen(true);
@@ -120,13 +99,12 @@ export const EditDonationCampaignForm = () => {
       >
         <div className="space-y-3 lg:w-[40%]!">
           <AppFileInput
-            label="Thumbnail"
-            name="image_file"
+            label="Thumbnail Kampanye"
+            name="thumbnail"
             accept="image/*"
             error={errors.image_file}
-            initialUrl={campaign?.imageUrl ?? null}
+            hint="Unggah gambar untuk kampanye"
             onChange={(file) => setFormData({ ...formData, image_file: file })}
-            hint="Upload thumbnail kampanye"
           />
 
           <AppInput
@@ -134,9 +112,13 @@ export const EditDonationCampaignForm = () => {
             required
             label="Nama"
             error={errors.name}
-            value={formData.name || ""}
             hint="Masukkan nama kampanye"
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setFormData((prev: any) => ({
+                ...prev,
+                name: event.target.value,
+              }))
+            }
           />
 
           <AppSelect
@@ -144,8 +126,8 @@ export const EditDonationCampaignForm = () => {
             label="Kategori"
             name="category"
             error={errors.category}
-            defaultValue={formData.category}
-            onChange={(val) => setFormData({ ...formData, category: val })}
+            defaultValue={"education"}
+            value={formData.category}
             options={[
               { label: "Pendidikan", value: "education" },
               { label: "Lingkungan", value: "environment" },
@@ -156,18 +138,7 @@ export const EditDonationCampaignForm = () => {
               { label: "Difabel", value: "disability" },
               { label: "Lainnya", value: "others" },
             ]}
-          />
-          <AppSelect
-            required
-            label="Status"
-            name="status"
-            error={errors.status}
-            defaultValue={formData.status}
-            onChange={(val) => setFormData({ ...formData, status: val })}
-            options={[
-              { label: "Aktif", value: "active" },
-              { label: "Tidak Aktif", value: "inactive" },
-            ]}
+            onChange={(val) => setFormData({ ...formData, category: val })}
           />
 
           <AppInput
@@ -177,9 +148,11 @@ export const EditDonationCampaignForm = () => {
             labelMessage={"Kosongkan jika tidak ada."}
             hint="cth: 100.000.000"
             error={errors.category}
-            value={formData.target_amount || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, target_amount: e.target.value })
+            onChange={(event) =>
+              setFormData((prev: any) => ({
+                ...prev,
+                target_amount: event.target.value, // <-- di sini target_amount, bukan target_ammount
+              }))
             }
           />
 
@@ -187,7 +160,6 @@ export const EditDonationCampaignForm = () => {
             label="Tanggal Berakhir (Opsional)"
             labelMessage={"Kosongkan jika tidak ada."}
             name="ended_at"
-            defaultValue={formData.ended_at}
             onChange={(val) => setFormData({ ...formData, ended_at: val })}
           />
         </div>
@@ -198,13 +170,14 @@ export const EditDonationCampaignForm = () => {
           placeholder="Tulis latar belakang kampanye..."
           error={errors.background_html}
           required
-          defaultValue={formData.background_html}
-          onChange={(val) => setFormData({ ...formData, background_html: val })}
+          onChange={(val: string) =>
+            setFormData((prev: any) => ({ ...prev, background_html: val }))
+          }
         />
 
         <AppButton
           type="submit"
-          text={loading ? "Menyimpan..." : "Edit Kampanye Donasi"}
+          text={loading ? "Menyimpan..." : "Tambah Kampanye Donasi"}
           className="mt-5 w-full! rounded-xl!"
         />
       </form>
@@ -222,8 +195,8 @@ export const EditDonationCampaignForm = () => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleSubmitConfirm}
         title="Konfirmasi Tambah Kampanye"
-        description="Apakah kamu yakin ingin memperbarui kampanye donasi ini?"
-        confirmText="Ya, Perbarui"
+        description="Apakah kamu yakin ingin menambahkan kampanye donasi baru?"
+        confirmText="Ya, Tambahkan"
         cancelText="Batal"
       />
     </>

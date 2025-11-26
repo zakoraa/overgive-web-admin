@@ -1,5 +1,5 @@
+import { getCampaignDetails } from "@/modules/donation_campaign/pages/detail/services/get-campaign-details";
 import { EditDonationCampaign } from "@/modules/donation_campaign/pages/edit";
-import { getCampaignDetail } from "@/modules/donation_campaign/services/campaign-service";
 import { notFound } from "next/navigation";
 
 interface CampaignPageProps {
@@ -10,9 +10,11 @@ export default async function Page({ params }: CampaignPageProps) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
 
-  const campaign = await getCampaignDetail(id);
+  const campaign = await getCampaignDetails(id);
 
   if (!campaign) return notFound();
 
   return <EditDonationCampaign initialCampaign={campaign} />;
 }
+
+

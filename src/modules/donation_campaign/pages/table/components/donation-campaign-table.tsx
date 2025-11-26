@@ -13,19 +13,17 @@ import { useRouter } from "next/navigation";
 import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
 import { formatRupiah } from "@/utils/currency";
 import { formatDate } from "@/utils/date";
-import {
-  CampaignCategory,
-  CampaignTableItem,
-} from "@/modules/donation_campaign/types/campaign";
+import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import {
   categoryDisplay,
   getCampaignStatusInfo,
 } from "@/modules/donation_campaign/utils/campaign-display";
 import CircularLoading from "@/components/ui/circular-loading";
-import { useCampaignContext } from "@/modules/donation_campaign/providers/campaign-table-provider";
-import { useDeleteCampaign } from "@/modules/donation_campaign/hooks/use-delete-campaign";
+import { useCampaignContext } from "@/modules/donation_campaign/pages/table/providers/campaign-table-provider";
+import { useDeleteCampaign } from "@/modules/donation_campaign/pages/table/hooks/use-delete-campaign";
 import { ModalInfo } from "@/components/ui/modal/modal-info";
 import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { CampaignTableItem } from "../types/campaign-table";
 
 export const DonationCampaignTable = () => {
   const router = useRouter();

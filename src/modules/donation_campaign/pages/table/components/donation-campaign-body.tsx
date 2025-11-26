@@ -6,7 +6,7 @@ import SearchInput from "@/components/ui/search/search-input";
 import { AppButtonSm } from "@/components/ui/button/app-button-sm";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCampaignContext } from "@/modules/donation_campaign/providers/campaign-table-provider";
+import { useCampaignContext } from "@/modules/donation_campaign/pages/table/providers/campaign-table-provider";
 
 export default function DonationCampaignBody() {
   const router = useRouter();

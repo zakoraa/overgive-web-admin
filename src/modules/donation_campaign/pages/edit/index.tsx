@@ -1,7 +1,7 @@
 import { Title } from "@/components/text/title";
 import { Line } from "@/components/ui/line";
 import { Campaign as CampaignType } from "../../types/campaign";
-import { CampaignDetailProvider } from "../../providers/campaign-detail-provider";
+import { CampaignDetailProvider } from "../detail/providers/campaign-detail-provider";
 import { EditDonationCampaignForm } from "./components/edit-donation-campaign-form";
 
 interface EditDonationCampaignProps {

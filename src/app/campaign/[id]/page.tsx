@@ -1,6 +1,6 @@
 // app/campaign/[id]/page.tsx
 import { Campaign } from "@/modules/donation_campaign/pages/detail";
-import { getCampaignDetail } from "@/modules/donation_campaign/services/campaign-service";
+import { getCampaignDetails } from "@/modules/donation_campaign/pages/detail/services/get-campaign-details";
 import { notFound } from "next/navigation";
 
 interface CampaignPageProps {
@@ -11,9 +11,10 @@ export default async function Page({ params }: CampaignPageProps) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
 
-  const campaign = await getCampaignDetail(id);
+  const campaign = await getCampaignDetails(id);
 
   if (!campaign) return notFound();
 
   return <Campaign initialCampaign={campaign} />;
 }
+

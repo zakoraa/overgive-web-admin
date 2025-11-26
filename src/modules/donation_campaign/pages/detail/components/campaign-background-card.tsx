@@ -2,7 +2,7 @@
 
 import { Title } from "@/components/text/title";
 import { Card } from "@/components/ui/card";
-import { useCampaignDetailContext } from "@/modules/donation_campaign/providers/campaign-detail-provider";
+import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/detail/providers/campaign-detail-provider";
 
 export const CampaignBackgroundCard = () => {
   const { campaign } = useCampaignDetailContext();

@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { DonationProgressIndicator } from "@/components/ui/donation-progress-indicator";
 import { cn, getDonationPercentage } from "@/utils/util";
 import { formatRupiah } from "@/utils/currency";
-import { useCampaignDetailContext } from "@/modules/donation_campaign/providers/campaign-detail-provider";
+import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/detail/providers/campaign-detail-provider";
 import { formatDate, getRemainingDays, isExpired } from "@/utils/date";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import {

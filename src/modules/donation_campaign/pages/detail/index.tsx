@@ -3,7 +3,7 @@ import { CampaignHeaderCard } from "./components/campaign-header-card";
 import { CampaignDonorsCard } from "./components/campaign_donors_card";
 import { CampaignLatestNewsCard } from "./components/campaign-latest-news-card";
 import { CampaignDetailsOfFundCard } from "./components/campaign-details-of-fund-card";
-import { CampaignDetailProvider } from "../../providers/campaign-detail-provider";
+import { CampaignDetailProvider } from "./providers/campaign-detail-provider";
 import { Campaign as CampaignType } from "../../types/campaign";
 import { Card } from "@/components/ui/card";
 
