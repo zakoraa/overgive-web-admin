@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import generatePassword from "generate-password";
 import { supabaseAdmin } from "@/lib/supabase/supabase-admin";
 
 export async function POST(req: NextRequest) {
     try {
-        const { fullName, email } = await req.json();
+        const { fullName, email, password } = await req.json();
 
         if (!fullName || !email) {
             return NextResponse.json({ message: "Nama lengkap dan email harus diisi" }, { status: 400 });
@@ -12,13 +11,6 @@ export async function POST(req: NextRequest) {
 
         const supabase = await supabaseAdmin();
 
-        const password = generatePassword.generate({
-            length: 12,
-            numbers: true,
-            symbols: true,
-            uppercase: true,
-            strict: true,
-        });
 
         const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
             email,

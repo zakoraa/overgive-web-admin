@@ -1,10 +1,9 @@
 "use server";
 
 import { absoluteUrl } from "@/lib/absolute-url";
-import { Distributor } from "@/modules/distributor/types/distributor";
 
-export async function createDistributor(fullName: string, email: string, password: string): Promise<Distributor | null> {
-    const url = await absoluteUrl('/api/distributor/create');
+export async function sendGeneratePassword(fullName: string, email: string, password: string) {
+    const url = await absoluteUrl('/api/distributor/send-email');
 
     try {
         const res = await fetch(url, {
@@ -13,10 +12,13 @@ export async function createDistributor(fullName: string, email: string, passwor
             body: JSON.stringify({ fullName, email, password }),
         });
 
-        if (!res.ok) return null;
+        if (!res.ok) {
+            const errMsg = await res.text();
+            console.error("Server error:", errMsg);
+            return null;
+        }
 
-        const distributor: Distributor = await res.json();
-        return distributor;
+        return await res.json();
     } catch (err) {
         console.error("Fetch API error:", err);
         return null;

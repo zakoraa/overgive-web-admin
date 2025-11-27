@@ -19,7 +19,7 @@ export const CreateDistributorForm = () => {
     imageUrl: "",
   });
 
-  const { submit, loading, error, distributor } = useCreateDistributor();
+  const { submit, loading, error } = useCreateDistributor();
 
   const handleCreateDistributor = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -60,15 +60,6 @@ export const CreateDistributorForm = () => {
       <GeneratedPasswordInformation />
       <form className="mt-5 space-y-3" onSubmit={handleCreateDistributor}>
         <AppInput
-          label={"Nama Lengkap"}
-          hint={"Masukkan nama lengkap"}
-          value={form.fullName}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setForm((prev) => ({ ...prev, fullName: e.target.value }))
-          }
-          error={errors.fullName}
-        />
-        <AppInput
           label="Email"
           hint="contoh@gmail.com"
           value={form.email}
@@ -76,6 +67,16 @@ export const CreateDistributorForm = () => {
             setForm((prev) => ({ ...prev, email: e.target.value }))
           }
           error={errors.email}
+        />
+
+        <AppInput
+          label={"Nama Lengkap"}
+          hint={"Masukkan nama lengkap"}
+          value={form.fullName}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setForm((prev) => ({ ...prev, fullName: e.target.value }))
+          }
+          error={errors.fullName}
         />
 
         <AppButton

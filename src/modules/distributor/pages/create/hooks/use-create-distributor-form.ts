@@ -25,8 +25,6 @@ export function useCreateDistributorForm() {
 
     if (!form.fullName.trim()) {
       newErrors.fullName = "Nama lengkap wajib diisi";
-    } else if (form.fullName.length < 6) {
-      newErrors.fullName = "Nama lengkap minimal 6 karakter";
     }
 
     setErrors(newErrors);
