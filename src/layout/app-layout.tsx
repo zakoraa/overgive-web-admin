@@ -15,7 +15,7 @@ export default function AppLayout() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const tab = searchParams.get("tab") || "kampanye";
+  const tab = searchParams.get("tab") || "campaign";
 
   const handleChangeTab = (tabName: string) => {
     router.push(`/?tab=${tabName}`);
@@ -52,8 +52,8 @@ export default function AppLayout() {
       {/* Konten Dinamis */}
       <div className="flex-1 overflow-auto p-6">
         {/* {activeTab === "dashboard" && <Dashboard />} */}
-        {tab === "kampanye" && <DonationCampaign />}
-        {tab === "create_distributor" && <CreateDistributor />}
+        {tab === "campaign" && <DonationCampaign />}
+        {tab === "create-distributor" && <CreateDistributor />}
       </div>
 
       {/* Modal Logout */}

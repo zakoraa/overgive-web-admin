@@ -20,7 +20,7 @@ export const tabs: TabItem[] = [
     icon: <LayoutDashboard className="h-5 w-5" />,
   },
   {
-    id: "kampanye",
+    id: "campaign",
     label: "Kampanye Donasi",
     icon: <HandHeart className="h-5 w-5" />,
   },
@@ -30,12 +30,12 @@ export const tabs: TabItem[] = [
   //   icon: <Table className="w-5 h-5" />,
   // },
   {
-    id: "assign_distributor",
+    id: "assign-distributor",
     label: "Tugaskan Distributor",
     icon: <Package className="h-5 w-5" />,
   },
   {
-    id: "create_distributor",
+    id: "create-distributor",
     label: "Daftarkan Distributor",
     icon: <UserPlus className="h-5 w-5" />,
   },
