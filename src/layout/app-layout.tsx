@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useLogout } from "@/modules/auth/hooks/use-logout";
 import { ModalLoading } from "@/components/ui/modal/modal-loading";
 import { ModalInfo } from "@/components/ui/modal/modal-info";
+import CreateDistributor from "@/modules/distributor/pages/create";
 
 export default function AppLayout() {
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
@@ -52,7 +53,7 @@ export default function AppLayout() {
       <div className="flex-1 overflow-auto p-6">
         {/* {activeTab === "dashboard" && <Dashboard />} */}
         {tab === "kampanye" && <DonationCampaign />}
-        {/* {activeTab === "doctors" && <CreateDoctorAccountForm />} */}
+        {tab === "create_distributor" && <CreateDistributor />}
       </div>
 
       {/* Modal Logout */}
