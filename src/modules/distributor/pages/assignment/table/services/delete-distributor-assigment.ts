@@ -1,11 +1,25 @@
-// export const deleteDistributorAssignment = async (id: string) => {
-//   const supabase = createClient();
+"use server";
 
-//   const { error } = await supabase
-//     .from("distributor_assignments")
-//     .update({ deleted_at: new Date().toISOString() })
-//     .eq("id", id);
+import { absoluteUrl } from "@/core/lib/absolute-url";
 
-//   if (error) return { success: false, error: error.message };
-//   return { success: true };
-// };
+export async function deleteDistributorAssignment(id: string) {
+    const url = await absoluteUrl(`/api/distributor/assignment/delete/${id}`);
+
+    try {
+        const res = await fetch(url, {
+            method: "DELETE",
+            cache: "no-store",
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || "Gagal menghapus penugasan distributor.");
+        }
+
+        const result = await res.json();
+        return { success: true, data: result.data };
+    } catch (err: any) {
+        console.error("ERROR deleteAssignment:", err);
+        return { success: false, error: err.message };
+    }
+}

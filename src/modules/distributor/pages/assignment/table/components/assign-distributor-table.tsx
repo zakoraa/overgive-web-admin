@@ -20,6 +20,7 @@ import { DistributorAssignmentItem } from "../types/distributor-assignment";
 import { useAssignmentContext } from "../providers/assignment-table-provider";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import { categoryDisplay } from "@/modules/donation_campaign/utils/campaign-display";
+import { useDeleteDistributorAssignment } from "../hooks/use-delete-distributor-assignment";
 
 export const AssignDistributorTable = () => {
   const router = useRouter();
@@ -27,7 +28,11 @@ export const AssignDistributorTable = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] =
     useState<DistributorAssignmentItem | null>(null);
-  // const { deleteAssignment, loading: deleting } = useDeleteAssignment();
+  const {
+    remove,
+    loading: deleting,
+    error: deleteError,
+  } = useDeleteDistributorAssignment();
 
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
   const [modalInfoData, setModalInfoData] = useState({
@@ -44,27 +49,28 @@ export const AssignDistributorTable = () => {
   };
 
   const handleConfirmDelete = async () => {
-    // if (!selectedAssignment) return;
-    // // tampilkan loading otomatis lewat hook useDeleteAssignment
-    // const result = await deleteAssignment(selectedAssignment.id);
-    // // tutup modal konfirmasi
-    // setOpenDeleteModal(false);
-    // // tampilkan modal info sukses/gagal
-    // if (result.success) {
-    //   setModalInfoData({
-    //     title: "Berhasil!",
-    //     message: `Kampanye <b>${selectedAssignment.title}</b> berhasil dihapus.`,
-    //     imageUrl: "/svgs/success.svg",
-    //   });
-    //   setModalInfoOpen(true);
-    // } else {
-    //   setModalInfoData({
-    //     title: "Gagal!",
-    //     message: `Terjadi kesalahan: ${result.error}`,
-    //     imageUrl: "/svgs/failed.svg",
-    //   });
-    //   setModalInfoOpen(true);
-    // }
+    if (!selectedAssignment) return;
+
+    const result = await remove(selectedAssignment.id);
+
+    setOpenDeleteModal(false);
+
+    if (result.error) {
+      setModalInfoData({
+        title: "Gagal!",
+        message: `Terjadi kesalahan: ${result.error}`,
+        imageUrl: "/svgs/failed.svg",
+      });
+      setModalInfoOpen(true);
+      return;
+    }
+
+    setModalInfoData({
+      title: "Berhasil!",
+      message: `Penugasan distributor untuk <b>${selectedAssignment.distributor_email}</b> berhasil dihapus.`,
+      imageUrl: "/svgs/success.svg",
+    });
+    setModalInfoOpen(true);
   };
 
   if (isLoading) return <CircularLoading />;
@@ -131,7 +137,7 @@ export const AssignDistributorTable = () => {
                       icon={<Trash2 />}
                       className="bg-error!"
                       onClick={() => {
-                        // setSelectedItem(item);
+                        setSelectedAssignment(item);
                         setOpenDeleteModal(true);
                       }}
                     />
@@ -161,7 +167,7 @@ export const AssignDistributorTable = () => {
             imageUrl={modalInfoData.imageUrl}
           />
 
-          <ModalLoading isOpen={false} />
+          <ModalLoading isOpen={deleting} />
         </>
       )}
     </div>
