@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const res = NextResponse.next();
   const isLoggedIn = req.cookies.get("token");
 
@@ -22,6 +22,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|images|hints|icons|svgs|fonts).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|images|icons|svgs|fonts).*)",
   ],
 };

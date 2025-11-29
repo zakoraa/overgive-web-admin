@@ -9,6 +9,7 @@ import { useLogout } from "@/modules/auth/hooks/use-logout";
 import { ModalLoading } from "@/components/ui/modal/modal-loading";
 import { ModalInfo } from "@/components/ui/modal/modal-info";
 import CreateDistributor from "@/modules/distributor/pages/create";
+import AssignDistributor from "@/modules/distributor/pages/assignment";
 
 export default function AppLayout() {
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
@@ -53,6 +54,7 @@ export default function AppLayout() {
       <div className="flex-1 overflow-auto p-6">
         {/* {activeTab === "dashboard" && <Dashboard />} */}
         {tab === "campaign" && <DonationCampaign />}
+        {tab === "assign-distributor" && <AssignDistributor />}
         {tab === "create-distributor" && <CreateDistributor />}
       </div>
 

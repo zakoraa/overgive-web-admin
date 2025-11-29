@@ -15,11 +15,14 @@ import { useCreateCampaignFormValidation } from "@/modules/donation_campaign/pag
 import { ModalInfo } from "@/components/ui/modal/modal-info";
 import { parseCurrency } from "@/utils/currency";
 import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { useGetCurrentUserContext } from "@/modules/auth/hooks/use-get-current-user";
+import { GridInput } from "@/components/ui/input/layout/grid-input";
 
 export const CreateDonationCampaignForm = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<any>({ category: "education" });
+  const { user } = useGetCurrentUserContext();
   const { errors, validate, clearErrors } = useCreateCampaignFormValidation();
   const { addCampaign, loading } = useCreateCampaign();
 
@@ -48,9 +51,9 @@ export const CreateDonationCampaignForm = () => {
           category: formData.category as CampaignCategory,
           target_amount: targetAmount,
           ended_at: formData.ended_at || null,
-          created_by: "83740ae3-fbd2-4648-93e0-cb0e62c07167",
+          created_by: user.id,
         },
-        formData.image_file, // <- optional file untuk upload
+        formData.image_file,
       );
 
       // Munculkan modal sukses
@@ -97,7 +100,7 @@ export const CreateDonationCampaignForm = () => {
           setIsModalOpen(true); //
         }}
       >
-        <div className="space-y-3 lg:w-[40%]!">
+        <GridInput>
           <AppFileInput
             label="Thumbnail Kampanye"
             name="thumbnail"
@@ -106,6 +109,7 @@ export const CreateDonationCampaignForm = () => {
             hint="Unggah gambar untuk kampanye"
             onChange={(file) => setFormData({ ...formData, image_file: file })}
           />
+          <div></div>
 
           <AppInput
             name="name"
@@ -162,7 +166,7 @@ export const CreateDonationCampaignForm = () => {
             name="ended_at"
             onChange={(val) => setFormData({ ...formData, ended_at: val })}
           />
-        </div>
+        </GridInput>
 
         <AppRichTextEditor
           label="Latar Belakang Kampanye"
