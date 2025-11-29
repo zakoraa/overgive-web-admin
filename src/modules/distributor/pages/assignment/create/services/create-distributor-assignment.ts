@@ -8,7 +8,7 @@ export async function createDistributorAssignment(payload: {
   campaign_id: string;
   notes?: string;
 }) {
-  const url = await absoluteUrl("/api/distributor/create-assignment");
+  const url = await absoluteUrl("/api/distributor/assignment/create");
 
   const res = await fetch(url, {
     method: "POST",

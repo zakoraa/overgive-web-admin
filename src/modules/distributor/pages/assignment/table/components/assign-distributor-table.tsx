@@ -6,7 +6,7 @@ import {
   TableBody,
   Table,
 } from "@/core/components/ui/table/table";
-import { Eye, Trash2 } from "lucide-react";
+import { Edit, Edit2, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
@@ -99,7 +99,7 @@ export const AssignDistributorTable = () => {
                 <TableRow key={item.id} className="hover:bg-gray-50">
                   <TableCell className="text-sm">{index + 1}</TableCell>
                   <TableCell className="text-sm font-semibold">
-                    {item.distributor_name}
+                    {item.distributor_email}
                   </TableCell>
                   <TableCell className="text-sm">
                     {item.campaign_title}
@@ -112,7 +112,7 @@ export const AssignDistributorTable = () => {
                     }
                   </TableCell>
                   <TableCell className="text-sm">
-                    {item.assigned_by_name}
+                    {item.assigned_by_email}
                   </TableCell>
                   <TableCell className="text-sm">
                     {formatDate(item.assigned_at)}
@@ -120,9 +120,10 @@ export const AssignDistributorTable = () => {
 
                   <TableCell className="flex items-center space-x-1">
                     <AppButtonSm
-                      icon={<Eye />}
+                      icon={<Edit />}
+                      className="bg-secondary!"
                       onClick={() =>
-                        router.push(`/distributor-assignments/${item.id}`)
+                        router.push(`/distributor/assignment/edit/${item.id}`)
                       }
                     />
 

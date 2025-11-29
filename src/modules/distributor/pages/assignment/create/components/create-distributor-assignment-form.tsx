@@ -1,10 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {  useState } from "react";
 import { AppButton } from "@/core/components/ui/button/app-button";
-import { AppInput } from "@/core/components/ui/input/app-input";
-import { AppSelect } from "@/core/components/ui/input/app-dropdown";
-import { AppDatePicker } from "@/core/components/ui/input/app-date-picker";
 import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
 import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
@@ -14,7 +11,6 @@ import { useCreateAssignment } from "../hooks/use-create-distributor-assignment"
 import { useGetDistributors } from "../hooks/use-get-distributors";
 import { useGetCurrentUserContext } from "@/modules/auth/hooks/use-get-current-user";
 import { AppSearchSelectInfinite } from "@/core/components/ui/input/app-search-select/app-search-select";
-import { debounce } from "@/core/utils/debounce";
 import { useGetCampaignsAssigments } from "../hooks/use-get-campaigns-assigment";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import { categoryDisplay } from "@/modules/donation_campaign/utils/campaign-display";
@@ -37,7 +33,6 @@ export const CreateDistributorAssignmentForm = () => {
     loadMore: campaignLoadMore,
     hasMore: campaignHasMore,
     isLoading: campaignLoading,
-    search: campaignSearch,
     setSearch: campaignSetSearch,
   } = useGetCampaignsAssigments(20);
 

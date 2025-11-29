@@ -21,8 +21,8 @@ export const getDistributorAssignments = async ({
                 `
         id,
         assigned_at,
-        distributor:users!distributor_id ( id, name ),
-        assigned_by_user:users!assigned_by ( id, name ),
+        distributor:users!distributor_id ( id, name, email ),
+        assigned_by_user:users!assigned_by ( id, name, email ),
         campaign:campaigns ( id, title, category )
         `,
                 { count: "exact" }
@@ -44,11 +44,13 @@ export const getDistributorAssignments = async ({
                     id: x.id,
                     distributor_id: x.distributor?.id ?? "",
                     distributor_name: x.distributor?.name ?? "",
+                    distributor_email: x.distributor?.email ?? "",
                     campaign_id: x.campaign?.id ?? "",
                     campaign_title: x.campaign?.title ?? "",
                     campaign_category: x.campaign?.category ?? "",
                     assigned_by: x.assigned_by_user?.id ?? "",
                     assigned_by_name: x.assigned_by_user?.name ?? "",
+                    assigned_by_email: x.assigned_by_user?.email ?? "",
                     assigned_at: x.assigned_at,
                 })) ?? [],
             total: count ?? 0,

@@ -17,7 +17,7 @@ export default function AssignDistributorBody() {
       <div className="mx-3 flex items-center justify-between gap-10">
         <SearchInput placeholder="Cari nama kampanye..." />
         <AppButtonSm
-          onClick={() => router.push("/distributor/create-assignment")}
+          onClick={() => router.push("/distributor/assignment/create")}
           text="Tambah"
           icon={<Plus />}
         />
