@@ -1,13 +1,9 @@
 "use server";
 
-import { absoluteUrl } from "@/lib/absolute-url";
+import { supabaseServer } from "@/lib/supabase/supabase-server";
 
 export async function logoutUser() {
-  const url = await absoluteUrl('/api/auth/logout');
-  
-  const res = await fetch(url, {
-    method: "POST",
-  });
+  const supabase = await supabaseServer();
 
-  return res.json();
+  await supabase.auth.signOut();
 }

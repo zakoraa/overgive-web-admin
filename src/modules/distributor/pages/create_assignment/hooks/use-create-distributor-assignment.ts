@@ -5,16 +5,20 @@ export const useCreateAssignment = () => {
   const [loading, setLoading] = useState(false);
 
   const createAssignment = async (payload: {
-    created_by: string;
+    assigned_by: string;
     distributor_id: string;
-    start_date: string | null;
-    end_date: string | null;
-    notes: string | null;
+    campaign_id: string;
+    notes?: string;
   }) => {
     try {
       setLoading(true);
       const result = await createDistributorAssignment(payload);
+      console.error("RESILT membuat penugasan distributor:", result);
+
       return result;
+    } catch (err) {
+      console.error("Gagal membuat penugasan distributor:", err);
+      throw err; 
     } finally {
       setLoading(false);
     }

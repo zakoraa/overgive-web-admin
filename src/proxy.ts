@@ -1,24 +1,58 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export async function proxy(req: NextRequest) {
-  const res = NextResponse.next();
-  const isLoggedIn = req.cookies.get("token");
+export async function proxy(request: NextRequest) {
+  let supabaseResponse = NextResponse.next({
+    request,
+  });
 
-  const pathname = req.nextUrl.pathname;
+  const supabase = createServerClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            request.cookies.set(name, value)
+          );
+          supabaseResponse = NextResponse.next({
+            request,
+          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const pathname = request.nextUrl.pathname;
   const isAuthPage = pathname.startsWith("/login");
 
-  if (!isLoggedIn && !isAuthPage) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!isAuthPage && !user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
   }
 
-  if (isLoggedIn && isAuthPage) {
-    return NextResponse.redirect(new URL("/", req.url));
+  if (isAuthPage && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
   }
 
-  return res;
+  return supabaseResponse;
+
 }
+
 
 export const config = {
   matcher: [

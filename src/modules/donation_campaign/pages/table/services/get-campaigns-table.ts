@@ -9,7 +9,7 @@ export const getCampaignsTable = async (page: number, pageSize: number): Promise
 
   const supabase = await supabaseServer();
   const { data, count, error } = await supabase
-    .from<"campaigns",CampaignTableItem>("campaigns")
+    .from<"campaigns", CampaignTableItem>("campaigns")
     .select("id, title, category, created_at, collected_amount, target_amount, status, ended_at", { count: "exact" })
     .order("created_at", { ascending: false })
     .is("deleted_at", null)

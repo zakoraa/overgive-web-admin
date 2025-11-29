@@ -4,11 +4,11 @@ import { supabaseServer } from "@/lib/supabase/supabase-server";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { created_by, distributor_id, start_date, end_date, notes } = body;
+        const { assigned_by, distributor_id, campaign_id, notes = null } = body;
 
-        if (!created_by || !distributor_id) {
+        if (!assigned_by || !distributor_id || !campaign_id) {
             return NextResponse.json(
-                { message: "created_by dan distributor_id wajib diisi" },
+                { message: "assigned_by, distributor_id, dan campaign_id wajib diisi" },
                 { status: 400 }
             );
         }
@@ -19,10 +19,10 @@ export async function POST(req: Request) {
             .from("distributor_assignments")
             .insert([
                 {
-                    created_by,
                     distributor_id,
-                    start_date: start_date ? new Date(start_date).toISOString() : null,
-                    end_date: end_date ? new Date(end_date).toISOString() : null,
+                    campaign_id,
+                    assigned_by,
+                    assigned_at: new Date().toISOString(),
                     notes,
                 },
             ])
@@ -30,10 +30,8 @@ export async function POST(req: Request) {
             .single();
 
         if (error) {
-            return NextResponse.json(
-                { message: error.message },
-                { status: 400 }
-            );
+            console.log("ERROR CREATE ASSIGNMENT: ", error)
+            return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
         return NextResponse.json({ message: "success", data });

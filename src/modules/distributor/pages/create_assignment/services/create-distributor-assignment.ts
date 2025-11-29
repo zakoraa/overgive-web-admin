@@ -1,13 +1,16 @@
 "use server";
 
+import { absoluteUrl } from "@/lib/absolute-url";
+
 export async function createDistributorAssignment(payload: {
-  created_by: string;
+  assigned_by: string;
   distributor_id: string;
-  start_date: string | null;
-  end_date: string | null;
-  notes: string | null;
+  campaign_id: string;
+  notes?: string;
 }) {
-  const res = await fetch(`/api/distributor/create-assignment`, {
+  const url = await absoluteUrl("/api/distributor/create-assignment");
+
+  const res = await fetch(url, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
@@ -18,9 +21,12 @@ export async function createDistributorAssignment(payload: {
 
   if (!res.ok) {
     const error = await res.json();
+    console.log("RESS EROR: ", error)
+
     throw new Error(error.message || "Gagal membuat penugasan distributor.");
   }
 
   const result = await res.json();
+  console.log("RESS OK: ", result)
   return result.data;
 }

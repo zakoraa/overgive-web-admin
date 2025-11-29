@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { loginWithEmailPassword } from "../services/login-service";
 import { setCookie } from "cookies-next";
+import { getCurrentUser } from "@/modules/auth/services/get-current-user";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,10 @@ export function useLogin() {
     try {
       const user = await loginWithEmailPassword(email, password);
       console.log("LOGIN user: ", user);
-      setCookie("token", user.id);
+      if(user){
+        await getCurrentUser();
+      }
+      // setCookie("token", user.id);
 
 
       return user;

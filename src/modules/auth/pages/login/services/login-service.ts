@@ -1,18 +1,25 @@
 "use server"
 
-import { absoluteUrl } from "@/lib/absolute-url";
+import { supabaseServer } from "@/lib/supabase/supabase-server";
 
-export async function loginWithEmailPassword(email:string, password:string) {
-  const url = await absoluteUrl('/api/auth/login')
-  const res = await fetch(url, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+export async function loginWithEmailPassword(email: string, password: string) {
+  const supabase = await supabaseServer();
 
-  if (!res.ok) return null;
 
-  const { user } = await res.json();
-  return user;
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+  if (error) {
+    let message = error.message
+    switch (message) {
+      case "Invalid login credentials":
+        message = "Email atau password salah"
+        break;
+      default:
+        message = "Terjadi kesalahan yang tidak diketahui"
+        break;
+    }
+    return { success: false, message: message }
+  }
+
+  return { success: true, message: 'Login berhasil!' }
 }

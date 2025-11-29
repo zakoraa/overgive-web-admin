@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getCurrentUser } from "../services/get-current-user";
 
 interface GetCurrentUserContextType {
-  user: any;
+  user: any | null;
   loading: boolean;
   reloadUser: () => Promise<void>;
 }
@@ -22,16 +22,21 @@ export function GetCurrentUserProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadUser = async () => {
-    setLoading(true);
-
-    const data = await getCurrentUser();
-    setUser(data);
-
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await getCurrentUser();
+      console.log("Berhasil memuat user:", data);
+      setUser(data);
+    } catch (err) {
+      console.error("Gagal memuat user:", err);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

@@ -3,9 +3,9 @@ import { supabaseServer } from "@/lib/supabase/supabase-server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-    
-    try {
-      const supabase = await supabaseServer();
+
+  try {
+    const supabase = await supabaseServer();
     const { id } = await params;
     console.log("IDNYA INI: ", id)
     const body = await req.json();

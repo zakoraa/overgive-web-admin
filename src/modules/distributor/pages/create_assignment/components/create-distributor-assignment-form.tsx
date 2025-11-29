@@ -58,13 +58,21 @@ export const CreateDistributorAssignmentForm = () => {
 
   const handleSubmitConfirm = async () => {
     setModalOpen(false);
-
+    if (!user) {
+      console.error("User belum login atau belum tersedia");
+      setModalInfoData({
+        title: "Gagal!",
+        message: "User belum tersedia, silakan login ulang.",
+        imageUrl: "/svgs/failed.svg",
+      });
+      setModalInfoOpen(true);
+      return;
+    }
     try {
       await createAssignment({
-        created_by: user.id,
+        assigned_by: user.id,
         distributor_id: formData.distributor_id,
-        start_date: formData.start_date || null,
-        end_date: formData.end_date || null,
+        campaign_id: formData.campaign_id,
         notes: formData.notes || null,
       });
 
@@ -81,6 +89,7 @@ export const CreateDistributorAssignmentForm = () => {
         notes: "",
       });
     } catch (err) {
+      console.log("ERROR CREATE DISTRI: ", err);
       setModalInfoData({
         title: "Gagal!",
         message: "Terjadi kesalahan, penugasan tidak dapat ditambahkan.",
