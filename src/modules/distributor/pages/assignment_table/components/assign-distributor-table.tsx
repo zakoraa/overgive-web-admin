@@ -88,7 +88,7 @@ export const AssignDistributorTable = () => {
                 <TableCell isHeader>Distributor</TableCell>
                 <TableCell isHeader>Kampanye</TableCell>
                 <TableCell isHeader>Kategori</TableCell>
-                <TableCell isHeader>Ditetapkan Oleh</TableCell>
+                <TableCell isHeader>Ditetapkan Oleh (Admin)</TableCell>
                 <TableCell isHeader>Tgl Penugasan</TableCell>
                 <TableCell isHeader>Aksi</TableCell>
               </TableRow>

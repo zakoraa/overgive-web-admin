@@ -30,7 +30,7 @@ export async function getCampaigns({
         .eq("status", "active")
         .gte("ended_at", today)
         .is("deleted_at", null)
-        .not("id", "in", `(${assignedIds.map((id) => `'${id}'`).join(",")})`)
+        .not("id", "in", `(${assignedIds.map((id) => `${id}`).join(",")})`)
         .order("created_at", { ascending: false })
         .range(from, to);
 

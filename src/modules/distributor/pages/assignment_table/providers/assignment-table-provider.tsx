@@ -34,17 +34,24 @@ export const AssignmentProvider = ({ children }: { children: React.ReactNode }) 
   const load = async () => {
     setLoading(true);
 
-    const res = await getDistributorAssignments({ page, limit: 10 });
+    try {
+      const res = await getDistributorAssignments({ page, limit: 10 });
 
-    setAssignments(res.data);
-    setTotalPages(res.totalPages);
-
-    setLoading(false);
+      setAssignments(res.data ?? []);
+      setTotalPages(res.totalPages ?? 1);
+    } catch (err: any) {
+      console.error("Gagal memuat assignment:", err);
+  
+      setAssignments([]);
+      setTotalPages(1);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     load();
-  }, [page]); // reload ketika page berubah
+  }, [page]);
 
   return (
     <AssignmentContext.Provider

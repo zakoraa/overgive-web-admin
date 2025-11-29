@@ -104,7 +104,7 @@ export const CreateDistributorAssignmentForm = () => {
     setModalInfoOpen(false);
 
     if (modalInfoData.title === "Berhasil!") {
-      router.refresh();
+      router.push("/?tab=assign-distributor");
     }
   };
 
