@@ -17,7 +17,15 @@ export function useEditAssignment(id: string) {
 
         try {
             const result = await editDistributorAssigment(id, payload);
-            return { data: result, error: null };
+
+            // kalau gagal
+            if (!result.success) {
+                setError(result.error ?? "Terjadi kesalahan");
+                return { data: null, error: result.error };
+            }
+
+            // kalau berhasil
+            return { data: result.data, error: null };
         } catch (err: any) {
             const message = err?.message ?? "Terjadi kesalahan";
             setError(message);

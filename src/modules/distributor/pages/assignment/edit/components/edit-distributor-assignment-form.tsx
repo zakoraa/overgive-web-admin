@@ -103,6 +103,7 @@ export const EditDistributorAssignmentForm = () => {
       >
         <GridInput>
           <AppInput
+            required
             label="Kampanye"
             value={data.campaign_title}
             disabled
@@ -111,6 +112,7 @@ export const EditDistributorAssignmentForm = () => {
           />
 
           <AppSearchSelectInfinite
+            required
             label="Pilih Distributor"
             value={formData.distributor_id}
             onChange={(v) => setFormData({ ...formData, distributor_id: v })}
@@ -126,7 +128,7 @@ export const EditDistributorAssignmentForm = () => {
         </GridInput>
 
         <AppRichTextEditor
-          label="Catatan"
+          label="Catatan (Opsional)"
           name="notes"
           defaultValue={formData.notes}
           onChange={(val) => setFormData({ ...formData, notes: val })}

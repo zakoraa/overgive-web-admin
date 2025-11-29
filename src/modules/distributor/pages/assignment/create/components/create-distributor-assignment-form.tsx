@@ -1,6 +1,6 @@
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { AppButton } from "@/core/components/ui/button/app-button";
 import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
 import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
@@ -15,6 +15,7 @@ import { useGetCampaignsAssigments } from "../hooks/use-get-campaigns-assigment"
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import { categoryDisplay } from "@/modules/donation_campaign/utils/campaign-display";
 import { GridInput } from "@/core/components/ui/input/layout/grid-input";
+import { useCreateAssignmentValidation } from "../hooks/use-create-assignment-validation";
 
 export const CreateDistributorAssignmentForm = () => {
   const router = useRouter();
@@ -45,6 +46,8 @@ export const CreateDistributorAssignmentForm = () => {
     search,
     setSearch,
   } = useGetDistributors(20);
+
+  const { errors, validate } = useCreateAssignmentValidation();
 
   const [formData, setFormData] = useState<any>({
     distributor_id: "",
@@ -111,11 +114,15 @@ export const CreateDistributorAssignmentForm = () => {
         className="space-y-4 pb-20"
         onSubmit={(e) => {
           e.preventDefault();
+          const isValid = validate(formData);
+          if (!isValid) return;
+
           setModalOpen(true);
         }}
       >
         <GridInput>
           <AppSearchSelectInfinite
+            required
             label="Pilih Distributor"
             value={formData.distributor_id}
             placeholderSearch="Cari nama/email distributor..."
@@ -128,8 +135,10 @@ export const CreateDistributorAssignmentForm = () => {
             onLoadMore={loadMore}
             loadingMore={distributorLoading}
             hasMore={hasMore}
+            error={errors.distributor_id}
           />
           <AppSearchSelectInfinite
+            required
             label="Pilih Kampanye"
             value={formData.campaign_id}
             onChange={(v) => setFormData({ ...formData, campaign_id: v })}
@@ -141,6 +150,7 @@ export const CreateDistributorAssignmentForm = () => {
             loadingMore={campaignLoading}
             hasMore={campaignHasMore}
             onSearch={campaignSetSearch}
+            error={errors.campaign_id}
           />
         </GridInput>
 

@@ -3,8 +3,10 @@ import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
+  console.log("PARAMS ID:", id);
   try {
     const body = await req.json();
     const { distributor_id, campaign_id, notes = null } = body;
@@ -25,7 +27,7 @@ export async function PUT(
         campaign_id,
         notes,
       })
-      .eq("id", params.id)
+      .eq("id", id)
       .select("*")
       .single();
 
