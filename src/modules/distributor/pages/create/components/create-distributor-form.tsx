@@ -1,9 +1,9 @@
-import { AppButton } from "@/components/ui/button/app-button";
-import { Card } from "@/components/ui/card";
-import GeneratedPasswordInformation from "@/components/ui/generate-password-information";
-import { AppInput } from "@/components/ui/input/app-input";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { AppButton } from "@/core/components/ui/button/app-button";
+import { Card } from "@/core/components/ui/card";
+import GeneratedPasswordInformation from "@/core/components/ui/generate-password-information";
+import { AppInput } from "@/core/components/ui/input/app-input";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { useState } from "react";
 import { useCreateDistributorForm } from "../hooks/use-create-distributor-form";
 import { useCreateDistributor } from "../hooks/use-create-distributor";

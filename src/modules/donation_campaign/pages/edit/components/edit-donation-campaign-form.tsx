@@ -1,21 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AppButton } from "@/components/ui/button/app-button";
-import { AppDatePicker } from "@/components/ui/input/app-date-picker";
-import { AppSelect } from "@/components/ui/input/app-dropdown";
-import { AppInput } from "@/components/ui/input/app-input";
-import { AppRichTextEditor } from "@/components/ui/input/app-rich-text-editor";
-import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
-import { AppFileInput } from "@/components/ui/input/app-file-input";
+import { AppButton } from "@/core/components/ui/button/app-button";
+import { AppDatePicker } from "@/core/components/ui/input/app-date-picker";
+import { AppSelect } from "@/core/components/ui/input/app-dropdown";
+import { AppInput } from "@/core/components/ui/input/app-input";
+import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
+import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
+import { AppFileInput } from "@/core/components/ui/input/app-file-input";
 import { useRouter } from "next/navigation";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
-import { parseCurrency } from "@/utils/currency";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
+import { parseCurrency } from "@/core/utils/currency";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/detail/providers/campaign-detail-provider";
 import { useEditCampaignFormValidation } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign-form-validation";
 import { useEditCampaign } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign";
-import CircularLoading from "@/components/ui/circular-loading";
+import CircularLoading from "@/core/components/ui/circular-loading";
 
 export const EditDonationCampaignForm = () => {
   const router = useRouter();

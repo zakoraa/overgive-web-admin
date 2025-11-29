@@ -2,20 +2,20 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/utils/util";
+import { cn } from "@/core/utils/util";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/input/app-search-select/command";
+} from "@/core/components/ui/input/app-search-select/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/input/app-search-select/popover";
-import { Label } from "@/components/text/label";
+} from "@/core/components/ui/input/app-search-select/popover";
+import { Label } from "@/core/components/text/label";
 import { Button } from "../../button/app-button-shadcn";
 
 export interface SelectOption {

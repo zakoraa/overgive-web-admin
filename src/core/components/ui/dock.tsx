@@ -11,7 +11,7 @@ import {
 } from "framer-motion";
 import React, { PropsWithChildren, useRef } from "react";
 
-import { cn } from "@/utils/util";
+import { cn } from "@/core/utils/util";
 
 export interface DockProps extends VariantProps<typeof dockVariants> {
   className?: string;

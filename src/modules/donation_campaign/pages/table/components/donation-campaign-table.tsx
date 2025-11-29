@@ -1,28 +1,28 @@
-import { AppButtonSm } from "@/components/ui/button/app-button-sm";
+import { AppButtonSm } from "@/core/components/ui/button/app-button-sm";
 import {
   TableHeader,
   TableRow,
   TableCell,
   TableBody,
   Table,
-} from "@/components/ui/table/table";
+} from "@/core/components/ui/table/table";
 import { Edit, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
-import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
-import { formatRupiah } from "@/utils/currency";
-import { formatDate } from "@/utils/date";
+import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
+import { formatRupiah } from "@/core/utils/currency";
+import { formatDate } from "@/core/utils/date";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import {
   categoryDisplay,
   getCampaignStatusInfo,
 } from "@/modules/donation_campaign/utils/campaign-display";
-import CircularLoading from "@/components/ui/circular-loading";
+import CircularLoading from "@/core/components/ui/circular-loading";
 import { useCampaignContext } from "@/modules/donation_campaign/pages/table/providers/campaign-table-provider";
 import { useDeleteCampaign } from "@/modules/donation_campaign/pages/table/hooks/use-delete-campaign";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { CampaignTableItem } from "../types/campaign-table";
 
 export const DonationCampaignTable = () => {

@@ -1,6 +1,6 @@
 "use server";
 
-import { absoluteUrl } from "@/lib/absolute-url";
+import { absoluteUrl } from "@/core/lib/absolute-url";
 
 export async function createDistributorAssignment(payload: {
   assigned_by: string;

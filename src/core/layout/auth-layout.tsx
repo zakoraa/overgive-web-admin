@@ -1,5 +1,5 @@
 import React from "react";
-import GridShape from "../modules/auth/components/grid-shape";
+import GridShape from "../../modules/auth/components/grid-shape";
 import Image from "next/image";
 
 export default function AuthLayout({

@@ -1,9 +1,9 @@
 "use client";
 
-import { PaginationButton } from "@/components/ui/table/pagination-button";
+import { PaginationButton } from "@/core/components/ui/table/pagination-button";
 import { AssignDistributorTable } from "./assign-distributor-table";
-import SearchInput from "@/components/ui/search/search-input";
-import { AppButtonSm } from "@/components/ui/button/app-button-sm";
+import SearchInput from "@/core/components/ui/search/search-input";
+import { AppButtonSm } from "@/core/components/ui/button/app-button-sm";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAssignmentContext } from "../providers/assignment-table-provider";

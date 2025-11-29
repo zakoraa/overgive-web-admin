@@ -1,6 +1,6 @@
 "use server";
 
-import { absoluteUrl } from "@/lib/absolute-url";
+import { absoluteUrl } from "@/core/lib/absolute-url";
 import { Distributor } from "@/modules/distributor/types/distributor";
 
 export async function createDistributor(fullName: string, email: string, password: string): Promise<Distributor | null> {

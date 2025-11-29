@@ -1,22 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { AppButton } from "@/components/ui/button/app-button";
-import { AppDatePicker } from "@/components/ui/input/app-date-picker";
-import { AppSelect } from "@/components/ui/input/app-dropdown";
-import { AppInput } from "@/components/ui/input/app-input";
-import { AppRichTextEditor } from "@/components/ui/input/app-rich-text-editor";
-import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
+import { AppButton } from "@/core/components/ui/button/app-button";
+import { AppDatePicker } from "@/core/components/ui/input/app-date-picker";
+import { AppSelect } from "@/core/components/ui/input/app-dropdown";
+import { AppInput } from "@/core/components/ui/input/app-input";
+import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
+import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
 import { useCreateCampaign } from "@/modules/donation_campaign/pages/create/hooks/use-create-campaign";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
-import { AppFileInput } from "@/components/ui/input/app-file-input";
+import { AppFileInput } from "@/core/components/ui/input/app-file-input";
 import { useRouter } from "next/navigation";
 import { useCreateCampaignFormValidation } from "@/modules/donation_campaign/pages/create/hooks/use-create-campaign-form-validation";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
-import { parseCurrency } from "@/utils/currency";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
+import { parseCurrency } from "@/core/utils/currency";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { useGetCurrentUserContext } from "@/modules/auth/hooks/use-get-current-user";
-import { GridInput } from "@/components/ui/input/layout/grid-input";
+import { GridInput } from "@/core/components/ui/input/layout/grid-input";
 
 export const CreateDonationCampaignForm = () => {
   const router = useRouter();

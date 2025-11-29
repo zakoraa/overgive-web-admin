@@ -1,5 +1,5 @@
-import { Title } from "@/components/text/title";
-import BasePage from "@/layout/base-page";
+import { Title } from "@/core/components/text/title";
+import BasePage from "@/core/layout/base-page";
 import { CreateDistributorForm } from "./components/create-distributor-form";
 
 export default function CreateDistributor() {

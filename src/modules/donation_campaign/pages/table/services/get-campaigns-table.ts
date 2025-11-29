@@ -1,6 +1,6 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase/supabase-server";
+import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 import { PaginatedCampaigns, CampaignTableItem } from "../types/campaign-table";
 
 export const getCampaignsTable = async (page: number, pageSize: number): Promise<PaginatedCampaigns> => {

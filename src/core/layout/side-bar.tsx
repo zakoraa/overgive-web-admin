@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TabItem, tabs } from "./tabs";
 import { Menu, ChevronsLeft, ChevronsRight } from "lucide-react";
-import AppLogo from "@/components/ui/app-logo";
+import AppLogo from "@/core/components/ui/app-logo";
 
 type SideBarProps = {
   activeTab: string;

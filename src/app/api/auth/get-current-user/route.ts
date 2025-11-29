@@ -1,6 +1,6 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase/supabase-server";
+import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 import { NextResponse } from "next/server";
 
 export async function GET() {

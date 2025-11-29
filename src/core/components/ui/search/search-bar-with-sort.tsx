@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import SearchInput from "@/components/ui/search/search-input";
+import SearchInput from "@/core/components/ui/search/search-input";
 
 interface SearchBarWithSortProps {
   placeholder?: string;

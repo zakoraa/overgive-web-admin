@@ -1,6 +1,6 @@
 // utils/campaign-display.ts
 
-import { getRemainingDays, isExpired } from "@/utils/date";
+import { getRemainingDays, isExpired } from "@/core/utils/date";
 import { CampaignCategory, CampaignStatus } from "../types/campaign";
 
 export const categoryDisplay: Record<CampaignCategory, string> = {
@@ -18,7 +18,7 @@ export function getCampaignStatusInfo(
   status: CampaignStatus | undefined,
   endedAt: string | undefined,
 ) {
-    if (!endedAt) {
+  if (!endedAt) {
     return {
       label: "Berlangsung",
       colorClass: "text-primary-dark bg-primary-faded",

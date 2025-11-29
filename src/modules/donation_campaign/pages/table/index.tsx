@@ -1,5 +1,5 @@
-import { Title } from "@/components/text/title";
-import BasePage from "@/layout/base-page";
+import { Title } from "@/core/components/text/title";
+import BasePage from "@/core/layout/base-page";
 import DonationCampaignBody from "./components/donation-campaign-body";
 import { CampaignTableProvider } from "./providers/campaign-table-provider";
 

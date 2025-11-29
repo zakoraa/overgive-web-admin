@@ -1,6 +1,6 @@
 "use server";
 
-import { absoluteUrl } from "@/lib/absolute-url";
+import { absoluteUrl } from "@/core/lib/absolute-url";
 
 export async function sendGeneratePassword(fullName: string, email: string, password: string) {
     const url = await absoluteUrl('/api/distributor/send-email');

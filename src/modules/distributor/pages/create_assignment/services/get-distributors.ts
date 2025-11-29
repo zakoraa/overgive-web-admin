@@ -1,6 +1,6 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase/supabase-server";
+import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 
 export async function getDistributors({
   page = 1,

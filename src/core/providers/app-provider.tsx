@@ -1,6 +1,6 @@
 "use client";
 
-import { queryClient } from "@/lib/react-query";
+import { queryClient } from "@/core/lib/react-query";
 import { GetCurrentUserProvider } from "@/modules/auth/hooks/use-get-current-user";
 import { QueryClientProvider } from "@tanstack/react-query";
 

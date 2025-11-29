@@ -1,41 +1,41 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Label } from "@/components/text/label";
-import { Card } from "@/components/ui/card";
-import { DonationProgressIndicator } from "@/components/ui/donation-progress-indicator";
+import { Label } from "@/core/components/text/label";
+import { Card } from "@/core/components/ui/card";
+import { DonationProgressIndicator } from "@/core/components/ui/donation-progress-indicator";
 
-export const CampaignVerticalCard = () => {
+export const CampaignHorizontalCard = () => {
   const router = useRouter();
   const percentage = 65;
 
   return (
     <Card
       onClick={() => router.push("/campaign")}
-      className="hover:bg-hover mt-3 flex h-72 w-56 cursor-pointer flex-col transition-colors duration-300"
+      className="hover:bg-hover flex h-30 cursor-pointer transition-colors duration-300"
     >
       <img
         src={
           "https://www.jagaindonesia.com/wp-content/uploads/2023/03/Papua.jpg"
         }
-        height={60}
-        width={250}
+        height={100}
+        width={200}
         alt="campaign-image"
-        className="h-full rounded-t-2xl object-cover"
+        className="h-full rounded-s-2xl object-cover"
       />
-      <div className="m-3 flex flex-col justify-between space-y-2">
+      <div className="m-3 flex flex-col justify-between">
         <Label
-          size="sm"
-          className="text-start font-bold"
+          size="md"
+          className="text-start"
           text="Bantuan Pembangunan Sekolah Di Papua"
         />
         <div className="space-y-1">
-          <p className="text-[10px]">
+          <p className="text-xs">
             Terkumpul{"  "}
             <span className="text-primary font-black">Rp 200.000.000</span>
           </p>
           <DonationProgressIndicator percentage={percentage} />
-          <p className="mt-3 text-end text-[10px]">
+          <p className="mt-3 text-end text-xs">
             Target Donasi{"  "}
             <span className="font-black">Rp 1.000.000.000</span>
           </p>

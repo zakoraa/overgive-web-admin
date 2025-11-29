@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Eye, EyeOff } from "lucide-react";
 import { Label } from "../../text/label";
 import ErrorInputMessage from "../error-input-message";
-import { formatRupiah } from "@/utils/currency";
+import { formatRupiah } from "@/core/utils/currency";
 
 interface AppInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;

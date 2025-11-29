@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import SideBar from "./side-bar";
-import { Modal } from "@/components/ui/modal/modal";
+import { Modal } from "@/core/components/ui/modal/modal";
 import DonationCampaign from "@/modules/donation_campaign/pages/table";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLogout } from "@/modules/auth/hooks/use-logout";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import CreateDistributor from "@/modules/distributor/pages/create";
 import AssignDistributor from "@/modules/distributor/pages/assignment";
 
@@ -30,7 +30,7 @@ export default function AppLayout() {
 
   const handleLogoutConfirm = async () => {
     setShowLogoutModal(false);
-    
+
     try {
       await logout();
       router.refresh();

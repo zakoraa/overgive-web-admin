@@ -1,6 +1,6 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase/supabase-server";
+import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 import { Campaign } from "../../../types/campaign";
 
 export const getCampaignDetails = async (id: string): Promise<Campaign | null> => {

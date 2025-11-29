@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { cn } from "@/utils/util";
+import { cn } from "@/core/utils/util";
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { CalendarDays } from "lucide-react";
-import { Label } from "@/components/text/label";
+import { Label } from "@/core/components/text/label";
 
 interface AppDatePickerProps {
   label?: string;

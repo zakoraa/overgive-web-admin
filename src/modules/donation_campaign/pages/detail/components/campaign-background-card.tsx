@@ -1,7 +1,7 @@
 "use client";
 
-import { Title } from "@/components/text/title";
-import { Card } from "@/components/ui/card";
+import { Title } from "@/core/components/text/title";
+import { Card } from "@/core/components/ui/card";
 import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/detail/providers/campaign-detail-provider";
 
 export const CampaignBackgroundCard = () => {

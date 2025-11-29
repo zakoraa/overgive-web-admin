@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import { LinkUnderline } from "@/extensions/tiptap/link-underline";
+import { LinkUnderline } from "@/core/extensions/tiptap/link-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { ResizableImage } from "tiptap-extension-resizable-image";
-import { FontSize } from "@/extensions/tiptap/font-size";
+import { FontSize } from "@/core/extensions/tiptap/font-size";
 
-import { cn } from "@/utils/util";
-import { Label } from "@/components/text/label";
+import { cn } from "@/core/utils/util";
+import { Label } from "@/core/components/text/label";
 
 import {
   Bold,
@@ -30,7 +30,7 @@ import {
   Undo,
   Redo,
 } from "lucide-react";
-import { AutoUrl } from "@/extensions/tiptap/auto-url";
+import { AutoUrl } from "@/core/extensions/tiptap/auto-url";
 import ErrorInputMessage from "../error-input-message";
 
 interface AppRichTextEditorProps {

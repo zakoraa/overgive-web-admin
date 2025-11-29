@@ -1,19 +1,19 @@
 "use client";
 
-import { Title } from "@/components/text/title";
-import { Card } from "@/components/ui/card";
-import { DonationProgressIndicator } from "@/components/ui/donation-progress-indicator";
-import { cn, getDonationPercentage } from "@/utils/util";
-import { formatRupiah } from "@/utils/currency";
+import { Title } from "@/core/components/text/title";
+import { Card } from "@/core/components/ui/card";
+import { DonationProgressIndicator } from "@/core/components/ui/donation-progress-indicator";
+import { cn, getDonationPercentage } from "@/core/utils/util";
+import { formatRupiah } from "@/core/utils/currency";
 import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/detail/providers/campaign-detail-provider";
-import { formatDate, getRemainingDays, isExpired } from "@/utils/date";
+import { formatDate, getRemainingDays, isExpired } from "@/core/utils/date";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import {
   categoryDisplay,
   getCampaignStatusInfo,
 } from "@/modules/donation_campaign/utils/campaign-display";
 import clsx from "clsx";
-import { Label } from "@/components/text/label";
+import { Label } from "@/core/components/text/label";
 
 interface Item {
   icon: string;

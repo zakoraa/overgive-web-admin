@@ -1,12 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AppButton } from "@/components/ui/button/app-button";
-import { AppInput } from "@/components/ui/input/app-input";
+import { AppButton } from "@/core/components/ui/button/app-button";
+import { AppInput } from "@/core/components/ui/input/app-input";
 import { useLoginForm } from "../hooks/use-login-form";
 import { useLogin } from "../hooks/use-login";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import { useState } from "react";
 
 export default function LoginFormBody() {
@@ -28,14 +28,14 @@ export default function LoginFormBody() {
 
     const user = await login(form.email, form.password);
 
-    
     if (user) {
       router.push("/");
     } else {
       console.log("LOGIN ERROR: ", error);
       setModalInfoData({
         title: "Gagal!",
-        message: "Login gagal. Silakan periksa kembali email dan kata sandi Anda.",
+        message:
+          "Login gagal. Silakan periksa kembali email dan kata sandi Anda.",
         imageUrl: "/svgs/failed.svg",
       });
       setModalInfoOpen(true);
@@ -49,7 +49,7 @@ export default function LoginFormBody() {
   return (
     <>
       <ModalLoading isOpen={loading} />
-      <form className="space-y-3"  onSubmit={handleLoginWithEmail} >
+      <form className="space-y-3" onSubmit={handleLoginWithEmail}>
         <AppInput
           label="Email"
           hint="contoh@gmail.com"

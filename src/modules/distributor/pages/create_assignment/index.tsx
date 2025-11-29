@@ -1,5 +1,5 @@
-import { Title } from "@/components/text/title";
-import { Line } from "@/components/ui/line";
+import { Title } from "@/core/components/text/title";
+import { Line } from "@/core/components/ui/line";
 import { CreateDistributorAssignmentForm } from "./components/create-distributor-assignment-form";
 
 export const CreateDistributorAssignment = () => {

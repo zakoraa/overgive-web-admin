@@ -1,11 +1,11 @@
 "use server";
 
-import { absoluteUrl } from "@/lib/absolute-url";
+import { absoluteUrl } from "@/core/lib/absolute-url";
 
 export async function deleteCampaignService(id: string) {
   if (!id) return { success: false, error: "ID campaign tidak valid" };
 
-  
+
   try {
     const url = await absoluteUrl(`/api/campaign/delete/${id}`);
     const res = await fetch(

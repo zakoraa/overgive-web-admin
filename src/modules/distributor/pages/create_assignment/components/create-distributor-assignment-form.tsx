@@ -1,24 +1,24 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AppButton } from "@/components/ui/button/app-button";
-import { AppInput } from "@/components/ui/input/app-input";
-import { AppSelect } from "@/components/ui/input/app-dropdown";
-import { AppDatePicker } from "@/components/ui/input/app-date-picker";
-import { AppRichTextEditor } from "@/components/ui/input/app-rich-text-editor";
-import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import { AppButton } from "@/core/components/ui/button/app-button";
+import { AppInput } from "@/core/components/ui/input/app-input";
+import { AppSelect } from "@/core/components/ui/input/app-dropdown";
+import { AppDatePicker } from "@/core/components/ui/input/app-date-picker";
+import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
+import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { useRouter } from "next/navigation";
 import { useCreateAssignment } from "../hooks/use-create-distributor-assignment";
 import { useGetDistributors } from "../hooks/use-get-distributors";
 import { useGetCurrentUserContext } from "@/modules/auth/hooks/use-get-current-user";
-import { AppSearchSelectInfinite } from "@/components/ui/input/app-search-select/app-search-select";
-import { debounce } from "@/utils/debounce";
+import { AppSearchSelectInfinite } from "@/core/components/ui/input/app-search-select/app-search-select";
+import { debounce } from "@/core/utils/debounce";
 import { useGetCampaignsAssigments } from "../hooks/use-get-campaigns-assigment";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
 import { categoryDisplay } from "@/modules/donation_campaign/utils/campaign-display";
-import { GridInput } from "@/components/ui/input/layout/grid-input";
+import { GridInput } from "@/core/components/ui/input/layout/grid-input";
 
 export const CreateDistributorAssignmentForm = () => {
   const router = useRouter();

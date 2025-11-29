@@ -1,4 +1,4 @@
-import { Label } from "@/components/text/label";
+import { Label } from "@/core/components/text/label";
 import { FC, useState, useEffect } from "react";
 import ErrorInputMessage from "../error-input-message";
 import clsx from "clsx";

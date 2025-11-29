@@ -5,7 +5,7 @@ import { CampaignLatestNewsCard } from "./components/campaign-latest-news-card";
 import { CampaignDetailsOfFundCard } from "./components/campaign-details-of-fund-card";
 import { CampaignDetailProvider } from "./providers/campaign-detail-provider";
 import { Campaign as CampaignType } from "../../types/campaign";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/core/components/ui/card";
 
 interface CampaignProps {
   initialCampaign: CampaignType;

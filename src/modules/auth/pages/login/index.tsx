@@ -1,5 +1,5 @@
-import { Label } from "@/components/text/label";
-import { Title } from "@/components/text/title";
+import { Label } from "@/core/components/text/label";
+import { Title } from "@/core/components/text/title";
 import Image from "next/image";
 import LoginFormBody from "./components/login-form-body";
 

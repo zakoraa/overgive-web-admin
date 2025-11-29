@@ -1,21 +1,21 @@
-import { AppButtonSm } from "@/components/ui/button/app-button-sm";
+import { AppButtonSm } from "@/core/components/ui/button/app-button-sm";
 import {
   TableHeader,
   TableRow,
   TableCell,
   TableBody,
   Table,
-} from "@/components/ui/table/table";
+} from "@/core/components/ui/table/table";
 import { Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
-import { ModalConfirm } from "@/components/ui/modal/modal-confirm";
-import { formatDate } from "@/utils/date";
+import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
+import { formatDate } from "@/core/utils/date";
 
-import CircularLoading from "@/components/ui/circular-loading";
-import { ModalInfo } from "@/components/ui/modal/modal-info";
-import { ModalLoading } from "@/components/ui/modal/modal-loading";
+import CircularLoading from "@/core/components/ui/circular-loading";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { DistributorAssignmentItem } from "../types/distributor-assignment";
 import { useAssignmentContext } from "../providers/assignment-table-provider";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";

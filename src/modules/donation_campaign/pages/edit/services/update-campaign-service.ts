@@ -1,6 +1,6 @@
 "use server";
 
-import { absoluteUrl } from "@/lib/absolute-url";
+import { absoluteUrl } from "@/core/lib/absolute-url";
 import { EditCampaignPayload } from "../types/edit-campaign-payload";
 
 export async function updateCampaign(id: string, payload: EditCampaignPayload) {
@@ -11,12 +11,12 @@ export async function updateCampaign(id: string, payload: EditCampaignPayload) {
 
   try {
     const res = await fetch(url, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-    credentials: "include",
-    cache: "no-store",
-  });
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      credentials: "include",
+      cache: "no-store",
+    });
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Gagal memperbarui campaign");
