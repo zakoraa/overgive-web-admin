@@ -5,13 +5,59 @@ export async function POST(req: NextRequest) {
     try {
         const { fullName, email, password } = await req.json();
 
-        if (!fullName || !email) {
-            return NextResponse.json({ message: "Nama lengkap dan email harus diisi" }, { status: 400 });
+        if (!fullName || !email || !password) {
+            return NextResponse.json(
+                { message: "Nama lengkap, email, dan password harus diisi" },
+                { status: 400 }
+            );
         }
 
         const supabase = await supabaseAdmin();
 
+        // cek apakah email sudah ada di tabel users
+        const { data: existingUser, error: fetchError } = await supabase
+            .from("users")
+            .select("*")
+            .eq("email", email)
+            .single();
 
+        if (fetchError && fetchError.code !== "PGRST116") {
+            // PGRST116 = tidak ada record
+            console.error(fetchError);
+            return NextResponse.json({ message: "Gagal mengecek user" }, { status: 500 });
+        }
+
+        if (existingUser) {
+            if (existingUser.deleted_at) {
+                // user sebelumnya soft deleted, reactivate
+                const { error: updateDbError } = await supabase
+                    .from("users")
+                    .update({ deleted_at: null, name: fullName })
+                    .eq("id", existingUser.id);
+
+                if (updateDbError) {
+                    console.error(updateDbError);
+                    return NextResponse.json({ message: "Gagal mengupdate user" }, { status: 500 });
+                }
+
+                // update password di auth
+                const { error: authUpdateError } = await supabase.auth.admin.updateUserById(
+                    existingUser.auth_id,
+                    { password, user_metadata: { fullName } },
+                );
+
+                if (authUpdateError) {
+                    console.error(authUpdateError);
+                    return NextResponse.json({ message: "Gagal update password Auth" }, { status: 500 });
+                }
+
+                return NextResponse.json({ distributor: existingUser, password, reactivated: true });
+            } else {
+                return NextResponse.json({ message: "Email sudah digunakan" }, { status: 400 });
+            }
+        }
+
+        // jika email belum ada, buat user baru di Auth
         const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
             email,
             password,
@@ -34,9 +80,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Gagal menyimpan user di DB" }, { status: 500 });
         }
 
-        return NextResponse.json({ distributor: inserted, password }, { status: 201 });
-    } catch (err) {
+        return NextResponse.json({ distributor: inserted, password, reactivated: false }, { status: 201 });
+    } catch (err: any) {
         console.error("API Error:", err);
-        return NextResponse.json({ message: "Terjadi kesalahan pada server" }, { status: 500 });
+        return NextResponse.json({ message: err.message || "Terjadi kesalahan pada server" }, { status: 500 });
     }
 }

@@ -3,7 +3,7 @@
 import { absoluteUrl } from "@/core/lib/absolute-url";
 
 export async function deleteUser(id: string) {
-  const url = await absoluteUrl(`/api/user/${id}`);
+  const url = await absoluteUrl(`/api/user/delete/${id}`);
 
   try {
     const res = await fetch(url, {
