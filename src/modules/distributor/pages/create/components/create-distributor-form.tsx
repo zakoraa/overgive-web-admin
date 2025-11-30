@@ -1,3 +1,5 @@
+"use client";
+
 import { AppButton } from "@/core/components/ui/button/app-button";
 import { Card } from "@/core/components/ui/card";
 import GeneratedPasswordInformation from "@/core/components/ui/generate-password-information";
@@ -51,7 +53,7 @@ export const CreateDistributorForm = () => {
   const handleCloseInfoModal = () => {
     setModalInfoOpen(false);
     if (modalInfoData.title === "Berhasil!") {
-      window.location.reload();
+      router.push("/?tab=distributor");
     }
   };
 

@@ -82,7 +82,7 @@ export const CreateDonationCampaignForm = () => {
 
     // Kalau sukses → redirect
     if (modalInfoData.title === "Berhasil!") {
-      router.push("/?tab=kampanye");
+      router.push("/?tab=campaign");
     }
   };
 

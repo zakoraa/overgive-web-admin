@@ -13,6 +13,10 @@ export const PaginationButton = ({
   onPageChange,
 }: PaginationButtonProps) => {
   const getPageNumbers = () => {
+    if (totalPages <= 3) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
     const delta = 2;
     const range = [];
 

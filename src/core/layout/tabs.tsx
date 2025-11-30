@@ -5,6 +5,7 @@ import {
   LogOut,
   HandHeart,
   Package,
+  User,
 } from "lucide-react";
 
 export type TabItem = {
@@ -35,9 +36,9 @@ export const tabs: TabItem[] = [
     icon: <Package className="h-5 w-5" />,
   },
   {
-    id: "create-distributor",
-    label: "Daftarkan Distributor",
-    icon: <UserPlus className="h-5 w-5" />,
+    id: "distributor",
+    label: "Distributor",
+    icon: <User className="h-5 w-5" />,
   },
   {
     id: "logout",

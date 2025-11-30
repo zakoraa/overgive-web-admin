@@ -9,7 +9,8 @@ import { useLogout } from "@/modules/auth/hooks/use-logout";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import CreateDistributor from "@/modules/distributor/pages/create";
-import AssignDistributor from "@/modules/distributor/pages/assignment/table";
+import AssignDistributor from "@/modules/distributor_assignment/table";
+import Distributor from "@/modules/distributor/pages/table";
 
 export default function AppLayout() {
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
@@ -55,7 +56,7 @@ export default function AppLayout() {
         {/* {activeTab === "dashboard" && <Dashboard />} */}
         {tab === "campaign" && <DonationCampaign />}
         {tab === "assign-distributor" && <AssignDistributor />}
-        {tab === "create-distributor" && <CreateDistributor />}
+        {tab === "distributor" && <Distributor />}
       </div>
 
       {/* Modal Logout */}

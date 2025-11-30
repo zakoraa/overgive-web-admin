@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
         const { data: inserted, error: insertError } = await supabase
             .from("users")
-            .insert([{ name: fullName, email, role: "distributor" }])
+            .insert([{ auth_id: authUser.user.id, name: fullName, email, role: "distributor" }])
             .select("*")
             .single();
 
