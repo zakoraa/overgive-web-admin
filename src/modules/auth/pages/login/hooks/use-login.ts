@@ -1,8 +1,6 @@
 "use client"
 import { useState } from "react";
 import { loginWithEmailPassword } from "../services/login-service";
-import { setCookie } from "cookies-next";
-import { getCurrentUser } from "@/modules/auth/services/get-current-user";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
@@ -13,18 +11,18 @@ export function useLogin() {
     setError(null);
 
     try {
-      const user = await loginWithEmailPassword(email, password);
-      console.log("LOGIN user: ", user);
-      if(user){
-        await getCurrentUser();
+      const response = await loginWithEmailPassword(email, password);
+      console.log("LOGIN response: ", response);
+
+      if (!response.success) {
+        setError(response.message); // simpan pesan dari service
+        return null;
       }
-      // setCookie("token", user.id);
 
-
-      return user;
-    } catch(err) {
-      console.log("ERROR USE_LOGIN: ", err)
-      setError("Login gagal. Harap periksa email dan password.");
+      return response; // sukses
+    } catch (err) {
+      console.log("ERROR USE_LOGIN: ", err);
+      setError("Login gagal. Terjadi kesalahan server.");
       return null;
     } finally {
       setLoading(false);

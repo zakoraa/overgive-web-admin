@@ -25,13 +25,23 @@ export default function LoginFormBody() {
     e.preventDefault();
 
     if (!validate()) return;
+    try {
+      const user = await login(form.email, form.password);
 
-    const user = await login(form.email, form.password);
-
-    if (user) {
-      router.push("/");
-    } else {
-      console.log("LOGIN ERROR: ", error);
+      if (user) {
+        router.push("/");
+      } else {
+        console.log("LOGIN ERROR: ", error);
+        setModalInfoData({
+          title: "Gagal!",
+          message:
+            "Login gagal. Silakan periksa kembali email dan kata sandi Anda.",
+          imageUrl: "/svgs/failed.svg",
+        });
+        setModalInfoOpen(true);
+      }
+    } catch (err) {
+      console.log("LOGIN ERROR: ", err);
       setModalInfoData({
         title: "Gagal!",
         message:

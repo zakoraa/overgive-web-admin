@@ -110,9 +110,7 @@ export const DistributorTable = () => {
                     <AppButtonSm
                       icon={<Edit />}
                       className="bg-secondary!"
-                      onClick={() =>
-                        router.push(`/assignment/edit/${user.id}`)
-                      }
+                      onClick={() => router.push(`/assignment/edit/${user.id}`)}
                     />
 
                     <AppButtonSm
