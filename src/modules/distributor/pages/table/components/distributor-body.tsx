@@ -10,12 +10,19 @@ import { DistributorTable } from "./distributor-table";
 
 export default function DistributorBody() {
   const router = useRouter();
-  const { page, setPage, totalPages } = useUserContext();
+  const { page, setPage, totalPages, search, setSearch } = useUserContext();
 
   return (
     <section className="container space-y-4 overflow-x-scroll rounded-xl border border-gray-300 bg-white py-5 sm:overflow-x-hidden">
       <div className="mx-3 flex items-center justify-between gap-10">
-        <SearchInput placeholder="Cari nama kampanye..." />
+        <SearchInput
+          placeholder="Cari nama pengguna..."
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+        />
         <AppButtonSm
           onClick={() => router.push("/distributor/create")}
           text="Tambah"
