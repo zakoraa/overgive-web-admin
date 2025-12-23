@@ -85,7 +85,7 @@ export const DonationCampaignTable = () => {
   return (
     <div className="w-full overflow-x-auto">
       {campaigns.length === 0 ? (
-        <p className="text-xs text-gray-500">Belum ada data pasien</p>
+        <p className="text-xs text-gray-500">Belum ada data</p>
       ) : (
         <>
           <Table className="min-w-full">

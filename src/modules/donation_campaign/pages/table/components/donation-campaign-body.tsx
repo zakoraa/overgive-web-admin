@@ -10,12 +10,20 @@ import { useCampaignContext } from "@/modules/donation_campaign/pages/table/prov
 
 export default function DonationCampaignBody() {
   const router = useRouter();
-  const { page, setPage, total, totalPages } = useCampaignContext();
+  const { page, setPage, total, totalPages, search, setSearch } =
+    useCampaignContext();
 
   return (
     <section className="container space-y-4 overflow-x-scroll rounded-xl border border-gray-300 bg-white py-5 sm:overflow-x-hidden">
       <div className="mx-3 flex items-center justify-between gap-10">
-        <SearchInput placeholder="Cari nama kampanye..." />
+         <SearchInput
+          placeholder="Cari nama kampanye..."
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+        />
         <AppButtonSm
           onClick={() => router.push("/campaign/add")}
           text="Tambah"

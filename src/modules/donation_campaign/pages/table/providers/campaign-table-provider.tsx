@@ -10,22 +10,20 @@ interface CampaignContextValue {
   pageSize: number;
   setPage: (page: number) => void;
   totalPages: number;
+  search: string;                 
+  setSearch: (search: string) => void; 
 }
 
 const CampaignTableContext = createContext<CampaignContextValue | undefined>(
   undefined,
 );
 
-export const CampaignTableProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const CampaignTableProvider = ({ children }: { children: ReactNode }) => {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const pageSize = 10;
 
-  const { campaigns, total, isLoading, isError } = useCampaigns(page, pageSize);
-
+  const { campaigns, total, isLoading, isError } = useCampaigns(page, pageSize, search);
   const totalPages = Math.ceil(total / pageSize);
 
   return (
@@ -39,12 +37,15 @@ export const CampaignTableProvider = ({
         pageSize,
         setPage,
         totalPages,
+        search,
+        setSearch,
       }}
     >
       {children}
     </CampaignTableContext.Provider>
   );
 };
+
 
 export const useCampaignContext = () => {
   const context = useContext(CampaignTableContext);
