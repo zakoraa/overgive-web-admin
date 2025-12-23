@@ -9,6 +9,8 @@ interface AssignmentContextType {
   isLoading: boolean;
   page: number;
   totalPages: number;
+  search: string;
+  setSearch: (search: string) => void;
   setPage: (page: number) => void;
   reload: () => Promise<void>;
 }
@@ -18,30 +20,33 @@ const AssignmentContext = createContext<AssignmentContextType>({
   isLoading: true,
   page: 1,
   totalPages: 1,
+  search: "",
+  setSearch: () => {},
   setPage: () => {},
   reload: async () => {},
 });
 
 export const useAssignmentContext = () => useContext(AssignmentContext);
 
-export const AssignmentProvider = ({ children }: { children: React.ReactNode }) => {
+export const AssignmentProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [assignments, setAssignments] = useState<DistributorAssignment[]>([]);
   const [isLoading, setLoading] = useState(true);
-
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState("");
 
   const load = async () => {
     setLoading(true);
-
     try {
-      const res = await getDistributorAssignments({ page, limit: 10 });
-
+      const res = await getDistributorAssignments({ page, limit: 10, search });
       setAssignments(res.data ?? []);
       setTotalPages(res.totalPages ?? 1);
     } catch (err: any) {
       console.error("Gagal memuat assignment:", err);
-  
       setAssignments([]);
       setTotalPages(1);
     } finally {
@@ -51,7 +56,7 @@ export const AssignmentProvider = ({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     load();
-  }, [page]);
+  }, [page, search]); 
 
   return (
     <AssignmentContext.Provider
@@ -60,6 +65,8 @@ export const AssignmentProvider = ({ children }: { children: React.ReactNode }) 
         isLoading,
         page,
         totalPages,
+        search,
+        setSearch,
         setPage,
         reload: load,
       }}

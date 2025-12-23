@@ -5,17 +5,18 @@ import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 export const getDistributorAssignments = async ({
     page = 1,
     limit = 10,
+    search = "",
 }: {
     page?: number;
     limit?: number;
+    search?: string;
 }) => {
     try {
         const supabase = await supabaseServer();
-
         const from = (page - 1) * limit;
         const to = from + limit - 1;
 
-        const query = supabase
+        let query = supabase
             .from("distributor_assignments")
             .select(
                 `
@@ -31,7 +32,16 @@ export const getDistributorAssignments = async ({
             .order("assigned_at", { ascending: false })
             .range(from, to);
 
+
         const { data, error, count } = await query;
+
+        let filteredData = data ?? [];
+
+        if (search.trim() !== "") {
+            filteredData = filteredData.filter(
+                (x: any) => x.campaign?.title?.toLowerCase().includes(search.toLowerCase())
+            );
+        }
 
         if (error) {
             console.error("ERROR FETCH ASSIGNMENTS:", error);
@@ -40,7 +50,7 @@ export const getDistributorAssignments = async ({
 
         return {
             data:
-                data?.map((x: any) => ({
+                filteredData?.map((x: any) => ({
                     id: x.id,
                     distributor_id: x.distributor?.id ?? "",
                     distributor_name: x.distributor?.name ?? "",
@@ -58,8 +68,6 @@ export const getDistributorAssignments = async ({
         };
     } catch (err: any) {
         console.error("UNEXPECTED ERROR getDistributorAssignments:", err);
-
-        // fallback aman, supaya client tidak crash
         return {
             data: [],
             total: 0,
