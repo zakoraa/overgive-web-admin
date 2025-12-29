@@ -6,6 +6,7 @@ import {
   HandHeart,
   Package,
   User,
+  ActivityIcon,
 } from "lucide-react";
 
 export type TabItem = {
@@ -24,6 +25,11 @@ export const tabs: TabItem[] = [
     id: "campaign",
     label: "Kampanye Donasi",
     icon: <HandHeart className="h-5 w-5" />,
+  },
+  {
+    id: "campaign-settlement",
+    label: "Operasional Kampanye",
+    icon: <ActivityIcon className="h-5 w-5" />,
   },
   // {
   //   id: "patients",
