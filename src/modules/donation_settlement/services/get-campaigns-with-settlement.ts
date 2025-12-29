@@ -35,6 +35,5 @@ export const getCampaignsWithSettlements = async (
 
     // Map supaya field donation_settlements hilang, hanya ambil campaign info
     const campaigns = data?.map(({ donation_settlements, ...rest }) => rest) || [];
-
     return { data: campaigns, total: count || 0 };
 };

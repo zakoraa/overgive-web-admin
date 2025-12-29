@@ -12,7 +12,7 @@ interface OperationalCostInput {
 
 interface UpdateOperationalInput {
     id: string;
-    updates: { amount?: number; note?: string };
+    updates: { id?: string, amount?: number; note?: string };
 }
 
 // Hook untuk create
@@ -23,18 +23,6 @@ export const useCreateOperationalCost = () => {
         mutationFn: (input) => createOperationalCost(input),
         onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({ queryKey: ["donation-settlement-summary", variables.campaignId] });
-        },
-    });
-};
-
-// Hook untuk update
-export const useUpdateOperationalCost = () => {
-    const queryClient = useQueryClient();
-
-    return useMutation<any, Error, UpdateOperationalInput>({
-        mutationFn: ({ id, updates }) => updateOperationalCost(id, updates),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["donation-settlement-summary", data.campaign_id] });
         },
     });
 };

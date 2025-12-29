@@ -7,22 +7,45 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/core/components/ui/input/app-search-select/dialog";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, SaveIcon } from "lucide-react";
 import { useOperationalFormValidation } from "../hooks/use-operational-validation";
+import { useEffect } from "react";
 
-interface AddOperationalModalProps {
+interface OperationalModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (amount: number, note: string) => void;
+  initialData?: {
+    amount: number;
+    note: string | null;
+  };
+  mode?: "add" | "edit";
 }
 
-export const AddOperationalModal = ({
+
+export const OperationalModal = ({
   isOpen,
   onClose,
   onSubmit,
-}: AddOperationalModalProps) => {
-  const { amount, setAmount, note, setNote, errors, validate, reset } =
-    useOperationalFormValidation();
+  initialData,
+  mode = "add",
+}: OperationalModalProps) => {
+  const {
+    amount,
+    setAmount,
+    note,
+    setNote,
+    errors,
+    validate,
+    reset,
+  } = useOperationalFormValidation();
+
+  useEffect(() => {
+    if (initialData) {
+      setAmount(initialData.amount);
+      setNote(initialData.note ?? "");
+    }
+  }, [initialData, setAmount, setNote]);
 
   const handleSubmit = () => {
     if (!validate()) return;
@@ -35,35 +58,37 @@ export const AddOperationalModal = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Tambah Biaya Operasional</DialogTitle>
+          <DialogTitle>
+            {mode === "add"
+              ? "Tambah Biaya Operasional"
+              : "Edit Biaya Operasional"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="mt-2 flex flex-col gap-3">
           <AppInput
             allowedChar="currency"
-            className="w-full rounded border px-2 py-1"
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
             label="Jumlah"
-            hint={"Masukkan jumlah"}
+            hint="Masukkan jumlah"
             error={errors.amount}
           />
 
           <AppInput
-            className="w-full rounded border px-2 py-1"
             value={note}
             maxLength={200}
             onChange={(e) => setNote(e.target.value)}
             label="Keterangan"
-            hint={"Masukkan keterangan"}
+            hint="Masukkan keterangan"
             error={errors.note}
           />
         </div>
 
         <DialogFooter>
           <AppButtonSm
-            text="Tambah"
-            icon={<PlusIcon />}
+            text={mode === "add" ? "Tambah" : "Simpan Perubahan"}
+            icon={mode === "add" ? <PlusIcon /> : <SaveIcon />}
             onClick={handleSubmit}
             className="w-full"
           />

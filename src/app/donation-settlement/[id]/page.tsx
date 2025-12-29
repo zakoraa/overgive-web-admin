@@ -8,7 +8,6 @@ interface DonationSettlementPageProps {
 }
 
 export default async function Page({ params }: DonationSettlementPageProps) {
-  console.log("RESL: ", params);
   const resolvedParams = await params;
   const { id: campaignId } = resolvedParams;
   if (!campaignId) return notFound();
@@ -16,12 +15,10 @@ export default async function Page({ params }: DonationSettlementPageProps) {
   try {
     const summary = await getDonationSettlementSummaryByCampaign(campaignId);
 
-    console.log("GAGAL: ", summary);
     if (!summary) return notFound();
 
     return <DonationSettlement summary={summary} />;
   } catch {
-    console.log("GAGAL");
     return notFound();
   }
 }

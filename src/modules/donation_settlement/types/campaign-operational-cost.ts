@@ -1,4 +1,5 @@
-export interface CampaignOperationalCost{
- amount: number; note: string | null 
-
+export interface CampaignOperationalCost {
+    id?: string;
+    amount: number;
+    note: string | null;
 }
