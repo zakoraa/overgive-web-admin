@@ -9,6 +9,9 @@ import { DonationSettlementSummary } from "../../types/donation-settlement";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { AddOperationalModal } from "./components/add-operational-modal";
+import { useCreateOperationalCost } from "../../hooks/use-create-operational-cost";
+import { ModalInfo } from "@/core/components/ui/modal/modal-info";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 
 interface DonationSettlementProps {
   summary: DonationSettlementSummary;
@@ -16,19 +19,52 @@ interface DonationSettlementProps {
 
 export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
+  const [infoModal, setInfoModal] = useState<{
+    title: string;
+    message: string;
+    imageUrl: string;
+  } | null>(null);
   const [operationalFees, setOperationalFees] = useState(
     summary.operational_fees,
   );
-
-  const handleAddOperational = (amount: number, note: string) => {
-    setOperationalFees([...operationalFees, { amount, note }]);
-  };
 
   const totalOperational = operationalFees.reduce(
     (acc, cur) => acc + cur.amount,
     0,
   );
   const finalNet = summary.total_net - totalOperational;
+
+  const createOperationalMutation = useCreateOperationalCost();
+
+  const handleAddOperational = async (amount: number, note: string) => {
+    setIsModalOpen(false);
+    setIsLoadingModal(true);
+
+    try {
+      await createOperationalMutation.mutateAsync({
+        campaignId: summary.campaign_id,
+        amount,
+        note,
+      });
+
+      setOperationalFees([...operationalFees, { amount, note }]);
+
+      setInfoModal({
+        title: "Sukses",
+        imageUrl: "/svgs/success.svg",
+        message: "Biaya operasional berhasil ditambahkan.",
+      });
+    } catch (err: any) {
+      setInfoModal({
+        title: "Gagal",
+        imageUrl: "/svgs/failed.svg",
+        message: err?.message || "Terjadi kesalahan",
+      });
+    } finally {
+      setIsLoadingModal(false);
+    }
+  };
 
   return (
     <BasePage className="mx-auto rounded-b-2xl p-4">
@@ -122,11 +158,24 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
         </table>
       </div>
 
+      {/* Modals */}
       <AddOperationalModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddOperational}
       />
+
+      <ModalLoading isOpen={isLoadingModal} />
+
+      {infoModal && (
+        <ModalInfo
+          imageUrl={infoModal.imageUrl}
+          isOpen={!!infoModal}
+          onClose={() => setInfoModal(null)}
+          title={infoModal.title}
+          message={infoModal.message}
+        />
+      )}
     </BasePage>
   );
 };

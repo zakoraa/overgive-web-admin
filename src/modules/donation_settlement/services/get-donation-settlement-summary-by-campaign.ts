@@ -13,7 +13,7 @@ export const getDonationSettlementSummaryByCampaign = async (
     .from("donation_settlements")
     .select(`
       *,
-      campaigns (title)
+      campaigns (id, title)
     `)
     .eq("campaign_id", campaignId);
 
@@ -21,6 +21,7 @@ export const getDonationSettlementSummaryByCampaign = async (
   if (!settlements || settlements.length === 0) throw new Error("No settlements found");
 
   const campaignTitle = settlements[0].campaigns?.title ?? "";
+  const campaignID = settlements[0].campaigns?.id ?? "";
 
   // Ambil semua operational cost per item
   const { data: opsCosts, error: opsError } = await supabase
@@ -48,6 +49,7 @@ export const getDonationSettlementSummaryByCampaign = async (
     ?.toISOString();
 
   return {
+    campaign_id: campaignID,
     campaign_title: campaignTitle,
     total_gross: totalGross,
     total_gas_fee: totalGasFee,

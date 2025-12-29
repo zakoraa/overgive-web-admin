@@ -1,4 +1,3 @@
-import { Button } from "@/core/components/ui/button/app-button-shadcn";
 import { AppButtonSm } from "@/core/components/ui/button/app-button-sm";
 import { AppInput } from "@/core/components/ui/input/app-input";
 import {
@@ -9,7 +8,7 @@ import {
   DialogTitle,
 } from "@/core/components/ui/input/app-search-select/dialog";
 import { PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useOperationalFormValidation } from "../hooks/use-operational-validation";
 
 interface AddOperationalModalProps {
   isOpen: boolean;
@@ -22,14 +21,13 @@ export const AddOperationalModal = ({
   onClose,
   onSubmit,
 }: AddOperationalModalProps) => {
-  const [amount, setAmount] = useState<number>(0);
-  const [note, setNote] = useState<string>("");
+  const { amount, setAmount, note, setNote, errors, validate, reset } =
+    useOperationalFormValidation();
 
   const handleSubmit = () => {
-    if (amount <= 0) return alert("Jumlah harus lebih dari 0");
+    if (!validate()) return;
     onSubmit(amount, note);
-    setAmount(0);
-    setNote("");
+    reset();
     onClose();
   };
 
@@ -46,8 +44,9 @@ export const AddOperationalModal = ({
             className="w-full rounded border px-2 py-1"
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
-            label={"Jumlah"}
+            label="Jumlah"
             hint={"Masukkan jumlah"}
+            error={errors.amount}
           />
 
           <AppInput
@@ -55,8 +54,9 @@ export const AddOperationalModal = ({
             value={note}
             maxLength={200}
             onChange={(e) => setNote(e.target.value)}
-            label={"Keterangan"}
+            label="Keterangan"
             hint={"Masukkan keterangan"}
+            error={errors.note}
           />
         </div>
 

@@ -25,6 +25,7 @@ export interface DonationSettlementWithCampaignTitle extends DonationSettlement 
 }
 
 export interface DonationSettlementSummary {
+  campaign_id: string;
   campaign_title: string;
   total_gross: number;
   total_gas_fee: number;
