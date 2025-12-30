@@ -13,9 +13,11 @@ import { useEditAssignment } from "../hooks/use-edit-assignment";
 import { AppInput } from "@/core/components/ui/input/app-input";
 import { useAssignmentDetailContext } from "../providers/edit-assignment-provider";
 import { useGetUsers } from "@/core/hooks/use-get-users";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const EditDistributorAssignmentForm = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { data, loading, error, reload } = useAssignmentDetailContext();
 
@@ -82,7 +84,8 @@ export const EditDistributorAssignmentForm = () => {
   const handleCloseInfoModal = () => {
     setModalInfoOpen(false);
     if (modalInfoData.title === "Berhasil!") {
-      router.push("/?tab=assign-distributor");
+      queryClient.invalidateQueries({ queryKey: ["distributor"] });
+      router.replace("/?tab=assign-distributor");
     }
   };
 

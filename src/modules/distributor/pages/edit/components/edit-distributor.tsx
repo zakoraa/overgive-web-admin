@@ -9,9 +9,11 @@ import { useRouter } from "next/navigation";
 import { AppInput } from "@/core/components/ui/input/app-input";
 import { useDistributorByIdContext } from "@/modules/distributor/providers/distributor-by-id-provider";
 import { useUpdateDistributorName } from "../hooks/use-update-distributor-name";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const EditDistributorForm = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { data } = useDistributorByIdContext();
   const mutation = useUpdateDistributorName();
 
@@ -52,7 +54,8 @@ export const EditDistributorForm = () => {
   const handleCloseInfoModal = () => {
     setModalInfoOpen(false);
     if (modalInfoData.title === "Berhasil!") {
-      router.push("/?tab=distributor");
+      queryClient.invalidateQueries({ queryKey: ["distributor"] });
+      router.replace("/?tab=distributor");
     }
   };
 
@@ -67,7 +70,7 @@ export const EditDistributorForm = () => {
           setModalOpen(true);
         }}
       >
-        <div className="space-y-2 md:max-w-[40%] flex flex-col justify-center items-center mx-auto">
+        <div className="mx-auto flex flex-col items-center justify-center space-y-2 md:max-w-[40%]">
           <AppInput
             required
             label="Nama"
@@ -85,7 +88,7 @@ export const EditDistributorForm = () => {
           <AppButton
             type="submit"
             text="Simpan Perubahan"
-            className="w-full! mt-5"
+            className="mt-5 w-full!"
           />
         </div>
       </form>

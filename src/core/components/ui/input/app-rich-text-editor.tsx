@@ -74,7 +74,6 @@ export const AppRichTextEditor = ({
         FontSize, // ⬅️ Tambah ini
         Placeholder.configure({
           placeholder,
-          
         }),
         ResizableImage.configure({ allowBase64: true }),
         AutoUrl,
@@ -88,6 +87,16 @@ export const AppRichTextEditor = ({
     },
     [],
   );
+
+  useEffect(() => {
+    if (!editor) return;
+
+    if (defaultValue) {
+      editor.commands.setContent(defaultValue);
+    } else {
+      editor.commands.clearContent();
+    }
+  }, [defaultValue, editor]);
 
   // sinkronisasi UI dropdown ketika seleksi berubah
   useEffect(() => {

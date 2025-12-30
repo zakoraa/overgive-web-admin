@@ -10,10 +10,12 @@ import { useState } from "react";
 import { useCreateDistributorForm } from "../hooks/use-create-distributor-form";
 import { useCreateDistributor } from "../hooks/use-create-distributor";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const CreateDistributorForm = () => {
   const { form, setForm, errors, validate } = useCreateDistributorForm();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [modalInfoOpen, setModalInfoOpen] = useState(false);
   const [modalInfoData, setModalInfoData] = useState({
     title: "",
@@ -53,7 +55,8 @@ export const CreateDistributorForm = () => {
   const handleCloseInfoModal = () => {
     setModalInfoOpen(false);
     if (modalInfoData.title === "Berhasil!") {
-      router.push("/?tab=distributor");
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      router.replace("/?tab=distributor");
     }
   };
 

@@ -3,7 +3,7 @@
 import { Title } from "@/core/components/text/title";
 import { Line } from "@/core/components/ui/line";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
-import { EditDistributorForm } from "./components/edit-distributor-assignment";
+import { EditDistributorForm } from "./components/edit-distributor";
 import {
   DistributorByIdProvider,
   useDistributorByIdContext,

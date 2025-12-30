@@ -16,12 +16,14 @@ import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/deta
 import { useEditCampaignFormValidation } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign-form-validation";
 import { useEditCampaign } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign";
 import CircularLoading from "@/core/components/ui/circular-loading";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const EditDonationCampaignForm = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<any>({ category: "education" });
   const { errors, validate } = useEditCampaignFormValidation();
+  const queryClient = useQueryClient();
 
   const { campaign } = useCampaignDetailContext();
 
@@ -100,7 +102,10 @@ export const EditDonationCampaignForm = () => {
 
     // Kalau sukses → redirect
     if (modalInfoData.title === "Berhasil!") {
-      router.push("/?tab=campaign");
+      queryClient.invalidateQueries({
+        queryKey: ["campaign-details", campaign.id],
+      });
+      router.replace("/?tab=campaign");
     }
   };
 

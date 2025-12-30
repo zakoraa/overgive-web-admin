@@ -17,9 +17,12 @@ import { parseCurrency } from "@/core/utils/currency";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { useGetCurrentUserContext } from "@/modules/auth/hooks/use-get-current-user";
 import { GridInput } from "@/core/components/ui/input/layout/grid-input";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const CreateDonationCampaignForm = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<any>({ category: "education" });
   const { user } = useGetCurrentUserContext();
@@ -82,7 +85,8 @@ export const CreateDonationCampaignForm = () => {
 
     // Kalau sukses → redirect
     if (modalInfoData.title === "Berhasil!") {
-      router.push("/?tab=campaign");
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      router.replace("/?tab=campaign");
     }
   };
 
