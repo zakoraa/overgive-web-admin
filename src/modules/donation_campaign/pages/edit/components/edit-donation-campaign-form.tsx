@@ -100,7 +100,7 @@ export const EditDonationCampaignForm = () => {
 
     // Kalau sukses → redirect
     if (modalInfoData.title === "Berhasil!") {
-      router.push("/?tab=kampanye");
+      router.push("/?tab=campaign");
     }
   };
 
