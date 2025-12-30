@@ -9,9 +9,35 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Overgive Admin",
+  title: "Overgive – Transparent Blockchain Donation Platform",
   description:
-    "Overgive Admin is a management panel for a web-based donation crowdfunding platform integrated with blockchain technology to ensure transparency, accountability, and secure administration of donation campaigns.",
+    "Overgive is a blockchain-powered donation crowdfunding platform that ensures transparency, accountability, and trust in every donation.",
+
+  applicationName: "Overgive",
+  creator: "Muhammad Rafli Silehu",
+  publisher: "Overlogic",
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
+  openGraph: {
+    title: "Overgive – Transparent Blockchain Donation Platform",
+    description:
+      "A web-based donation crowdfunding platform integrated with blockchain to ensure transparency and accountability.",
+    url: "https://overgive-web.vercel.app",
+    siteName: "Overgive",
+    images: [
+      {
+        url: "/images/overgive-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Overgive Platform",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function RootLayout({
