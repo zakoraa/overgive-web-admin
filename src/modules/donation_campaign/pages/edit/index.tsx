@@ -1,29 +1,21 @@
-import { Title } from "@/core/components/text/title";
-import { Line } from "@/core/components/ui/line";
-import { Campaign as CampaignType } from "../../types/campaign";
-import { CampaignDetailProvider } from "../detail/providers/campaign-detail-provider";
-import { EditDonationCampaignForm } from "./components/edit-donation-campaign-form";
+"use client";
 
-interface EditDonationCampaignProps {
-  initialCampaign: CampaignType;
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
+import { useCampaignDetails } from "../detail/hooks/use-campaign-detail";
+import { EditDonationCampaign } from "./components/edit-donation-campaign";
+
+interface EditCampaignPageProps {
+  campaignId: string;
 }
 
-export const EditDonationCampaign = ({
-  initialCampaign,
-}: EditDonationCampaignProps) => {
-  return (
-    <main className="container px-4 py-5 lg:px-8">
-      <Title text="Edit Kampanye Donasi" />
-      <p className="text-sm text-gray-500">
-        Perbarui informasi kampanye untuk memastikan setiap detail tetap jelas,
-        akurat, dan meyakinkan bagi para calon donatur. Lengkapi deskripsi,
-        tujuan, serta kebutuhan terkini agar dukungan yang diterima dapat
-        tersalurkan dengan tepat dan berdampak nyata.
-      </p>
-      <Line />
-      <CampaignDetailProvider initialCampaign={initialCampaign}>
-        <EditDonationCampaignForm />
-      </CampaignDetailProvider>
-    </main>
-  );
+export const EditDonationCampaignPage = ({
+  campaignId,
+}: EditCampaignPageProps) => {
+  const { data, loading, error, reload } = useCampaignDetails(campaignId);
+
+  if (loading) return <ModalLoading isOpen />;
+  if (error || !data)
+    return <p>Terjadi kesalahan: {error ?? "Campaign tidak ditemukan"}</p>;
+
+  return <EditDonationCampaign initialCampaign={data} />;
 };

@@ -1,16 +1,25 @@
+"use client";
+
 import { Title } from "@/core/components/text/title";
 import { Line } from "@/core/components/ui/line";
 import { AssignmentDetailProvider } from "./providers/edit-assignment-provider";
 import { EditDistributorAssignmentForm } from "./components/edit-distributor-assignment-form";
-import { AssignmentDetail } from "./types/assignment-detail";
+import { useAssignmentDetail } from "./hooks/use-assignment-detail";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 
 interface EditDistributorAssignmentProps {
-  initialAssignment: AssignmentDetail;
+  assignmentId: string;
 }
 
 export const EditDistributorAssignment = ({
-  initialAssignment,
+  assignmentId,
 }: EditDistributorAssignmentProps) => {
+  const { data, loading, error, reload } = useAssignmentDetail(assignmentId);
+
+  if (loading) return <ModalLoading isOpen />;
+  if (error || !data)
+    return <p>Terjadi kesalahan: {error ?? "Data tidak ditemukan"}</p>;
+
   return (
     <main className="container px-4 py-5 lg:px-8">
       <Title text="Edit Penugasan Distributor" />
@@ -19,7 +28,7 @@ export const EditDistributorAssignment = ({
         berjalan jelas, terstruktur, dan sesuai kebutuhan.
       </p>
       <Line />
-      <AssignmentDetailProvider initialAssignment={initialAssignment}>
+      <AssignmentDetailProvider initialAssignment={data}>
         <EditDistributorAssignmentForm />
       </AssignmentDetailProvider>
     </main>
