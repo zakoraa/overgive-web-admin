@@ -57,7 +57,7 @@ export const CreateDistributorAssignmentForm = () => {
   const handleSubmitConfirm = async () => {
     setModalOpen(false);
     if (!user) {
-      console.error("User belum login atau belum tersedia");
+      // console.error("User belum login atau belum tersedia");
       setModalInfoData({
         title: "Gagal!",
         message: "User belum tersedia, silakan login ulang.",
@@ -87,7 +87,7 @@ export const CreateDistributorAssignmentForm = () => {
         notes: "",
       });
     } catch (err) {
-      console.log("ERROR CREATE DISTRI: ", err);
+      // console.log("ERROR CREATE DISTRI: ", err);
       setModalInfoData({
         title: "Gagal!",
         message: "Terjadi kesalahan, penugasan tidak dapat ditambahkan.",

@@ -15,9 +15,9 @@ export function useAssignmentDetail(id: string) {
 
             const result = await getAssignmentDetail(id);
             setData(result);
-            console.log("DATA DETAIL :", result)
+            // console.log("DATA DETAIL :", result)
         } catch (err: any) {
-            console.log("DATA DETAIL ERROR :", err)
+            // console.log("DATA DETAIL ERROR :", err)
             setError(err.message ?? "Terjadi kesalahan");
         } finally {
             setLoading(false);

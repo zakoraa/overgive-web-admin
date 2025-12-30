@@ -16,11 +16,11 @@ export type TabItem = {
 };
 
 export const tabs: TabItem[] = [
-  {
-    id: "dashboard",
-    label: "Dasbor",
-    icon: <LayoutDashboard className="h-5 w-5" />,
-  },
+  // {
+  //   id: "dashboard",
+  //   label: "Dasbor",
+  //   icon: <LayoutDashboard className="h-5 w-5" />,
+  // },
   {
     id: "campaign",
     label: "Kampanye Donasi",

@@ -27,7 +27,7 @@ export async function editDistributorAssigment(id: string, payload: {
         const result = await res.json();
         return { success: true, data: result.data };
     } catch (err: any) {
-        console.error("ERROR updateAssignment:", err);
+        // console.error("ERROR updateAssignment:", err);
         return { success: false, error: err.message };
     }
 }

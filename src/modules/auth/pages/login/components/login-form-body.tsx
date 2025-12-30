@@ -31,7 +31,7 @@ export default function LoginFormBody() {
       if (user) {
         router.push("/");
       } else {
-        console.log("LOGIN ERROR: ", error);
+        // console.log("LOGIN ERROR: ", error);
         setModalInfoData({
           title: "Gagal!",
           message:
@@ -41,7 +41,7 @@ export default function LoginFormBody() {
         setModalInfoOpen(true);
       }
     } catch (err) {
-      console.log("LOGIN ERROR: ", err);
+      // console.log("LOGIN ERROR: ", err);
       setModalInfoData({
         title: "Gagal!",
         message:

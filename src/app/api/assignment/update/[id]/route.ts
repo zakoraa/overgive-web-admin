@@ -31,13 +31,13 @@ export async function PUT(
       .single();
 
     if (error) {
-      console.error("ERROR UPDATE ASSIGNMENT:", error);
+      // console.error("ERROR UPDATE ASSIGNMENT:", error);
       return NextResponse.json({ message: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ message: "success", data });
   } catch (err) {
-    console.error("ERROR UPDATE ASSIGNMENT:", err);
+    // console.error("ERROR UPDATE ASSIGNMENT:", err);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

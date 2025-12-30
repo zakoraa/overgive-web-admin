@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ message: "Email berhasil dikirim" });
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     return NextResponse.json({ message: "Gagal mengirim email" }, { status: 500 });
   }
 }

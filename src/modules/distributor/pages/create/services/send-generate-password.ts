@@ -14,13 +14,13 @@ export async function sendGeneratePassword(fullName: string, email: string, pass
 
         if (!res.ok) {
             const errMsg = await res.text();
-            console.error("Server error:", errMsg);
+            // console.error("Server error:", errMsg);
             return null;
         }
 
         return await res.json();
     } catch (err) {
-        console.error("Fetch API error:", err);
+        // console.error("Fetch API error:", err);
         return null;
     }
 }

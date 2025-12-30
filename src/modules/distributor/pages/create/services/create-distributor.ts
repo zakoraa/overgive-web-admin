@@ -18,7 +18,7 @@ export async function createDistributor(fullName: string, email: string, passwor
         const distributor: Distributor = await res.json();
         return distributor;
     } catch (err) {
-        console.error("Fetch API error:", err);
+        // console.error("Fetch API error:", err);
         return null;
     }
 }

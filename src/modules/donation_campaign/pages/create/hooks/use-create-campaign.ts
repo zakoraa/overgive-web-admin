@@ -28,7 +28,7 @@ export const useCreateCampaign = () => {
       return result;
 
     } catch (err: any) {
-      console.log("ERROR:", err);
+      // console.log("ERROR:", err);
       setError(err.message || "Gagal menambahkan campaign");
       throw err;
     } finally {

@@ -35,7 +35,7 @@ export const useCreateDistributor = () => {
             setDistributor(result);
             return result;
         } catch (err) {
-            console.error(err);
+            // console.error(err);
             setError("Terjadi kesalahan pada server");
             return null;
         } finally {

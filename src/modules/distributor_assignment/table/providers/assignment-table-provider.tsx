@@ -46,7 +46,7 @@ export const AssignmentProvider = ({
       setAssignments(res.data ?? []);
       setTotalPages(res.totalPages ?? 1);
     } catch (err: any) {
-      console.error("Gagal memuat assignment:", err);
+      // console.error("Gagal memuat assignment:", err);
       setAssignments([]);
       setTotalPages(1);
     } finally {
@@ -56,7 +56,7 @@ export const AssignmentProvider = ({
 
   useEffect(() => {
     load();
-  }, [page, search]); 
+  }, [page, search]);
 
   return (
     <AssignmentContext.Provider

@@ -17,7 +17,7 @@ export default function SideBar({ activeTab, setActiveTab }: SideBarProps) {
       {/* Burger Button (Mobile Only) */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="absolute top-4 left-4 z-50 rounded-md bg-white p-2 shadow-md lg:hidden"
+        className="absolute top-4 right-4 z-50 rounded-md bg-white p-2 shadow-md lg:hidden"
       >
         <Menu className="h-6 w-6 text-gray-700" />
       </button>

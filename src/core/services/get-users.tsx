@@ -33,7 +33,7 @@ export async function getUsers({
   const { data, error, count } = await query;
 
   if (error) {
-    console.error("Gagal mengambil data distributor:", error);
+    // console.error("Gagal mengambil data distributor:", error);
     return {
       data: [],
       total: 0,

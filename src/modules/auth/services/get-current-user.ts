@@ -9,13 +9,13 @@ export async function getCurrentUser() {
         const { data: { user }, error } = await supabase.auth.getUser();
 
         if (error) {
-            console.error("Gagal mengambil user:", error.message);
+            // console.error("Gagal mengambil user:", error.message);
             return null;
         }
 
         return user;
     } catch (err: any) {
-        console.error("Gagal ambil user:", err.message);
+        // console.error("Gagal ambil user:", err.message);
         return null;
     }
 }

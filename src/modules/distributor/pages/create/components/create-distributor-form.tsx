@@ -40,7 +40,7 @@ export const CreateDistributorForm = () => {
       });
       setModalInfoOpen(true);
     } else {
-      console.log("LOGIN ERROR: ", error);
+      // console.log("LOGIN ERROR: ", error);
       setModalInfoData({
         title: "Gagal!",
         message: "Gagal mendaftarkan distributor. Silakan coba lagi!",

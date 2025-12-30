@@ -13,12 +13,12 @@ export const useCreateAssignment = () => {
     try {
       setLoading(true);
       const result = await createDistributorAssignment(payload);
-      console.error("RESILT membuat penugasan distributor:", result);
+      // console.error("RESILT membuat penugasan distributor:", result);
 
       return result;
     } catch (err) {
-      console.error("Gagal membuat penugasan distributor:", err);
-      throw err; 
+      // console.error("Gagal membuat penugasan distributor:", err);
+      throw err;
     } finally {
       setLoading(false);
     }

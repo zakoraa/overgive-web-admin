@@ -19,7 +19,7 @@ export async function deleteUser(id: string) {
     const result = await res.json();
     return { success: true, data: result.data };
   } catch (err: any) {
-    console.error("ERROR softDeleteUser:", err);
+    // console.error("ERROR softDeleteUser:", err);
     return { success: false, error: err.message };
   }
 }

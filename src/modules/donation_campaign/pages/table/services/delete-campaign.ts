@@ -22,7 +22,7 @@ export async function deleteCampaignService(id: string) {
 
     return { success: true, data: data.data };
   } catch (err: any) {
-    console.error(err);
+    // console.error(err);
     return { success: false, error: err.message };
   }
 }

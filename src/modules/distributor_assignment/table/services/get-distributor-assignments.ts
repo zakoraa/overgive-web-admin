@@ -44,7 +44,7 @@ export const getDistributorAssignments = async ({
         }
 
         if (error) {
-            console.error("ERROR FETCH ASSIGNMENTS:", error);
+            // console.error("ERROR FETCH ASSIGNMENTS:", error);
             throw new Error(error.message);
         }
 
@@ -67,7 +67,7 @@ export const getDistributorAssignments = async ({
             totalPages: Math.ceil((count ?? 0) / limit),
         };
     } catch (err: any) {
-        console.error("UNEXPECTED ERROR getDistributorAssignments:", err);
+        // console.error("UNEXPECTED ERROR getDistributorAssignments:", err);
         return {
             data: [],
             total: 0,

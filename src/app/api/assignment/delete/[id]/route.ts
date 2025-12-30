@@ -19,13 +19,13 @@ export async function DELETE(
             .single();
 
         if (error) {
-            console.log("ERROR SOFT DELETE ASSIGNMENT:", error);
+            // console.log("ERROR SOFT DELETE ASSIGNMENT:", error);
             return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
         return NextResponse.json({ message: "success", data });
     } catch (err) {
-        console.error("ERROR DELETE ASSIGNMENT:", err);
+        // console.error("ERROR DELETE ASSIGNMENT:", err);
         return NextResponse.json(
             { message: "Internal Server Error" },
             { status: 500 }

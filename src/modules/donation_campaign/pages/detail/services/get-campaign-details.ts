@@ -5,7 +5,7 @@ import { Campaign } from "../../../types/campaign";
 
 export const getCampaignDetails = async (id: string): Promise<Campaign | null> => {
   const supabase = await supabaseServer();
-  console.log(`ID: ${id}`)
+  // console.log(`ID: ${id}`)
 
   const { data, error } = await supabase
     .from("campaigns")
@@ -14,10 +14,10 @@ export const getCampaignDetails = async (id: string): Promise<Campaign | null> =
     .is("deleted_at", null)
     .single();
 
-  console.log(`data: ${data}`)
+  // console.log(`data: ${data}`)
 
   if (error) {
-    console.log(`erro:`, error)
+    // console.log(`erro:`, error)
     if (error.code === "PGRST116") return null;
     throw new Error(error.message);
   }

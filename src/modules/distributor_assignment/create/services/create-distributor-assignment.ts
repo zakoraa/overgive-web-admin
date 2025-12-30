@@ -21,12 +21,12 @@ export async function createDistributorAssignment(payload: {
 
   if (!res.ok) {
     const error = await res.json();
-    console.log("RESS EROR: ", error)
+    // console.log("RESS EROR: ", error)
 
     throw new Error(error.message || "Gagal membuat penugasan distributor.");
   }
 
   const result = await res.json();
-  console.log("RESS OK: ", result)
+  // console.log("RESS OK: ", result)
   return result.data;
 }

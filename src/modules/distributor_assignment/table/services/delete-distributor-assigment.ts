@@ -19,7 +19,7 @@ export async function deleteDistributorAssignment(id: string) {
         const result = await res.json();
         return { success: true, data: result.data };
     } catch (err: any) {
-        console.error("ERROR deleteAssignment:", err);
+        // console.error("ERROR deleteAssignment:", err);
         return { success: false, error: err.message };
     }
 }

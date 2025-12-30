@@ -26,7 +26,7 @@ export const EditDonationCampaignForm = () => {
   const { campaign } = useCampaignDetailContext();
 
   useEffect(() => {
-    console.log("Campaign: ", campaign);
+    // console.log("Campaign: ", campaign);
     if (!campaign) return;
 
     setFormData({
@@ -85,7 +85,7 @@ export const EditDonationCampaignForm = () => {
       });
       setModalInfoOpen(true);
     } else {
-      console.log("ERROR  EDIT:", result?.error);
+      // console.log("ERROR  EDIT:", result?.error);
       setModalInfoData({
         title: "Gagal!",
         message: result?.error || "Terjadi kesalahan",

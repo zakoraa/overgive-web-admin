@@ -30,13 +30,13 @@ export async function POST(req: Request) {
             .single();
 
         if (error) {
-            console.log("ERROR CREATE ASSIGNMENT: ", error)
+            // console.log("ERROR CREATE ASSIGNMENT: ", error)
             return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
         return NextResponse.json({ message: "success", data });
     } catch (err) {
-        console.error("Error creating assignment:", err);
+        // console.error("Error creating assignment:", err);
         return NextResponse.json(
             { message: "Internal Server Error" },
             { status: 500 }

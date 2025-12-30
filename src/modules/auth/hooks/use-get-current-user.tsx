@@ -29,10 +29,10 @@ export function GetCurrentUserProvider({
     try {
       setLoading(true);
       const data = await getCurrentUser();
-      console.log("Berhasil memuat user:", data);
+      // console.log("Berhasil memuat user:", data);
       setUser(data);
     } catch (err) {
-      console.error("Gagal memuat user:", err);
+      // console.error("Gagal memuat user:", err);
       setUser(null);
     } finally {
       setLoading(false);
