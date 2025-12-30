@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Overgive Admin",
     images: [
       {
-        url: "/images/overgive-logo.png",
+        url: "/images/overgive-logo-bg-white.png",
         width: 1200,
         height: 630,
         alt: "Overgive Admin Dashboard",
