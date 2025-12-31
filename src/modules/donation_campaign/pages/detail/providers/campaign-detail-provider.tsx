@@ -1,8 +1,7 @@
-// src/modules/donation_campaign/providers/campaign-detail-provider.tsx
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Campaign } from "../../../types/campaign";
+import { Campaign } from "../types/campaign";
 
 interface CampaignDetailContextValue {
   campaign: Campaign | null;

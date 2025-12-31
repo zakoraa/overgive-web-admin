@@ -22,6 +22,7 @@ interface DonationSettlementProps {
 }
 
 export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
+  const [isInfoModalOpean, setModalInfoOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -78,6 +79,14 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
       });
     } finally {
       setIsLoadingModal(false);
+    }
+  };
+
+  const handleCloseInfoModal = () => {
+    if (infoModal?.title === "Sukses") {
+      window.location.reload();
+    } else {
+      setInfoModal(null);
     }
   };
 
@@ -382,7 +391,7 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
         <ModalInfo
           imageUrl={infoModal.imageUrl}
           isOpen={!!infoModal}
-          onClose={() => setInfoModal(null)}
+          onClose={handleCloseInfoModal}
           title={infoModal.title}
           message={infoModal.message}
         />

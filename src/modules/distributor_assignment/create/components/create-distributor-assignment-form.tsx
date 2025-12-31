@@ -16,8 +16,11 @@ import { categoryDisplay } from "@/modules/donation_campaign/utils/campaign-disp
 import { GridInput } from "@/core/components/ui/input/layout/grid-input";
 import { useCreateAssignmentValidation } from "../hooks/use-create-assignment-validation";
 import { useGetUsers } from "@/core/hooks/use-get-users";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const CreateDistributorAssignmentForm = () => {
+  const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -102,6 +105,10 @@ export const CreateDistributorAssignmentForm = () => {
     setModalInfoOpen(false);
 
     if (modalInfoData.title === "Berhasil!") {
+      queryClient.invalidateQueries({
+        queryKey: ["assignment-detail"],
+      });
+
       router.replace("/?tab=assign-distributor");
     }
   };

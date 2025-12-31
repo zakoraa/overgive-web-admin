@@ -1,14 +1,15 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getAssignmentDetail } from "../services/get-assignment-detail";
 import { AssignmentDetail } from "../types/assignment-detail";
 
 type AssignmentDetailContextType = {
-  data: AssignmentDetail;
+  data: AssignmentDetail ;
   loading: boolean;
   error: string | null;
-  reload: () => Promise<void>;
+  reload: () => void;
 };
 
 const AssignmentDetailContext =
@@ -21,27 +22,21 @@ export function AssignmentDetailProvider({
   initialAssignment: AssignmentDetail;
   children: React.ReactNode;
 }) {
-  const [data, setData] = useState(initialAssignment);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const reload = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const result = await getAssignmentDetail(initialAssignment.id);
-
-      setData(result);
-    } catch (err: any) {
-      setError(err?.message ?? "Terjadi kesalahan");
-    } finally {
-      setLoading(false);
-    }
-  }, [initialAssignment.id]);
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["assignment-detail", initialAssignment.id],
+    queryFn: () => getAssignmentDetail(initialAssignment.id),
+    initialData: initialAssignment,
+  });
 
   return (
-    <AssignmentDetailContext.Provider value={{ data, loading, error, reload }}>
+    <AssignmentDetailContext.Provider
+      value={{
+        data,
+        loading: isLoading,
+        error: error ? (error as Error).message : null,
+        reload: refetch,
+      }}
+    >
       {children}
     </AssignmentDetailContext.Provider>
   );

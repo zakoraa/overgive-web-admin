@@ -11,11 +11,13 @@ interface EditCampaignPageProps {
 export const EditDonationCampaignPage = ({
   campaignId,
 }: EditCampaignPageProps) => {
-  const { data, loading, error, reload } = useCampaignDetails(campaignId);
+  const { campaign, loading, error } = useCampaignDetails(campaignId);
 
   if (loading) return <ModalLoading isOpen />;
-  if (error || !data)
-    return <p>Terjadi kesalahan: {error ?? "Campaign tidak ditemukan"}</p>;
+  if (error || !campaign)
+    return (
+      <p>Terjadi kesalahan: {error?.message ?? "Campaign tidak ditemukan"}</p>
+    );
 
-  return <EditDonationCampaign initialCampaign={data} />;
+  return <EditDonationCampaign initialCampaign={campaign} />;
 };

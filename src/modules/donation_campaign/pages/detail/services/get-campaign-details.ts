@@ -1,11 +1,10 @@
 "use server";
 
 import { supabaseServer } from "@/core/lib/supabase/supabase-server";
-import { Campaign } from "../../../types/campaign";
+import { Campaign } from "../types/campaign";
 
 export const getCampaignDetails = async (id: string): Promise<Campaign | null> => {
   const supabase = await supabaseServer();
-  // console.log(`ID: ${id}`)
 
   const { data, error } = await supabase
     .from("campaigns")
@@ -14,10 +13,8 @@ export const getCampaignDetails = async (id: string): Promise<Campaign | null> =
     .is("deleted_at", null)
     .single();
 
-  // console.log(`data: ${data}`)
 
   if (error) {
-    // console.log(`erro:`, error)
     if (error.code === "PGRST116") return null;
     throw new Error(error.message);
   }
@@ -27,16 +24,16 @@ export const getCampaignDetails = async (id: string): Promise<Campaign | null> =
   const campaign: Campaign = {
     id: data.id,
     title: data.title,
-    imageUrl: data.image_url,
-    backgroundHtml: data.background_html,
+    image_url: data.image_url,
+    background_html: data.background_html,
     category: data.category,
-    targetAmount: data.target_amount,
-    collectedAmount: data.collected_amount,
+    target_amount: data.target_amount,
+    collected_amount: data.collected_amount,
     status: data.status,
-    createdBy: data.created_by,
-    endedAt: data.ended_at,
-    createdAt: data.created_at,
-    deletedAt: data.deleted_at,
+    created_by: data.created_by,
+    ended_at: data.ended_at,
+    created_at: data.created_at,
+    deleted_at: data.deleted_at,
   };
 
 

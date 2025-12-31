@@ -84,7 +84,10 @@ export const EditDistributorAssignmentForm = () => {
   const handleCloseInfoModal = () => {
     setModalInfoOpen(false);
     if (modalInfoData.title === "Berhasil!") {
-      queryClient.invalidateQueries({ queryKey: ["distributor"] });
+      queryClient.invalidateQueries({
+        queryKey: ["assignment-detail", data.id],
+      });
+
       router.replace("/?tab=assign-distributor");
     }
   };

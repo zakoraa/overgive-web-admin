@@ -12,11 +12,11 @@ import { useRouter } from "next/navigation";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import { parseCurrency } from "@/core/utils/currency";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
-import { useCampaignDetailContext } from "@/modules/donation_campaign/pages/detail/providers/campaign-detail-provider";
 import { useEditCampaignFormValidation } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign-form-validation";
 import { useEditCampaign } from "@/modules/donation_campaign/pages/edit/hooks/use-edit-campaign";
 import CircularLoading from "@/core/components/ui/circular-loading";
 import { useQueryClient } from "@tanstack/react-query";
+import { useCampaignDetailContext } from "../../detail/providers/campaign-detail-provider";
 
 export const EditDonationCampaignForm = () => {
   const router = useRouter();
@@ -33,12 +33,12 @@ export const EditDonationCampaignForm = () => {
 
     setFormData({
       name: campaign.title,
-      background_html: campaign.backgroundHtml,
+      background_html: campaign.background_html,
       category: campaign.category,
       status: campaign.status,
-      target_amount: campaign.targetAmount ? String(campaign.targetAmount) : "",
-      ended_at: campaign.endedAt ? new Date(campaign.endedAt) : null,
-      image_url: campaign.imageUrl ?? "",
+      target_amount: campaign.target_amount ? String(campaign.target_amount) : "",
+      ended_at: campaign.ended_at ? new Date(campaign.ended_at) : null,
+      image_url: campaign.image_url ?? "",
     });
   }, [campaign]);
 
@@ -105,6 +105,9 @@ export const EditDonationCampaignForm = () => {
       queryClient.invalidateQueries({
         queryKey: ["campaign-details", campaign.id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["campaign", campaign.id],
+      });
       router.replace("/?tab=campaign");
     }
   };
@@ -129,7 +132,7 @@ export const EditDonationCampaignForm = () => {
             name="image_file"
             accept="image/*"
             error={errors.image_file}
-            initialUrl={campaign?.imageUrl ?? null}
+            initialUrl={campaign?.image_url ?? null}
             onChange={(file) => setFormData({ ...formData, image_file: file })}
             hint="Upload thumbnail kampanye"
           />

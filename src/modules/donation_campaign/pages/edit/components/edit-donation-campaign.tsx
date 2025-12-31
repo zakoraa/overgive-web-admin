@@ -1,11 +1,11 @@
 import { Title } from "@/core/components/text/title";
 import { Line } from "@/core/components/ui/line";
-import { Campaign as CampaignType } from "../../../types/campaign";
 import { CampaignDetailProvider } from "../../detail/providers/campaign-detail-provider";
 import { EditDonationCampaignForm } from "./edit-donation-campaign-form";
+import { Campaign } from "../../detail/types/campaign";
 
 interface EditDonationCampaignProps {
-  initialCampaign: CampaignType;
+  initialCampaign: Campaign;
 }
 
 export const EditDonationCampaign = ({

@@ -1,16 +1,43 @@
-import { Label } from "@/core/components/text/label";
 import { Card } from "@/core/components/ui/card";
+import { formatRupiah } from "@/core/utils/currency";
+import { timeAgo } from "@/core/utils/date";
+import { useRouter } from "next/navigation";
+import { VerificationStatus } from "../ui/verification-status";
+import { DonationWithBlockchain } from "@/modules/donation/services/get-donation-by-id";
 
-export const DonorDonationCard = () => {
+interface DonorDonationCardProps {
+  donation: DonationWithBlockchain;
+}
+
+export const DonorDonationCard = ({ donation }: DonorDonationCardProps) => {
+  const isAnonymous = donation.is_anonymous;
+  const donorName = isAnonymous
+    ? "Donatur Baik"
+    : (donation.username ?? "Donatur");
+
+  const amount = donation.amount;
+  const createdAt = donation.created_at;
+  const message = donation.donation_message;
+  const router = useRouter();
+
   return (
-    <Card className="flex h-22 flex-col p-3">
-      <Label size="md" className="text-start" text="Donatur Baik" />
+    <Card
+      onClick={() => router.push(`/donation/${donation.id}`)}
+      className="hover:bg-hover transition-color text-start flex h-fit cursor-pointer flex-col px-3 py-2 duration-300"
+    >
+      <h3 className="text-start font-bold">{donorName}</h3>
+
       <div className="space-y-1">
         <p className="text-sm">
-          Berdonasi sebesar{"  "}
-          <span className="font-black">Rp 50.000</span>
+          Berdonasi sebesar{" "}
+          <span className="font-black">{formatRupiah(amount)}</span>
         </p>
-        <p className="text-end text-xs text-gray-500">15 menit lalu</p>
+
+        <p className="line-clamp-2 text-xs text-gray-500">{message}</p>
+        <div className="flex justify-between">
+          <VerificationStatus donation={donation} />
+          <p className="text-end text-xs text-gray-500">{timeAgo(createdAt)}</p>
+        </div>
       </div>
     </Card>
   );

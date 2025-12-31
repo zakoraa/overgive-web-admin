@@ -1,25 +1,26 @@
-"use client";
-
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignDetails } from "../services/get-campaign-details";
-import { Campaign } from "@/modules/donation_campaign/types/campaign";
+import { Campaign } from "../types/campaign";
 
-export function useCampaignDetails(id: string) {
-  const query = useQuery<Campaign | null>({
-    queryKey: ["campaign-details", id],
+export const useCampaignDetails = (id: string) => {
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+  } = useQuery<Campaign | null>({
+    queryKey: ["campaign", id],
     queryFn: () => getCampaignDetails(id),
     enabled: !!id,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
-    refetchOnWindowFocus: true,
-    retry: 1,
-    refetchOnReconnect: true,
+    staleTime: 1000 * 60,
   });
 
   return {
-    data: query.data,
-    loading: query.isLoading,
-    error: query.error instanceof Error ? query.error.message : null,
-    reload: query.refetch,
+    campaign: data,
+    loading: isLoading,
+    fetching: isFetching, 
+    isError,
+    error,
   };
-}
+};
