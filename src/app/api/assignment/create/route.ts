@@ -15,6 +15,36 @@ export async function POST(req: Request) {
 
         const supabase = await supabaseServer();
 
+        /** 
+         * 1. CEK APAKAH SUDAH ADA ASSIGNMENT AKTIF
+         */
+        const { data: existingAssignment, error: checkError } = await supabase
+            .from("distributor_assignments")
+            .select("id")
+            .eq("campaign_id", campaign_id)
+            .eq("distributor_id", distributor_id)
+            .is("deleted_at", null)
+            .maybeSingle();
+
+        if (checkError) {
+            return NextResponse.json(
+                { message: checkError.message },
+                { status: 400 }
+            );
+        }
+
+        if (existingAssignment) {
+            return NextResponse.json(
+                {
+                    message: "Distributor sudah ditugaskan ke campaign ini",
+                },
+                { status: 409 } // Conflict
+            );
+        }
+
+        /**
+         * 2. INSERT JIKA BELUM ADA
+         */
         const { data, error } = await supabase
             .from("distributor_assignments")
             .insert([
@@ -30,15 +60,13 @@ export async function POST(req: Request) {
             .single();
 
         if (error) {
-            // console.log("ERROR CREATE ASSIGNMENT: ", error)
             return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
         return NextResponse.json({ message: "success", data });
     } catch (err) {
-        // console.error("Error creating assignment:", err);
         return NextResponse.json(
-            { message: "Internal Server Error" },
+            { message: "Terjadi kesalahan, penugasan tidak dapat ditambahkan." },
             { status: 500 }
         );
     }

@@ -89,11 +89,13 @@ export const CreateDistributorAssignmentForm = () => {
         distributor_id: "",
         notes: "",
       });
-    } catch (err) {
+    } catch (err: any) {
       // console.log("ERROR CREATE DISTRI: ", err);
       setModalInfoData({
         title: "Gagal!",
-        message: "Terjadi kesalahan, penugasan tidak dapat ditambahkan.",
+        message:
+          err?.message ??
+          "Terjadi kesalahan, penugasan tidak dapat ditambahkan.",
         imageUrl: "/svgs/failed.svg",
       });
 
