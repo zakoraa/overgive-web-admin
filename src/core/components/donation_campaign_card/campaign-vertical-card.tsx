@@ -1,17 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Label } from "@/core/components/text/label";
 import { Card } from "@/core/components/ui/card";
 import { DonationProgressIndicator } from "@/core/components/ui/donation-progress-indicator";
 
 export const CampaignVerticalCard = () => {
-  const router = useRouter();
   const percentage = 65;
 
   return (
     <Card
-      onClick={() => router.push("/campaign")}
+      href={"/campaign"}
       className="hover:bg-hover mt-3 flex h-72 w-56 cursor-pointer flex-col transition-colors duration-300"
     >
       <img

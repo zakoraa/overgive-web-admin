@@ -21,7 +21,7 @@ export const CampaignDonorsCard = () => {
         count={donations.length}
         title="Donatur"
         isShowAll={donations.length !== 0}
-        onClick={() => router.push(`/campaign/${campaign?.id}/donations`)}
+        href={`/campaign/${campaign?.id}/donations`}
       />
       {loading && <CircularLoading />}
       {!loading && !error && donations.length === 0 && (

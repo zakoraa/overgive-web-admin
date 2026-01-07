@@ -4,7 +4,6 @@ import BasePage from "@/core/layout/base-page";
 import { formatRupiah } from "@/core/utils/currency";
 import { Title } from "@/core/components/text/title";
 import { Line } from "@/core/components/ui/line";
-import { formatDate } from "@/core/utils/date";
 import { Edit, Pencil, PlusIcon, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
@@ -22,7 +21,6 @@ interface DonationSettlementProps {
 }
 
 export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
-  const [isInfoModalOpean, setModalInfoOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -58,13 +56,13 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
     setIsLoadingModal(true);
 
     try {
-      await createOperationalMutation.mutateAsync({
+      const created = await createOperationalMutation.mutateAsync({
         campaignId: summary.campaign_id,
         amount,
         note,
       });
-
-      setOperationalFees([...operationalFees, { amount, note }]);
+      
+      setOperationalFees((prev) => [...prev, created]);
 
       setInfoModal({
         title: "Sukses",
@@ -190,9 +188,6 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
     <BasePage className="mx-auto flex flex-col items-start rounded-b-2xl p-4">
       <Title text={`Penggunaan Dana Kampanye ${summary.campaign_title}`} />
       <Line className="mt-0! mb-4" />
-      <p className="w-full text-start text-sm text-gray-500">
-        Terakhir update — {formatDate(summary.updated_at)}
-      </p>
 
       <div className="flex w-fit flex-col items-start justify-start rounded-md border border-yellow-300 bg-yellow-50 p-3 text-start text-sm text-yellow-800">
         <p className="text-md font-bold">Catatan Biaya Operasional</p>

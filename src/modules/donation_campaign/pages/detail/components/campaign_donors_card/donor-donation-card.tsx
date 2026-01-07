@@ -22,7 +22,7 @@ export const DonorDonationCard = ({ donation }: DonorDonationCardProps) => {
 
   return (
     <Card
-      onClick={() => router.push(`/donation/${donation.id}`)}
+      href={`/donation/${donation.id}`}
       className="hover:bg-hover transition-color text-start flex h-fit cursor-pointer flex-col px-3 py-2 duration-300"
     >
       <h3 className="text-start font-bold">{donorName}</h3>

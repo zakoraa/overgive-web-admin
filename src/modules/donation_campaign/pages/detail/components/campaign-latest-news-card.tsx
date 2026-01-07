@@ -22,7 +22,7 @@ export const CampaignLatestNewsCard = ({
       <CampaignTitleCard
         isShowAll={data?.count !== 0}
         count={loading ? 0 : (data?.count ?? 0)}
-        onClick={() => router.push(`${campaign.id}/delivery-history`)}
+        href={`${campaign.id}/delivery-history`}
         title="Kabar Terbaru"
       />
       {loading ? (
@@ -32,7 +32,7 @@ export const CampaignLatestNewsCard = ({
           Belum ada kabar terbaru
         </p>
       ) : (
-        <p className="text-sm">
+        <p className="text-sm text-left">
           Terakhir update — {formatDate(data?.latest_created_at)}
         </p>
       )}

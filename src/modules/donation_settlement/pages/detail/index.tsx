@@ -2,7 +2,8 @@
 
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { DonationSettlement } from "./components/donation-settlement";
-import { useDonationSettlementSummaryByCampaign } from "../../hooks/use-get-donation-settlements-by-campaign";
+import { getDonationSettlementSummaryByCampaign } from "../../services/get-donation-settlement-summary-by-campaign";
+import { useGetDonationSettlementSummaryByCampaign } from "../../hooks/use-get-donation-settlements-by-campaign";
 
 interface DonationSettlementPageProps {
   campaignId: string;
@@ -11,12 +12,15 @@ interface DonationSettlementPageProps {
 export const DonationSettlementPage = ({
   campaignId,
 }: DonationSettlementPageProps) => {
-  const { data, loading, error, reload } =
-    useDonationSettlementSummaryByCampaign(campaignId);
+  const {
+    data,
+    isLoading,
+    isError,
+  } = useGetDonationSettlementSummaryByCampaign(campaignId);
 
-  if (loading) return <ModalLoading isOpen />;
-  if (error || !data)
-    return <p>Terjadi kesalahan: {error ?? "Summary tidak ditemukan"}</p>;
+  if (isLoading) return <ModalLoading isOpen />;
+  if (isError || !data)
+    return <p>Terjadi kesalahan: {isError ?? "Summary tidak ditemukan"}</p>;
 
   return <DonationSettlement summary={data} />;
 };

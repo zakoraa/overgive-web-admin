@@ -20,7 +20,7 @@ export const getCampaignsWithSettlements = async (
       title,
       category,
       created_at,
-      donation_settlements!inner(id)
+      donations!inner(id)
     `, { count: "exact" })
         .order("created_at", { ascending: false })
         .range(from, to);
@@ -34,6 +34,6 @@ export const getCampaignsWithSettlements = async (
     if (error) throw new Error(error.message);
 
     // Map supaya field donation_settlements hilang, hanya ambil campaign info
-    const campaigns = data?.map(({ donation_settlements, ...rest }) => rest) || [];
+    const campaigns = data?.map(({ donations, ...rest }) => rest) || [];
     return { data: campaigns, total: count || 0 };
 };
