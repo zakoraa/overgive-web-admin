@@ -10,8 +10,10 @@ export async function POST(req: Request) {
     .select()
     .single();
 
+    console.log("error; ", error)
   if (error)
     return Response.json({ error: error.message }, { status: 400 });
+
 
   return Response.json(result);
 }

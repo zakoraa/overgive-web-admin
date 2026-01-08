@@ -59,7 +59,6 @@ export const CreateDonationCampaignForm = () => {
         formData.image_file,
       );
 
-      // Munculkan modal sukses
       setModalInfoData({
         title: "Berhasil!",
         message: "Kampanye berhasil ditambahkan.",
@@ -67,10 +66,8 @@ export const CreateDonationCampaignForm = () => {
       });
       setModalInfoOpen(true);
 
-      // Reset form
       resetForm();
     } catch (err) {
-      // Munculkan modal gagal
       setModalInfoData({
         title: "Gagal!",
         message: "Terjadi kesalahan, kampanye tidak dapat ditambahkan.",
