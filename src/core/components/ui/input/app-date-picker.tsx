@@ -81,27 +81,46 @@ export const AppDatePicker = ({
       {labelMessage && <p className="text-xs text-gray-500">{labelMessage}</p>}
 
       {/* Trigger Button */}
-      <button
-        disabled={disabled}
-        type="button"
-        onClick={() => !disabled && setOpen(!open)}
-        className={cn(
-          "flex w-full cursor-pointer items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700",
-          "transition hover:bg-gray-50",
-          "focus:border-primary focus:ring-primary/20 outline-none focus:ring-2",
-          disabled && "cursor-not-allowed bg-gray-100 opacity-60",
-          error && "border-red-500 focus:border-red-500 focus:ring-red-300/20",
-          className,
-        )}
-      >
-        <span>
-          {selected
-            ? format(selected, "dd MMMM yyyy", { locale: id })
-            : placeholder}
-        </span>
+      {/* Trigger Button */}
+      <div className="relative">
+        <button
+          disabled={disabled}
+          type="button"
+          onClick={() => !disabled && setOpen(!open)}
+          className={cn(
+            "flex w-full cursor-pointer items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700",
+            "transition hover:bg-gray-50",
+            "focus:border-primary focus:ring-primary/20 outline-none focus:ring-2",
+            disabled && "cursor-not-allowed bg-gray-100 opacity-60",
+            error &&
+              "border-red-500 focus:border-red-500 focus:ring-red-300/20",
+            className,
+          )}
+        >
+          <span>
+            {selected
+              ? format(selected, "dd MMMM yyyy", { locale: id })
+              : placeholder}
+          </span>
 
-        <CalendarDays className="h-5 w-5 text-gray-500" />
-      </button>
+          <div className="flex items-center space-x-2">
+            {selected && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected(null);
+                  onChange?.(null);
+                }}
+                className="text-red-500 cursor-pointer hover:text-red-700"
+              >
+                ✕
+              </button>
+            )}
+            <CalendarDays className="h-5 w-5 text-gray-500" />
+          </div>
+        </button>
+      </div>
 
       {/* Popup Calendar */}
       {open && !disabled && (

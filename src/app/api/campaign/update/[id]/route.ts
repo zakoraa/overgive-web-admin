@@ -53,9 +53,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (category) updatePayload.category = category;
     if (status) updatePayload.status = status;
     if (target_amount !== undefined) updatePayload.target_amount = target_amount;
-    if (ended_at) updatePayload.ended_at = ended_at;
+    updatePayload.ended_at = ended_at ?? null;
     if (imageUrl) updatePayload.image_url = imageUrl;
-
     const { data, error } = await supabase
       .from("campaigns")
       .update(updatePayload)

@@ -36,7 +36,9 @@ export const EditDonationCampaignForm = () => {
       background_html: campaign.background_html,
       category: campaign.category,
       status: campaign.status,
-      target_amount: campaign.target_amount ? String(campaign.target_amount) : "",
+      target_amount: campaign.target_amount
+        ? String(campaign.target_amount)
+        : "",
       ended_at: campaign.ended_at ? new Date(campaign.ended_at) : null,
       image_url: campaign.image_url ?? "",
     });
@@ -66,7 +68,7 @@ export const EditDonationCampaignForm = () => {
         reader.onload = () => resolve(reader.result as string);
       });
     }
-
+    console.log("ENDET AT: ", formData.ended_at);
     const payload = {
       name: formData.name,
       background_html: formData.background_html,
