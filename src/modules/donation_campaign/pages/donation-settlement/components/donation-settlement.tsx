@@ -23,16 +23,26 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
         <table className="min-w-full divide-y divide-gray-200">
           <tbody className="divide-y divide-gray-100 text-left">
             {/* Donation Settlement Summary */}
-            <tr className="bg-gray-50 ">
+            <tr className="bg-gray-50">
               <td className="px-4 py-2">Total Donasi Masuk</td>
               <td className="px-4 py-2 text-right">
                 {formatRupiah(summary.total_gross)}
               </td>
             </tr>
             <tr>
-              <td className="px-4 py-2">Biaya Transaksi (Gas)</td>
+              <td className="px-4 py-2 text-left">
+                Biaya Transaksi Donasi (Gas Fee)
+              </td>
               <td className="px-4 py-2 text-right">
-                {formatRupiah(summary.total_gas_fee)}
+                {formatRupiah(summary.total_donation_gas_fee)}
+              </td>
+            </tr>
+            <tr>
+              <td className="px-4 py-2 text-left">
+                Biaya Transaksi Penyaluran Donasi (Gas Fee)
+              </td>
+              <td className="px-4 py-2 text-right">
+                {formatRupiah(summary.total_delivery_gas_fee)}
               </td>
             </tr>
             <tr className="bg-gray-50">

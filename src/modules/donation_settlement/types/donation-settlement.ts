@@ -4,7 +4,8 @@ export interface DonationSettlementSummary {
   campaign_id: string;
   campaign_title: string;
   total_gross: number;
-  total_gas_fee: number;
+  total_donation_gas_fee: number,
+  total_delivery_gas_fee: number,
   total_xendit_fee: number;
   total_fee: number;
   total_net: number;

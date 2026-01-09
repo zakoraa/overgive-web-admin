@@ -11,9 +11,9 @@ export const useGetDonationSettlementSummaryByCampaign = (
     queryFn: () => getDonationSettlementSummaryByCampaign(campaignId!),
     enabled: !!campaignId,
 
-    staleTime: 0,                 // selalu dianggap stale
-    refetchOnWindowFocus: true,   // refetch saat tab difokuskan
-    refetchOnMount: "always",     // refetch saat page dibuka
+    staleTime: 0,                 
+    refetchOnWindowFocus: true,   
+    refetchOnMount: "always",     
     retry: 1,
   });
 };

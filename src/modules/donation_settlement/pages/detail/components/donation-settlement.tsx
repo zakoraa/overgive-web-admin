@@ -4,7 +4,7 @@ import BasePage from "@/core/layout/base-page";
 import { formatRupiah } from "@/core/utils/currency";
 import { Title } from "@/core/components/text/title";
 import { Line } from "@/core/components/ui/line";
-import { Edit, EyeIcon, Pencil, PlusIcon, Trash2 } from "lucide-react";
+import { Edit, Pencil, PlusIcon, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
@@ -124,7 +124,7 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
   ) => {
     setIsEditOpen(false);
     setIsLoadingModal(true);
-    console.log("RECEI+T: ", receipt_image_url)
+    console.log("RECEI+T: ", receipt_image_url);
 
     try {
       const updated = await updateOperationalMutation.mutateAsync({
@@ -188,17 +188,27 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
 
   const maxTotalFee = summary.total_gross * 0.1;
 
-  const transactionFee = summary.total_gas_fee + summary.total_xendit_fee;
+  // Pisah gas fee donasi dan delivery
+  const donationGasFee = summary.total_donation_gas_fee ?? 0;
+  const deliveryGasFee = summary.total_delivery_gas_fee ?? 0;
 
+  // Total transaksi yang sudah dipakai sebelum tambah operasional
+  const transactionFee =
+    donationGasFee + deliveryGasFee + summary.total_xendit_fee;
+
+  // Total biaya operasional yang sudah ditambahkan
   const totalOperationalAmount = operationalFees.reduce(
     (acc, cur) => acc + cur.amount,
     0,
   );
 
+  // Total fee yang sudah terpakai (gas fee + xendit + operasional)
   const totalFeeUsed = transactionFee + totalOperationalAmount;
 
+  // Sisa quota untuk operasional
   const remainingOperationalQuota = maxTotalFee - totalFeeUsed;
 
+  // Cek apakah over limit
   const isOverLimit = remainingOperationalQuota < 0;
 
   return (
@@ -256,9 +266,19 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
               </td>
             </tr>
             <tr>
-              <td className="px-4 py-2 text-left">Biaya Transaksi (Gas Fee)</td>
+              <td className="px-4 py-2 text-left">
+                Biaya Transaksi Donasi (Gas Fee)
+              </td>
               <td className="px-4 py-2 text-right">
-                {formatRupiah(summary.total_gas_fee)}
+                {formatRupiah(summary.total_donation_gas_fee)}
+              </td>
+            </tr>
+            <tr>
+              <td className="px-4 py-2 text-left">
+                Biaya Transaksi Penyaluran Donasi (Gas Fee)
+              </td>
+              <td className="px-4 py-2 text-right">
+                {formatRupiah(summary.total_delivery_gas_fee)}
               </td>
             </tr>
             <tr className="bg-gray-50">
