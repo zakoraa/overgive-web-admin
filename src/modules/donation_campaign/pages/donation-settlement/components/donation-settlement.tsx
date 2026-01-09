@@ -5,6 +5,7 @@ import { formatRupiah } from "@/core/utils/currency";
 import { Title } from "@/core/components/text/title";
 import { Line } from "@/core/components/ui/line";
 import { DonationSettlementSummary } from "@/modules/donation_settlement/types/donation-settlement";
+import { ViewImageButton } from "@/modules/donation_settlement/pages/detail/components/view-image-button";
 
 interface DonationSettlementProps {
   summary: DonationSettlementSummary;
@@ -72,8 +73,9 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
                 <td className="px-4 py-2">
                   • {op.note || "Biaya Operasional"}
                 </td>
-                <td className="px-4 py-2 text-right">
-                  {formatRupiah(op.amount)}
+                <td className="flex items-center justify-center space-x-2 px-4 py-2 text-right">
+                  <span>{formatRupiah(op.amount)}</span>
+                  <ViewImageButton imageUrl={op.receipt_image_url} />
                 </td>
               </tr>
             ))}
