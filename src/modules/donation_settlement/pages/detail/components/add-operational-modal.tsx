@@ -48,44 +48,46 @@ export const OperationalModal = ({
       setAmount(initialData.amount);
       setNote(initialData.note ?? "");
       setReceiptImageUrl(initialData.receiptImageUrl ?? "");
+      console.log("INITAL DATA: ", initialData.receiptImageUrl);
     }
   }, [initialData, setAmount, setNote]);
 
-  const handleSubmit = async () => {
-    if (!validate()) return;
+ const handleSubmit = async () => {
+  if (!validate()) return;
 
-    if (!selectedFile && !receiptImageUrl) {
-      setFileError("Bukti pembayaran wajib diupload");
-      return;
-    } else {
-      setFileError("");
-    }
-
-    let imageUrl = receiptImageUrl;
-
-    try {
-      if (selectedFile && !imageUrl) {
-        setIsUploading(true); // ← mulai loading
-        imageUrl = await uploadMutation.mutateAsync(selectedFile);
-        setReceiptImageUrl(imageUrl);
-      }
-    } catch (err) {
-      alert("Gagal upload gambar: " + (err as Error).message);
-      return;
-    } finally {
-      setIsUploading(false); // ← selesai loading
-    }
-
-    onSubmit(amount, note, imageUrl);
-    reset();
+  if (!selectedFile && !receiptImageUrl) {
+    setFileError("Bukti pembayaran wajib diupload");
+    return;
+  } else {
     setFileError("");
-    onClose();
-  };
+  }
+
+  let imageUrl = receiptImageUrl;
+
+  try {
+    if (selectedFile) {
+      setIsUploading(true);
+      imageUrl = await uploadMutation.mutateAsync(selectedFile);
+      setReceiptImageUrl(imageUrl); 
+    }
+  } catch (err) {
+    alert("Gagal upload gambar: " + (err as Error).message);
+    return;
+  } finally {
+    setIsUploading(false);
+  }
+
+  onSubmit(amount, note, imageUrl); 
+  reset();
+  setFileError("");
+  onClose();
+};
+
 
   return (
-   <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
-        {isUploading && <ModalLoading isOpen/>}
+        {isUploading && <ModalLoading isOpen />}
         <DialogHeader>
           <DialogTitle>
             {mode === "add"
@@ -115,6 +117,7 @@ export const OperationalModal = ({
 
           <ReceiptImageUploader
             value={selectedFile}
+            initialUrl={initialData?.receiptImageUrl ?? undefined}
             onChange={setSelectedFile}
             error={fileError}
           />

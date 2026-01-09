@@ -69,7 +69,7 @@ export const getDonationSettlementSummaryByCampaign = async (
   
   const { data: opsCosts } = await supabase
     .from("campaign_operational_costs")
-    .select("id, amount, note")
+    .select("id, amount, note, receipt_image_url")
     .eq("campaign_id", campaignId)
     .is("deleted_at", null);
 

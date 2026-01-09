@@ -4,7 +4,7 @@ import BasePage from "@/core/layout/base-page";
 import { formatRupiah } from "@/core/utils/currency";
 import { Title } from "@/core/components/text/title";
 import { Line } from "@/core/components/ui/line";
-import { Edit, Pencil, PlusIcon, Trash2 } from "lucide-react";
+import { Edit, EyeIcon, Pencil, PlusIcon, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
@@ -15,6 +15,7 @@ import { useCreateOperationalCost } from "@/modules/donation_settlement/hooks/us
 import { useSoftDeleteOperationalCost } from "@/modules/donation_settlement/hooks/use-delete-operational-cost";
 import { useUpdateOperationalCost } from "../hooks/use-update-operational-cost";
 import { OperationalModal } from "./add-operational-modal";
+import { ViewImageButton } from "./view-image-button";
 
 interface DonationSettlementProps {
   summary: DonationSettlementSummary;
@@ -30,7 +31,8 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
   const [selectedOperational, setSelectedOperational] = useState<{
     id: string;
     amount: number;
-    note: string | null;
+    note: string;
+    receiptImageUrl: string | null;
   } | null>(null);
 
   const [infoModal, setInfoModal] = useState<{
@@ -96,12 +98,17 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
 
   const updateFee = (
     id: string,
-    updated: { amount: number; note: string | null },
+    updated: { amount: number; note: string; receipt_image_url: string },
   ) => {
     setOperationalFees((prev) =>
       prev.map((fee) =>
         fee.id === id
-          ? { ...fee, amount: updated.amount, note: updated.note }
+          ? {
+              ...fee,
+              amount: updated.amount,
+              note: updated.note,
+              receipt_image_url: updated.receipt_image_url,
+            }
           : fee,
       ),
     );
@@ -112,21 +119,25 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
   const handleUpdateOperational = async (
     id: string,
     amount: number,
-    note: string | null,
+    note: string,
+    receipt_image_url: string | null,
   ) => {
     setIsEditOpen(false);
     setIsLoadingModal(true);
+    console.log("RECEI+T: ", receipt_image_url)
 
     try {
       const updated = await updateOperationalMutation.mutateAsync({
         id,
         amount,
         note,
+        receiptImageUrl: receipt_image_url,
       });
 
       updateFee(id, {
         amount: updated.amount,
         note: updated.note,
+        receipt_image_url: updated.receipt_image_url,
       });
 
       setInfoModal({
@@ -295,7 +306,7 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
                 <td className="px-4 py-2 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <span>{formatRupiah(op.amount)}</span>
-
+                    <ViewImageButton imageUrl={op.receipt_image_url} />
                     {isEditMode && (
                       <>
                         <AppButtonSm
@@ -304,6 +315,7 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
                               id: op.id!,
                               amount: op.amount,
                               note: op.note,
+                              receiptImageUrl: op.receipt_image_url,
                             });
                             setIsEditOpen(true);
                           }}
@@ -360,12 +372,18 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
         <OperationalModal
           isOpen={isEditOpen}
           onClose={() => setIsEditOpen(false)}
-          onSubmit={(amount, note) =>
-            handleUpdateOperational(selectedOperational.id, amount, note)
+          onSubmit={(amount, note, receiptImageUrl) =>
+            handleUpdateOperational(
+              selectedOperational.id,
+              amount,
+              note,
+              receiptImageUrl,
+            )
           }
           initialData={{
             amount: selectedOperational.amount,
             note: selectedOperational.note,
+            receiptImageUrl: selectedOperational.receiptImageUrl,
           }}
           mode="edit"
         />
