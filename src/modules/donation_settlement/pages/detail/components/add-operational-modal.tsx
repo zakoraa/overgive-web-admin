@@ -9,19 +9,22 @@ import {
 } from "@/core/components/ui/input/app-search-select/dialog";
 import { PlusIcon, SaveIcon } from "lucide-react";
 import { useOperationalFormValidation } from "../hooks/use-operational-validation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useUploadOperationalReceiptImage } from "../hooks/use-upload-operationa-receipt-image";
+import { ReceiptImageUploader } from "./receipt-image-uploader";
+import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 
 interface OperationalModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (amount: number, note: string) => void;
+  onSubmit: (amount: number, note: string, receiptImageUrl: string) => void;
   initialData?: {
     amount: number;
     note: string | null;
+    receiptImageUrl?: string | null;
   };
   mode?: "add" | "edit";
 }
-
 
 export const OperationalModal = ({
   isOpen,
@@ -30,33 +33,59 @@ export const OperationalModal = ({
   initialData,
   mode = "add",
 }: OperationalModalProps) => {
-  const {
-    amount,
-    setAmount,
-    note,
-    setNote,
-    errors,
-    validate,
-    reset,
-  } = useOperationalFormValidation();
+  const { amount, setAmount, note, setNote, errors, validate, reset } =
+    useOperationalFormValidation();
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [receiptImageUrl, setReceiptImageUrl] = useState<string>("");
+  const [fileError, setFileError] = useState<string>("");
+  const [isUploading, setIsUploading] = useState<boolean>(false); // ← state loading
+
+  const uploadMutation = useUploadOperationalReceiptImage();
 
   useEffect(() => {
     if (initialData) {
       setAmount(initialData.amount);
       setNote(initialData.note ?? "");
+      setReceiptImageUrl(initialData.receiptImageUrl ?? "");
     }
   }, [initialData, setAmount, setNote]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) return;
-    onSubmit(amount, note);
+
+    if (!selectedFile && !receiptImageUrl) {
+      setFileError("Bukti pembayaran wajib diupload");
+      return;
+    } else {
+      setFileError("");
+    }
+
+    let imageUrl = receiptImageUrl;
+
+    try {
+      if (selectedFile && !imageUrl) {
+        setIsUploading(true); // ← mulai loading
+        imageUrl = await uploadMutation.mutateAsync(selectedFile);
+        setReceiptImageUrl(imageUrl);
+      }
+    } catch (err) {
+      alert("Gagal upload gambar: " + (err as Error).message);
+      return;
+    } finally {
+      setIsUploading(false); // ← selesai loading
+    }
+
+    onSubmit(amount, note, imageUrl);
     reset();
+    setFileError("");
     onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+   <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
+        {isUploading && <ModalLoading isOpen/>}
         <DialogHeader>
           <DialogTitle>
             {mode === "add"
@@ -82,6 +111,12 @@ export const OperationalModal = ({
             label="Keterangan"
             hint="Masukkan keterangan"
             error={errors.note}
+          />
+
+          <ReceiptImageUploader
+            value={selectedFile}
+            onChange={setSelectedFile}
+            error={fileError}
           />
         </div>
 

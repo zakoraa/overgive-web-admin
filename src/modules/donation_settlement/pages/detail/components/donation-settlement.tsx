@@ -51,7 +51,11 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
 
   const createOperationalMutation = useCreateOperationalCost();
 
-  const handleAddOperational = async (amount: number, note: string) => {
+  const handleAddOperational = async (
+    amount: number,
+    note: string,
+    receiptImageUrl: string,
+  ) => {
     setIsModalOpen(false);
     setIsLoadingModal(true);
 
@@ -59,9 +63,11 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
       const created = await createOperationalMutation.mutateAsync({
         campaignId: summary.campaign_id,
         amount,
+        maxAllowedAmount: remainingOperationalQuota,
+        receiptImageUrl,
         note,
       });
-      
+
       setOperationalFees((prev) => [...prev, created]);
 
       setInfoModal({

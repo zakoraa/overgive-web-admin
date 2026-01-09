@@ -2,7 +2,6 @@
 
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { DonationSettlement } from "./components/donation-settlement";
-import { getDonationSettlementSummaryByCampaign } from "../../services/get-donation-settlement-summary-by-campaign";
 import { useGetDonationSettlementSummaryByCampaign } from "../../hooks/use-get-donation-settlements-by-campaign";
 
 interface DonationSettlementPageProps {
