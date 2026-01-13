@@ -5,7 +5,7 @@ import { AppButton } from "@/core/components/ui/button/app-button";
 import { AppDatePicker } from "@/core/components/ui/input/app-date-picker";
 import { AppSelect } from "@/core/components/ui/input/app-dropdown";
 import { AppInput } from "@/core/components/ui/input/app-input";
-import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
+// import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor/app-rich-text-editor";
 import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
 import { useCreateCampaign } from "@/modules/donation_campaign/pages/create/hooks/use-create-campaign";
 import { CampaignCategory } from "@/modules/donation_campaign/types/campaign";
@@ -18,6 +18,7 @@ import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
 import { useGetCurrentUserContext } from "@/modules/auth/hooks/use-get-current-user";
 import { GridInput } from "@/core/components/ui/input/layout/grid-input";
 import { useQueryClient } from "@tanstack/react-query";
+import EditorClient from "@/core/components/ui/input/app-rich-text-editor/components/Editor/EditorClient";
 
 export const CreateDonationCampaignForm = () => {
   const router = useRouter();
@@ -88,7 +89,7 @@ export const CreateDonationCampaignForm = () => {
   };
 
   return (
-    <>
+    <div className="min-w-full">
       <ModalLoading isOpen={loading} />
       <form
         className="space-y-3 pb-14"
@@ -169,10 +170,9 @@ export const CreateDonationCampaignForm = () => {
           />
         </GridInput>
 
-        <AppRichTextEditor
+        <EditorClient
           label="Latar Belakang Kampanye"
           name="background"
-          placeholder="Tulis latar belakang kampanye..."
           error={errors.background_html}
           required
           onChange={(val: string) =>
@@ -204,6 +204,6 @@ export const CreateDonationCampaignForm = () => {
         confirmText="Ya, Tambahkan"
         cancelText="Batal"
       />
-    </>
+    </div>
   );
 };

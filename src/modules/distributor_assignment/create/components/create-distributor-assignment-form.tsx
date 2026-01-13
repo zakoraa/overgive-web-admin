@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AppButton } from "@/core/components/ui/button/app-button";
-import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
+// import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor/app-rich-text-editor";
 import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
@@ -17,6 +17,7 @@ import { GridInput } from "@/core/components/ui/input/layout/grid-input";
 import { useCreateAssignmentValidation } from "../hooks/use-create-assignment-validation";
 import { useGetUsers } from "@/core/hooks/use-get-users";
 import { useQueryClient } from "@tanstack/react-query";
+import EditorClient from "@/core/components/ui/input/app-rich-text-editor/components/Editor/EditorClient";
 
 export const CreateDistributorAssignmentForm = () => {
   const queryClient = useQueryClient();
@@ -116,7 +117,7 @@ export const CreateDistributorAssignmentForm = () => {
   };
 
   return (
-    <>
+    <div className="min-w-full">
       <ModalLoading isOpen={loading} />
 
       <form
@@ -163,17 +164,17 @@ export const CreateDistributorAssignmentForm = () => {
           />
         </GridInput>
 
-        <AppRichTextEditor
-          label="Catatan (Opsional)"
-          name="notes"
-          placeholder="Tambahkan catatan penugasan..."
-          onChange={(val) => setFormData({ ...formData, notes: val })}
+        <EditorClient
+        label="Catatan (Opsional)"
+        name="notes"
+        placeholder="Tambahkan catatan penugasan..."
+        onChange={(val) => setFormData({ ...formData, notes: val })}
         />
 
         <AppButton
           type="submit"
           text="Tambah Penugasan Distributor"
-          className="w-full!"
+          className="w-full! mt-5"
         />
       </form>
 
@@ -194,6 +195,6 @@ export const CreateDistributorAssignmentForm = () => {
         confirmText="Ya, Tambahkan"
         cancelText="Batal"
       />
-    </>
+    </div>
   );
 };

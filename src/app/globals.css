@@ -54,7 +54,6 @@ html {
 body {
   font-family: var(--font-nunito), sans-serif;
   background: var(--background);
-  color: var(--foreground);
 }
 
 @theme {
@@ -113,18 +112,16 @@ body {
   background: var(--foreground); /* Thumb color */
 }
 
-.ProseMirror img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+/* KHUSUS VIEWER */
+.ProseMirror {
+  user-select: text;
+}
+.rich-text-viewer .ProseMirror {
+  padding: 0 !important;
+  min-height: unset !important;
 }
 
-.ProseMirror:focus {
-  outline: none;
-}
-
-.ProseMirror p.is-empty:first-child::before {
-  color: #aaa;
-  content: attr(data-placeholder);
+/* viewer tidak perlu focus style */
+.rich-text-viewer .ProseMirror-focused {
+  outline: none !important;
 }

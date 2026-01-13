@@ -4,7 +4,7 @@ import { CreateDonationCampaignForm } from "./components/create-donation-campaig
 
 export const AddDonationCampaign = () => {
   return (
-    <main className="container px-4 py-5 lg:px-8">
+    <main className="container px-4 py-5 lg:px-8 flex flex-col">
       <Title text="Tambah Kampanye Donasi" />
       <p className="text-sm text-gray-500">
         Buat kampanye baru untuk menggalang dana dan bantu mereka yang

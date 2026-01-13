@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AppButton } from "@/core/components/ui/button/app-button";
-import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
+// import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor/app-rich-text-editor";
 import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
 import { ModalInfo } from "@/core/components/ui/modal/modal-info";
 import { ModalLoading } from "@/core/components/ui/modal/modal-loading";
@@ -14,6 +14,7 @@ import { AppInput } from "@/core/components/ui/input/app-input";
 import { useAssignmentDetailContext } from "../providers/edit-assignment-provider";
 import { useGetUsers } from "@/core/hooks/use-get-users";
 import { useQueryClient } from "@tanstack/react-query";
+import EditorClient from "@/core/components/ui/input/app-rich-text-editor/components/Editor/EditorClient";
 
 export const EditDistributorAssignmentForm = () => {
   const router = useRouter();
@@ -131,14 +132,14 @@ export const EditDistributorAssignmentForm = () => {
           />
         </GridInput>
 
-        <AppRichTextEditor
-          label="Catatan (Opsional)"
-          name="notes"
-          defaultValue={formData.notes}
-          onChange={(val) => setFormData({ ...formData, notes: val })}
+        <EditorClient
+        label="Catatan (Opsional)"
+        name="notes"
+        defaultValue={formData.notes}
+        onChange={(val) => setFormData({ ...formData, notes: val })}
         />
 
-        <AppButton type="submit" text="Simpan Perubahan" className="w-full!" />
+        <AppButton type="submit" text="Simpan Perubahan" className="w-full! mt-5" />
       </form>
 
       <ModalInfo

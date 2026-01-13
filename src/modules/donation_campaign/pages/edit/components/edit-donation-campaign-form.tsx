@@ -5,7 +5,7 @@ import { AppButton } from "@/core/components/ui/button/app-button";
 import { AppDatePicker } from "@/core/components/ui/input/app-date-picker";
 import { AppSelect } from "@/core/components/ui/input/app-dropdown";
 import { AppInput } from "@/core/components/ui/input/app-input";
-import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor";
+// import { AppRichTextEditor } from "@/core/components/ui/input/app-rich-text-editor/app-rich-text-editor";
 import { ModalConfirm } from "@/core/components/ui/modal/modal-confirm";
 import { AppFileInput } from "@/core/components/ui/input/app-file-input";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ import { useEditCampaign } from "@/modules/donation_campaign/pages/edit/hooks/us
 import CircularLoading from "@/core/components/ui/circular-loading";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCampaignDetailContext } from "../../detail/providers/campaign-detail-provider";
+import EditorClient from "@/core/components/ui/input/app-rich-text-editor/components/Editor/EditorClient";
 
 export const EditDonationCampaignForm = () => {
   const router = useRouter();
@@ -202,10 +203,9 @@ export const EditDonationCampaignForm = () => {
           />
         </div>
 
-        <AppRichTextEditor
+        <EditorClient
           label="Latar Belakang Kampanye"
           name="background"
-          placeholder="Tulis latar belakang kampanye..."
           error={errors.background_html}
           required
           defaultValue={formData.background_html}

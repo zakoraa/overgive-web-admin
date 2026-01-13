@@ -7,6 +7,12 @@ import { useCampaignDetailContext } from "../providers/campaign-detail-provider"
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/core/lib/utils";
 import { Line } from "@/core/components/ui/line";
+import "@excalidraw/excalidraw/index.css";
+import "katex/dist/katex.min.css";
+import "prism-code-editor-lightweight/layout.css";
+import "prism-code-editor-lightweight/themes/github-dark.css";
+import "reactjs-tiptap-editor/style.css";
+import { RichTextViewer } from "@/core/components/ui/input/app-rich-text-editor/components/Editor/rich-text-viewer";
 
 export const CampaignBackgroundCard = () => {
   const { campaign } = useCampaignDetailContext();
@@ -15,17 +21,18 @@ export const CampaignBackgroundCard = () => {
   if (!campaign) return null;
 
   return (
-    <Card className="relative space-y-3 px-5 py-5 text-sm text-start">
+    <Card className="relative space-y-3 px-5 py-5 text-start text-sm">
       <Title text="Latar Belakang" />
       <Line className="mt-0! mb-2!" />
       {/* Content */}
       <div
         className={cn(
-          "prose max-w-none overflow-hidden text-start transition-all duration-300",
+          "relative overflow-hidden transition-all duration-300",
           !expanded && "max-h-40",
         )}
-        dangerouslySetInnerHTML={{ __html: campaign.background_html }}
-      />
+      >
+        <RichTextViewer content={campaign.background_html} />
+      </div>
 
       {/* Overlay + Read more */}
       {!expanded && (

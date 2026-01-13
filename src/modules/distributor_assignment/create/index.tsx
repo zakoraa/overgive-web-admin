@@ -4,7 +4,7 @@ import { CreateDistributorAssignmentForm } from "./components/create-distributor
 
 export const CreateDistributorAssignment = () => {
   return (
-    <main className="container px-4 py-5 lg:px-8">
+    <main className="container px-4 py-5 lg:px-8 ">
       <Title text="Tambah Penugasan Distributor" />
       <p className="text-sm text-gray-500">
         Buat penugasan baru untuk distributor agar mereka dapat menjalankan

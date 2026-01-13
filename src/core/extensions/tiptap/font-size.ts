@@ -3,11 +3,6 @@ import { Mark, mergeAttributes } from "@tiptap/core";
 export const FontSize = Mark.create({
   name: "fontSize",
 
-  addOptions() {
-    return {
-      types: ["textStyle"],
-    };
-  },
 
   addAttributes() {
     return {
@@ -26,10 +21,10 @@ export const FontSize = Mark.create({
     return [
       {
         style: "font-size",
-        default: "16px",
       },
     ];
   },
+
 
   renderHTML({ HTMLAttributes }) {
     return ["span", mergeAttributes(HTMLAttributes), 0];
