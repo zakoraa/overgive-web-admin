@@ -116,6 +116,12 @@ const DocumentColumn = /* @__PURE__ */ Document.extend({
     content: '(block|columns)+',
 });
 
+const BlockImage = Image.extend({
+    group: 'block', // bikin image jadi block node
+    inline: false,  // pastikan dianggap block
+});
+
+
 
 const CustomParagraph = Paragraph.extend({
     addAttributes() {
@@ -192,13 +198,15 @@ export const richTextExtensions = (LIMIT = 2505) => [
     LineHeight,
     TaskList,
     Link,
-    Image.configure({
-        upload: (files: File) => new Promise(resolve => {
-            setTimeout(() => resolve(URL.createObjectURL(files)), 300);
-        }),
-
-    })
-    ,
+    BlockImage.configure({
+        upload: (files: File) =>
+            new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string); // base64
+                reader.onerror = (err) => reject(err);
+                reader.readAsDataURL(files);
+            }),
+    }),
     // Video.configure({
     //     upload: (files: File) => {
     //         return new Promise((resolve) => {
@@ -225,18 +233,13 @@ export const richTextExtensions = (LIMIT = 2505) => [
         defaultDirection: null,
     }),
     Attachment.configure({
-        upload: (file: any) => {
-            // fake upload return base 64
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    const blob = convertBase64ToBlob(reader.result as string);
-                    resolve(URL.createObjectURL(blob));
-                }, 300);
-            });
-        },
+        upload: (file: File) =>
+            new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string); // langsung base64
+                reader.onerror = (err) => reject(err);
+                reader.readAsDataURL(file);
+            }),
     }),
     Katex,
     Excalidraw,
