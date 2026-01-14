@@ -124,7 +124,6 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
   ) => {
     setIsEditOpen(false);
     setIsLoadingModal(true);
-    console.log("RECEI+T: ", receipt_image_url);
 
     try {
       const updated = await updateOperationalMutation.mutateAsync({
@@ -132,6 +131,7 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
         amount,
         note,
         receiptImageUrl: receipt_image_url,
+        maxAllowedAmount: remainingOperationalQuota,
       });
 
       updateFee(id, {
