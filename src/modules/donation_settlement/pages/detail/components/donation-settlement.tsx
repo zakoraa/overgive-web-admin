@@ -125,13 +125,14 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
     setIsEditOpen(false);
     setIsLoadingModal(true);
 
+
     try {
       const updated = await updateOperationalMutation.mutateAsync({
         id,
         amount,
         note,
         receiptImageUrl: receipt_image_url,
-        maxAllowedAmount: remainingOperationalQuota,
+        maxAllowedAmount: Math.max(0, remainingOperationalQuota),
       });
 
       updateFee(id, {
