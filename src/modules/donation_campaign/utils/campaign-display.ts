@@ -18,18 +18,12 @@ export function getCampaignStatusInfo(
   status: CampaignStatus | undefined,
   endedAt: string | undefined,
 ) {
-  if (!endedAt) {
-    return {
-      label: "Berlangsung",
-      colorClass: "text-primary-dark bg-primary-faded",
-    };
-  }
 
   const expired = isExpired(endedAt);
   const remainingLabel = getRemainingDays(endedAt);
 
   // active + masih ada waktu → remaining
-  if (status === "active" && !expired) {
+  if (status === "active" && !expired && endedAt) {
     return {
       label: remainingLabel,
       colorClass: "text-amber-600 bg-amber-100",
@@ -44,6 +38,14 @@ export function getCampaignStatusInfo(
     };
   }
 
+
+  if (!endedAt) {
+    return {
+      label: "Berlangsung",
+      colorClass: "text-primary-dark bg-primary-faded",
+    };
+  }
+
   // active + waktu habis → selesai
   if (status === "active" && expired) {
     return {
@@ -51,6 +53,7 @@ export function getCampaignStatusInfo(
       colorClass: "text-red-500 bg-red-100",
     };
   }
+
 
   // inactive + waktu habis → selesai
   return {
