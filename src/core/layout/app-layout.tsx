@@ -42,7 +42,7 @@ export default function AppLayout() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <SideBar
         activeTab={tab}
