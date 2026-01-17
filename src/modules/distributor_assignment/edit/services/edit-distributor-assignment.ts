@@ -1,33 +1,38 @@
 "use server";
 
 import { absoluteUrl } from "@/core/lib/absolute-url";
+import { ActionResult } from "@/core/types/action-result";
 
-export async function editDistributorAssigment(id: string, payload: {
+export async function editDistributorAssigment(
+  id: string,
+  payload: {
     distributor_id: string;
     campaign_id: string;
     notes?: string;
-}) {
-    const url = await absoluteUrl(`/api/assignment/update/${id}`);
+  }
+): Promise<ActionResult> {
+  const url = await absoluteUrl(`/api/assignment/update/${id}`);
 
-    try {
-        const res = await fetch(url, {
-            method: "PUT",
-            body: JSON.stringify(payload),
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cache: "no-store",
-        });
+  const res = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
 
-        if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.message || "Gagal mengubah penugasan distributor.");
-        }
+  const result = await res.json();
 
-        const result = await res.json();
-        return { success: true, data: result.data };
-    } catch (err: any) {
-        // console.error("ERROR updateAssignment:", err);
-        return { success: false, error: err.message };
-    }
+  if (!res.ok) {
+    return {
+      success: false,
+      message: result.message || "Gagal mengubah penugasan distributor.",
+    };
+  }
+
+  return {
+    success: true,
+    data: result.data,
+  };
 }

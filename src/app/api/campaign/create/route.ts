@@ -1,19 +1,22 @@
+import { NextResponse } from "next/server";
 import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 
 export async function POST(req: Request) {
-  const data = await req.json();
+  const payload = await req.json();
   const supabase = await supabaseServer();
 
-  const { data: result, error } = await supabase
+  const { data, error } = await supabase
     .from("campaigns")
-    .insert([data])
+    .insert([payload])
     .select()
     .single();
 
-    console.log("error; ", error)
-  if (error)
-    return Response.json({ error: error.message }, { status: 400 });
+  if (error) {
+    return NextResponse.json(
+      { message: error.message },
+      { status: 400 }
+    );
+  }
 
-
-  return Response.json(result);
+  return NextResponse.json(data);
 }

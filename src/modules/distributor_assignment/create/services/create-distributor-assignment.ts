@@ -1,13 +1,16 @@
 "use server";
 
 import { absoluteUrl } from "@/core/lib/absolute-url";
+import { ActionResult } from "@/core/types/action-result";
 
-export async function createDistributorAssignment(payload: {
-  assigned_by: string;
-  distributor_id: string;
-  campaign_id: string;
-  notes?: string;
-}) {
+export async function createDistributorAssignment(
+  payload: {
+    assigned_by: string;
+    distributor_id: string;
+    campaign_id: string;
+    notes?: string;
+  }
+): Promise<ActionResult> {
   const url = await absoluteUrl("/api/assignment/create");
 
   const res = await fetch(url, {
@@ -19,14 +22,19 @@ export async function createDistributorAssignment(payload: {
     cache: "no-store",
   });
 
-  if (!res.ok) {
-    const error = await res.json();
-    // console.log("RESS EROR: ", error)
+  const result = await res.json();
 
-    throw new Error(error.message || "Gagal membuat penugasan distributor.");
+  if (!res.ok) {
+        console.log("ERROR : ", result)
+
+    return {
+      success: false,
+      message: result.message || "Gagal membuat penugasan distributor.",
+    };
   }
 
-  const result = await res.json();
-  // console.log("RESS OK: ", result)
-  return result.data;
+  return {
+    success: true,
+    data: result.data,
+  };
 }

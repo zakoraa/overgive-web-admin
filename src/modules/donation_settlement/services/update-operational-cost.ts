@@ -2,69 +2,82 @@
 
 import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 import { CampaignOperationalCost } from "../types/campaign-operational-cost";
+import { ActionResult } from "@/core/types/action-result";
 
 interface UpdateOperationalCostPayload {
-    id: string;
-    amount: number;
-    note: string;
-    receiptImageUrl?: string | null;
-    maxAllowedAmount: number; // 10% dari total
+  id: string;
+  amount: number;
+  note: string;
+  receiptImageUrl?: string | null;
+  maxAllowedAmount: number;
 }
 
-export const updateOperationalCost = async ({
+export const updateOperationalCost = async (
+  payload: UpdateOperationalCostPayload
+): Promise<ActionResult<CampaignOperationalCost>> => {
+  const {
     id,
     amount,
     note,
     receiptImageUrl,
     maxAllowedAmount,
-}: UpdateOperationalCostPayload): Promise<CampaignOperationalCost> => {
-    const supabase = await supabaseServer();
+  } = payload;
 
-    // 1. Ambil data operasional yang mau diupdate
-    const { data: existingCost, error: existingError } = await supabase
-        .from("campaign_operational_costs")
-        .select("id, amount, campaign_id")
-        .eq("id", id)
-        .single();
+  const supabase = await supabaseServer();
 
-    if (existingError || !existingCost) {
-        throw new Error("Data operasional tidak ditemukan");
-    }
+  // 1. Ambil data existing
+  const { data: existingCost, error: existingError } = await supabase
+    .from("campaign_operational_costs")
+    .select("id, amount, campaign_id")
+    .eq("id", id)
+    .is("deleted_at", null)
+    .single();
 
-    // 3. Hitung total setelah update
-    const oldAmount = Number(existingCost.amount);
-    const increaseAmount = amount - oldAmount;
-
-    console.log("oldAmount AMOUNT:", oldAmount);
-    console.log("INCREASE AMOUNT:", increaseAmount);
-    console.log("MAX ALLOWED:", maxAllowedAmount);
-
-    // kalau naik, cek kuota
-    if (increaseAmount > 0 && increaseAmount > maxAllowedAmount) {
-        throw new Error("Biaya operasional melebihi batas maksimum 10%");
-    }
-
-
-    // 5. Update data
-    const updateData: Record<string, any> = {
-        amount,
-        note,
+  if (existingError || !existingCost) {
+    return {
+      success: false,
+      message: "Data operasional tidak ditemukan",
     };
+  }
 
-    if (receiptImageUrl !== undefined) {
-        updateData.receipt_image_url = receiptImageUrl;
-    }
+  // 2. Hitung selisih
+  const oldAmount = Number(existingCost.amount);
+  const increaseAmount = amount - oldAmount;
 
-    const { data, error } = await supabase
-        .from("campaign_operational_costs")
-        .update(updateData)
-        .eq("id", id)
-        .select()
-        .single();
+  // 3. Validasi limit
+  if (increaseAmount > 0 && increaseAmount > maxAllowedAmount) {
+    return {
+      success: false,
+      message: "Biaya operasional melebihi batas maksimum 10%",
+    };
+  }
 
-    if (error) {
-        throw new Error(error.message);
-    }
+  // 4. Update
+  const updateData: Record<string, any> = {
+    amount,
+    note,
+  };
 
-    return data;
+  if (receiptImageUrl !== undefined) {
+    updateData.receipt_image_url = receiptImageUrl;
+  }
+
+  const { data, error } = await supabase
+    .from("campaign_operational_costs")
+    .update(updateData)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  return {
+    success: true,
+    data,
+  };
 };

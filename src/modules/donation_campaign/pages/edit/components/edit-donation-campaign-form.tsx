@@ -93,7 +93,7 @@ export const EditDonationCampaignForm = () => {
       // console.log("ERROR  EDIT:", result?.error);
       setModalInfoData({
         title: "Gagal!",
-        message: result?.error || "Terjadi kesalahan",
+        message: result?.message || "Terjadi kesalahan",
         imageUrl: "/svgs/failed.svg",
       });
       setModalInfoOpen(true);

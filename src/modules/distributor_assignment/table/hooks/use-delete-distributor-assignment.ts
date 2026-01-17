@@ -15,7 +15,7 @@ export function useDeleteDistributorAssignment() {
             const result = await deleteDistributorAssignment(id);
 
             if (!result.success) {
-                const msg = result.error ?? "Terjadi kesalahan";
+                const msg = result.message ?? "Terjadi kesalahan";
                 setError(msg);
                 return { data: null, error: msg };
             }

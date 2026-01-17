@@ -20,8 +20,8 @@ export function useEditAssignment(id: string) {
 
             // kalau gagal
             if (!result.success) {
-                setError(result.error ?? "Terjadi kesalahan");
-                return { data: null, error: result.error };
+                setError(result.message ?? "Terjadi kesalahan");
+                return { data: null, error: result.message };
             }
 
             // kalau berhasil

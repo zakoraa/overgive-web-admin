@@ -10,14 +10,13 @@ export async function DELETE(
 
     if (!id) {
       return NextResponse.json(
-        { error: "ID campaign tidak ditemukan" },
+        { message: "ID campaign tidak ditemukan" },
         { status: 400 }
       );
     }
 
     const supabase = await supabaseServer();
 
-    // update deleted_at dengan timestamp sekarang
     const { data, error } = await supabase
       .from("campaigns")
       .update({ deleted_at: new Date().toISOString() })
@@ -26,13 +25,17 @@ export async function DELETE(
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+
+    if (!data) {
+      return NextResponse.json({ message: "Campaign tidak ditemukan" }, { status: 404 });
     }
 
     return NextResponse.json({ data });
   } catch (err: any) {
     return NextResponse.json(
-      { error: err.message || "Terjadi kesalahan" },
+      { message: err.message || "Terjadi kesalahan sistem" },
       { status: 500 }
     );
   }

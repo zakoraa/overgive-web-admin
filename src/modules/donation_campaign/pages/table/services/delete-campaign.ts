@@ -1,28 +1,37 @@
 "use server";
 
 import { absoluteUrl } from "@/core/lib/absolute-url";
+import { ActionResult } from "@/core/types/action-result";
 
-export async function deleteCampaignService(id: string) {
-  if (!id) return { success: false, error: "ID campaign tidak valid" };
-
+export async function deleteCampaignService(id: string): Promise<ActionResult> {
+  if (!id) {
+    return { success: false, message: "ID campaign tidak valid" };
+  }
 
   try {
     const url = await absoluteUrl(`/api/campaign/delete/${id}`);
-    const res = await fetch(
-      url,
-      {
-        method: "DELETE",
-        credentials: "include",
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(url, {
+      method: "DELETE",
+      cache: "no-store",
+    });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Gagal menghapus campaign");
+    const result = await res.json();
 
-    return { success: true, data: data.data };
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || "Gagal menghapus campaign",
+      };
+    }
+
+    return {
+      success: true,
+      data: result.data,
+    };
   } catch (err: any) {
-    // console.error(err);
-    return { success: false, error: err.message };
+    return {
+      success: false,
+      message: err.message || "Terjadi kesalahan jaringan",
+    };
   }
 }

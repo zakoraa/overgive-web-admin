@@ -67,7 +67,7 @@ export const DonationCampaignTable = () => {
     } else {
       setModalInfoData({
         title: "Gagal!",
-        message: `Terjadi kesalahan: ${result.error}`,
+        message: `Terjadi kesalahan: ${result.message}`,
         imageUrl: "/svgs/failed.svg",
       });
       setModalInfoOpen(true);

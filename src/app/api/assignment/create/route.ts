@@ -34,9 +34,11 @@ export async function POST(req: Request) {
         }
 
         if (existingAssignment) {
+        console.log("ERROR : ", existingAssignment)
+
             return NextResponse.json(
                 {
-                    message: "Distributor sudah ditugaskan ke campaign ini",
+                    message: "Distributor sudah ditugaskan ke kampanye ini",
                 },
                 { status: 409 } // Conflict
             );
@@ -65,6 +67,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ message: "success", data });
     } catch (err) {
+        console.log("ERROR : ", err)
         return NextResponse.json(
             { message: "Terjadi kesalahan, penugasan tidak dapat ditambahkan." },
             { status: 500 }

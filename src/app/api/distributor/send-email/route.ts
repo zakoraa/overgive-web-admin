@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   const html = `
     <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
       <div style="background-color: #0fc7b8; padding: 20px; text-align: center;">
-        <img src="https://gscuqeshqhnbomvxgggw.supabase.co/storage/v1/object/public/overgive-logo/overgive-logo-white.png" alt="Overgive Logo" style="height:100px; margin-bottom: 10px;" />
+        <img src="https://gscuqeshqhnbomvxgggw.supabase.co/storage/v1/object/public/overgive-logo/ic-overgive-logo.png" alt="Overgive Logo" style="height:100px; margin-bottom: 10px;" />
         <h1 style="color: #ffffff; margin: 0; font-size: 24px;">Selamat Datang di Overgive!</h1>
       </div>
       <div style="padding: 30px; background-color: #ffffff;">

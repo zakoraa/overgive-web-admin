@@ -3,6 +3,7 @@ import { Distributor } from "@/modules/distributor/types/distributor";
 import { createDistributor } from "../services/create-distributor";
 import generatePassword from "generate-password";
 import { sendGeneratePassword } from "../services/send-generate-password";
+import { ActionResult } from "@/core/types/action-result";
 
 export const useCreateDistributor = () => {
     const [loading, setLoading] = useState(false);
@@ -27,12 +28,13 @@ export const useCreateDistributor = () => {
                 setError("Gagal membuat distributor");
                 return null;
             }
-            const result = await createDistributor(fullName, email, password);
-            if (!result) {
-                setError("Gagal membuat distributor");
+            const result: ActionResult<Distributor> = await createDistributor(fullName, email, password);
+            console.log("RESulT : ", result)
+            if (!result.success) {
+                setError(result.message);
                 return null;
             }
-            setDistributor(result);
+            setDistributor(result.data);
             return result;
         } catch (err) {
             // console.error(err);

@@ -1,8 +1,13 @@
 "use server";
 
 import { absoluteUrl } from "@/core/lib/absolute-url";
+import { ActionResult } from "@/core/types/action-result";
 
-export async function sendGeneratePassword(fullName: string, email: string, password: string) {
+export async function sendGeneratePassword(
+    fullName: string,
+    email: string,
+    password: string
+): Promise<ActionResult> {
     const url = await absoluteUrl('/api/distributor/send-email');
 
     try {
@@ -10,17 +15,26 @@ export async function sendGeneratePassword(fullName: string, email: string, pass
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ fullName, email, password }),
+            cache: "no-store",
         });
 
+        const result = await res.json();
+
         if (!res.ok) {
-            const errMsg = await res.text();
-            // console.error("Server error:", errMsg);
-            return null;
+            return {
+                success: false,
+                message: result.message || "Gagal mengirim email",
+            };
         }
 
-        return await res.json();
-    } catch (err) {
-        // console.error("Fetch API error:", err);
-        return null;
+        return {
+            success: true,
+            data: result,
+        };
+    } catch (err: any) {
+        return {
+            success: false,
+            message: err.message || "Terjadi kesalahan jaringan",
+        };
     }
 }

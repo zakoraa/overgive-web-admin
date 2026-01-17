@@ -62,7 +62,7 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
     setIsLoadingModal(true);
 
     try {
-      const created = await createOperationalMutation.mutateAsync({
+      const result = await createOperationalMutation.mutateAsync({
         campaignId: summary.campaign_id,
         amount,
         maxAllowedAmount: remainingOperationalQuota,
@@ -70,7 +70,17 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
         note,
       });
 
-      setOperationalFees((prev) => [...prev, created]);
+      if (!result.success) {
+        setInfoModal({
+          title: "Gagal",
+          imageUrl: "/svgs/failed.svg",
+          message: result.message,
+        });
+        return;
+      }
+
+      // jika sukses
+      setOperationalFees((prev) => [...prev, result.data]);
 
       setInfoModal({
         title: "Sukses",
@@ -125,15 +135,27 @@ export const DonationSettlement = ({ summary }: DonationSettlementProps) => {
     setIsEditOpen(false);
     setIsLoadingModal(true);
 
-
     try {
-      const updated = await updateOperationalMutation.mutateAsync({
+      const updatedResult = await updateOperationalMutation.mutateAsync({
         id,
         amount,
         note,
         receiptImageUrl: receipt_image_url,
         maxAllowedAmount: Math.max(0, remainingOperationalQuota),
       });
+
+      if (!updatedResult.success) {
+        setInfoModal({
+          title: "Gagal",
+          imageUrl: "/svgs/failed.svg",
+          message:
+            updatedResult.message || "Gagal memperbarui biaya operasional",
+        });
+        return;
+      }
+
+      // akses data yang valid
+      const updated = updatedResult.data;
 
       updateFee(id, {
         amount: updated.amount,

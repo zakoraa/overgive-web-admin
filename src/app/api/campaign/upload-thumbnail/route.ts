@@ -4,25 +4,32 @@ import { supabaseServer } from "@/core/lib/supabase/supabase-server";
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
-    const file = formData.get("file") as File;
+    const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "File tidak ditemukan" }, { status: 400 });
+      return NextResponse.json(
+        { message: "File tidak ditemukan" },
+        { status: 400 }
+      );
     }
 
     const supabase = await supabaseServer();
 
     const fileName = `campaign-${Date.now()}-${file.name}`;
     const buffer = await file.arrayBuffer();
-    const uint8 = new Uint8Array(buffer);
 
     const { data, error } = await supabase.storage
       .from("campaign-images")
-      .upload(fileName, uint8, {
+      .upload(fileName, new Uint8Array(buffer), {
         contentType: file.type,
       });
 
-    if (error) throw error;
+    if (error) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: 400 }
+      );
+    }
 
     const publicUrl = supabase.storage
       .from("campaign-images")
@@ -32,7 +39,11 @@ export async function POST(req: Request) {
       success: true,
       url: publicUrl,
     });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    console.error("UPLOAD THUMBNAIL ERROR:", err);
+    return NextResponse.json(
+      { message: "Gagal mengunggah thumbnail" },
+      { status: 500 }
+    );
   }
 }

@@ -1,8 +1,13 @@
 "use server";
 
 import { absoluteUrl } from "@/core/lib/absolute-url";
+import { ActionResult } from "@/core/types/action-result";
 
-export async function deleteUser(id: string) {
+export async function deleteUser(id: string): Promise<ActionResult> {
+  if (!id) {
+    return { success: false, message: "ID user tidak valid" };
+  }
+
   const url = await absoluteUrl(`/api/user/delete/${id}`);
 
   try {
@@ -11,15 +16,14 @@ export async function deleteUser(id: string) {
       cache: "no-store",
     });
 
+    const result = await res.json();
+
     if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || "Gagal menghapus user.");
+      return { success: false, message: result.error || "Gagal menghapus user" };
     }
 
-    const result = await res.json();
     return { success: true, data: result.data };
   } catch (err: any) {
-    // console.error("ERROR softDeleteUser:", err);
-    return { success: false, error: err.message };
+    return { success: false, message: err.message || "Terjadi kesalahan jaringan" };
   }
 }

@@ -1,17 +1,23 @@
+"use client";
+
 import { useState } from "react";
 import { uploadCampaignThumbnail } from "../services/upload-campaign-thumbnail";
 import { createCampaign } from "../services/create-campaign";
 import { compressImage } from "@/core/utils/image";
 import { CampaignCreateInput } from "../types/campaign-create-input";
-
+import { ActionResult } from "@/core/types/action-result";
 
 export const useCreateCampaign = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addCampaign = async (data: CampaignCreateInput, file?: File) => {
+  const addCampaign = async (
+    data: CampaignCreateInput,
+    file?: File
+  ): Promise<ActionResult<any>> => {
     setLoading(true);
     setError(null);
+
     try {
       let payload: CampaignCreateInput = { ...data };
 
@@ -19,18 +25,25 @@ export const useCreateCampaign = () => {
         const compressedFile = await compressImage(file);
         const uploadResult = await uploadCampaignThumbnail(compressedFile);
 
-        if (!uploadResult.success) throw new Error("Gagal upload thumbnail");
+        if (!uploadResult.success) {
+          setError(uploadResult.message);
+          return { success: false, message: uploadResult.message };
+        }
 
-        payload.image_url = uploadResult.url;
+        payload.image_url = uploadResult.data.url;
       }
 
       const result = await createCampaign(payload);
-      return result;
 
+      if (!result.success) {
+        setError(result.message);
+        return { success: false, message: result.message };
+      }
+
+      return { success: true, data: result.data };
     } catch (err: any) {
-      // console.log("ERROR:", err);
       setError(err.message || "Gagal menambahkan campaign");
-      throw err;
+      return { success: false, message: err.message || "Gagal menambahkan campaign" };
     } finally {
       setLoading(false);
     }
